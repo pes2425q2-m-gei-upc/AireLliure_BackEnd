@@ -141,6 +141,35 @@ urlpatterns = [
     path('events-de-calendari-publics/<int:pk>/update/', views.update_event_de_calendari_public, name='update_event_de_calendari_public'),
     path('events-de-calendari-publics/<int:pk>/delete/', views.delete_event_de_calendari_public, name='delete_event_de_calendari_public'),
     
+    #APUNTAT
+    path('apuntats/', views.get_apuntats, name='get_apuntats'),
+    path('apuntats/<int:pk>/', views.get_apuntat, name='get_apuntat'),
+    path('apuntats/create/', views.create_apuntat, name='create_apuntat'),
+    path('apuntats/<int:pk>/update/', views.update_apuntat, name='update_apuntat'),
+    path('apuntats/<int:pk>/delete/', views.delete_apuntat, name='delete_apuntat'),
+    
+    #PUNT
+    path('punts/', views.get_punts, name='get_punts'),
+    path('punts/<int:pk>/', views.get_punt, name='get_punt'),
+    path('punts/create/', views.create_punt, name='create_punt'),
+    path('punts/<int:pk>/update/', views.update_punt, name='update_punt'),
+    path('punts/<int:pk>/delete/', views.delete_punt, name='delete_punt'),
+    
+    #ESTACIO QUALITAT AIRE
+    path('estacions-qualitat-aire/', views.get_estacions_qualitat_aire, name='get_estacions_qualitat_aire'),
+    path('estacions-qualitat-aire/<int:pk>/', views.get_estacio_qualitat_aire, name='get_estacio_qualitat_aire'),
+    path('estacions-qualitat-aire/create/', views.create_estacio_qualitat_aire, name='create_estacio_qualitat_aire'),
+    path('estacions-qualitat-aire/<int:pk>/update/', views.update_estacio_qualitat_aire, name='update_estacio_qualitat_aire'),
+    path('estacions-qualitat-aire/<int:pk>/delete/', views.delete_estacio_qualitat_aire, name='delete_estacio_qualitat_aire'),
+    
+    
+    #ACTIVITAT CULTURAL
+    path('activitats-culturals/', views.get_activitats_culturals, name='get_activitats_culturals'),
+    path('activitats-culturals/<int:pk>/', views.get_activitat_cultural, name='get_activitat_cultural'),
+    path('activitats-culturals/create/', views.create_activitat_cultural, name='create_activitat_cultural'),
+    path('activitats-culturals/<int:pk>/update/', views.update_activitat_cultural, name='update_activitat_cultural'),
+    path('activitats-culturals/<int:pk>/delete/', views.delete_activitat_cultural, name='delete_activitat_cultural'),
+    
     
     
     

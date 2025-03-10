@@ -910,12 +910,190 @@ def delete_event_de_calendari_public(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE APUNTAT ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_apuntats(request):
+    apuntats = Apuntat.objects.all()
+    serializer = ApuntatSerializer(apuntats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_apuntat(request, pk):
+    apuntat = get_object_or_404(Apuntat, pk=pk)
+    serializer = ApuntatSerializer(apuntat)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_apuntat(request):
+    data = {
+        'event': request.data.get('event'),
+        'usuari': request.data.get('usuari')
+    }
+    form = ApuntatForm(data=data)
+    if form.is_valid():
+        apuntat = form.save()
+        serializer = ApuntatSerializer(apuntat)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_apuntat(request, pk):
+    apuntat = get_object_or_404(Apuntat, pk=pk)
+    serializer = ApuntatSerializer(apuntat, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_apuntat(request, pk):
+    apuntat = get_object_or_404(Apuntat, pk=pk)
+    if apuntat is not None:
+        apuntat.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 # LA PART DE PUNT ------------------------------------------------------------------------------------------------
 
-# LA PART DE ESTACIO QUALITAT AIRE ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_punts(request):
+    punts = Punt.objects.all()
+    serializer = PuntSerializer(punts, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_punt(request, pk):
+    punt =  get_object_or_404(Punt, pk=pk)
+    serializer = PuntSerializer(punt)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_punt(request):
+    data = {
+        'latitud': request.data.get('latitud'),
+        'longitud': request.data.get('longitud'),
+        'altitud': request.data.get('altitud'),
+        'index_qualitat_aire': request.data.get('index_qualitat_aire')
+    }
+    form = PuntForm(data=data)
+    if form.is_valid():
+        punt = form.save()
+        serializer = PuntSerializer(punt)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_punt(request, pk):
+    punt = get_object_or_404(Punt, pk=pk)  
+    serializer = PuntSerializer(punt, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_punt(request, pk):
+    punt = get_object_or_404(Punt, pk=pk)
+    if punt is not None:
+        punt.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
+# LA PART DE ESTACIO QUALITAT AIRE ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_estacions_qualitat_aire(request):
+    estacions_qualitat_aire = EstacioQualitatAire.objects.all()
+    serializer = EstacioQualitatAireSerializer(estacions_qualitat_aire, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_estacio_qualitat_aire(request, pk):
+    estacio_qualitat_aire = get_object_or_404(EstacioQualitatAire, pk=pk)
+    serializer = EstacioQualitatAireSerializer(estacio_qualitat_aire)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_estacio_qualitat_aire(request):
+    data = {
+        'nom_estacio': request.data.get('nom_estacio'),
+        'descripcio': request.data.get('descripcio'),
+        'latitud': request.data.get('latitud'),
+        'longitud': request.data.get('longitud'),
+        'altitud': request.data.get('altitud'),
+        'index_qualitat_aire': request.data.get('index_qualitat_aire')
+    }
+    form = EstacioQualitatAireForm(data=data)
+    if form.is_valid():
+        estacio = form.save()
+        serializer = EstacioQualitatAireSerializer(estacio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PATCH'])
+def update_estacio_qualitat_aire(request, pk):
+    estacio_qualitat_aire = get_object_or_404(EstacioQualitatAire, pk=pk)
+    serializer = EstacioQualitatAireSerializer(estacio_qualitat_aire, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK) 
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_estacio_qualitat_aire(request, pk):
+    estacio_qualitat_aire = get_object_or_404(EstacioQualitatAire, pk=pk)
+    if estacio_qualitat_aire is not None:
+        estacio_qualitat_aire.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+        
 # LA PART DE ACTIVITAT CULTURAL ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_activitats_culturals(request):
+    activitats_culturals = ActivitatCultural.objects.all()
+    serializer = ActivitatCulturalSerializer(activitats_culturals, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_activitat_cultural(request, pk):
+    activitat_cultural = get_object_or_404(ActivitatCultural, pk=pk)
+    serializer = ActivitatCulturalSerializer(activitat_cultural)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_activitat_cultural(request):
+    data = {
+        'nom_activitat': request.data.get('nom_activitat'),
+        'descripcio': request.data.get('descripcio'),
+        'data_inici': request.data.get('data_inici'),
+        'data_fi': request.data.get('data_fi'),
+        'punt': request.data.get('punt')
+    }
+    form = ActivitatCulturalForm(data=data)
+    if form.is_valid():
+        activitat = form.save()
+        serializer = ActivitatCulturalSerializer(activitat)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_activitat_cultural(request, pk):
+    activitat_cultural = get_object_or_404(ActivitatCultural, pk=pk)
+    serializer = ActivitatCulturalSerializer(activitat_cultural, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_activitat_cultural(request, pk):
+    activitat_cultural = get_object_or_404(ActivitatCultural, pk=pk)
+    if activitat_cultural is not None:
+        activitat_cultural.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+    
 
 # LA PART DE CONTAMINANT ------------------------------------------------------------------------------------------------
 

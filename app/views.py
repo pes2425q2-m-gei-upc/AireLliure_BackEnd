@@ -1097,4 +1097,92 @@ def delete_activitat_cultural(request, pk):
 
 # LA PART DE CONTAMINANT ------------------------------------------------------------------------------------------------
 
+@api_view(['GET'])
+def get_contaminants(request):
+    contaminants = Contaminant.objects.all()
+    serializer = ContaminantSerializer(contaminants, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_contaminant(request, pk):
+    contaminant = get_object_or_404(Contaminant, pk=pk)
+    serializer = ContaminantSerializer(contaminant)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_contaminant(request):
+    data = {
+        'nom': request.data.get('nom'),
+        'informacio': request.data.get('informacio')
+    }
+    form = ContaminantForm(data=data)
+    if form.is_valid():
+        contaminant = form.save()
+        serializer = ContaminantSerializer(contaminant)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_contaminant(request, pk):
+    contaminant = get_object_or_404(Contaminant, pk=pk)
+    serializer = ContaminantSerializer(contaminant, data = request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_contaminant(request, pk):
+    contaminant = get_object_or_404(Contaminant, pk=pk)
+    if contaminant is not None:
+        contaminant.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE PRESENCIA ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_presencies(request):
+    presencies = Presencia.objects.all()
+    serializer = PresenciaSerializer(presencies, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_presencia(request,pk):
+    presencia = get_object_or_404(Presencia, pk=pk)
+    serializer = PresenciaSerializer(presencia)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_presencia(request):
+    data={
+        'punt': request.data.get('punt'),
+        'contaminant': request.data.get('contaminant'),
+        'data': request.data.get('data', timezone.now()),
+        'valor': request.data.get('valor')
+    }
+    form = PresenciaForm(data=data)
+    if form.is_valid():
+        presencia = form.save()
+        serializer = PresenciaSerializer(presencia)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_presencia(request, pk):
+    presencia = get_object_or_404(Presencia, pk=pk)
+    serializer = PresenciaSerializer(presencia, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_presencia(request, pk):
+    presencia = get_object_or_404(Presencia, pk=pk)
+    if presencia is not None:
+        presencia.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)

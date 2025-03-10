@@ -170,7 +170,18 @@ urlpatterns = [
     path('activitats-culturals/<int:pk>/update/', views.update_activitat_cultural, name='update_activitat_cultural'),
     path('activitats-culturals/<int:pk>/delete/', views.delete_activitat_cultural, name='delete_activitat_cultural'),
     
+    #CONTAMINANT
+    path('contaminants/', views.get_contaminants, name='get_contaminants'),
+    path('contaminants/<int:pk>/', views.get_contaminant, name='get_contaminant'),
+    path('contaminants/create/', views.create_contaminant, name='create_contaminant'),
+    path('contaminants/<int:pk>/update/', views.update_contaminant, name='update_contaminant'),
+    path('contaminants/<int:pk>/delete/', views.delete_contaminant, name='delete_contaminant'),
     
-    
+    #PRESENCIA
+    path('presencies/', views.get_presencies, name='get_presencies'),
+    path('presencies/<int:pk>/', views.get_presencia, name='get_presencia'),
+    path('presencies/create/', views.create_presencia, name='create_presencia'),
+    path('presencies/<int:pk>/update/', views.update_presencia, name='update_presencia'),
+    path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia')
     
 ]

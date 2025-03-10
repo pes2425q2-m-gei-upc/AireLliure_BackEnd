@@ -51,6 +51,26 @@ urlpatterns = [
     
     #RUTA
     
+    path('rutas/', views.get_rutas, name='get_rutas'),
+    path('rutas/<int:pk>/', views.get_ruta, name='get_ruta'),
+    path('rutas/create/', views.create_ruta, name='create_ruta'),
+    path('rutas/<int:pk>/update/', views.update_ruta, name='update_ruta'),
+    path('rutas/<int:pk>/delete/', views.delete_ruta, name='delete_ruta'),
+    
+    #VALORACIO
+    path('valoracions/', views.get_valoracions, name='get_valoracions'),
+    path('valoracions/<int:pk>/', views.get_valoracio, name='get_valoracio'),
+    path('valoracions/create/', views.create_valoracio, name='create_valoracio'),
+    path('valoracions/<int:pk>/update/', views.update_valoracio, name='update_valoracio'),
+    path('valoracions/<int:pk>/delete/', views.delete_valoracio, name='delete_valoracio'),
+    
+    #RECOMPENSA
+    path('recompenses/', views.get_recompenses, name='get_recompenses'),
+    path('recompenses/<int:pk>/', views.get_recompensa, name='get_recompensa'),
+    path('recompenses/create/', views.create_recompensa, name='create_recompensa'),
+    path('recompenses/<int:pk>/update/', views.update_recompensa, name='update_recompensa'),
+    path('recompenses/<int:pk>/delete/', views.delete_recompensa, name='delete_recompensa'),
+    
     
 
 ]

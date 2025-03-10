@@ -304,3 +304,140 @@ def delete_amistat(request, pk):
 
 # LA PART DE RUTA ------------------------------------------------------------------------------------------------
 
+@api_view(['GET'])
+def get_rutas(request):
+    rutas = Ruta.objects.all()
+    serializer = RutaSerializer(rutas, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_ruta(request, pk):
+    ruta = get_object_or_404(Ruta, pk=pk)
+    serializer = RutaSerializer(ruta)   
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_ruta(request):
+    data = {
+        'descripcio': request.data.get('descripcio'),
+        'nom': request.data.get('nom'),
+        'dist_km': request.data.get('dist_km')
+    }
+    form = RutaForm(data=data)
+    if form.is_valid():
+        ruta = form.save()
+        serializer = RutaSerializer(ruta)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_ruta(request, pk):
+    ruta = get_object_or_404(Ruta, pk=pk)
+    serializer = RutaSerializer(ruta, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_ruta(request,pk):
+    ruta = get_object_or_404(Ruta, pk=pk)
+    if ruta is not None:
+        ruta.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE VALORACIO ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_valoracions(request):
+    valoracions = Valoracio.objects.all()
+    serializer = ValoracioSerializer(valoracions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_valoracio(request,pk):
+    valoracio = Valoracio.objects.get(pk=pk)
+    serializer = ValoracioSerializer(valoracio)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_valoracio(request):
+    data = {
+        'usuari': request.data.get('usuari'),
+        'ruta': request.data.get('ruta'),
+        'puntuacio': request.data.get('puntuacio'),
+        'comentari': request.data.get('comentari')
+    }
+    form = ValoracioForm(data=data)
+    if form.is_valid():
+        valoracio = form.save()
+        serializer = ValoracioSerializer(valoracio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_valoracio(request, pk):
+    valoracio = get_object_or_404(Valoracio, pk=pk)
+    serializer = ValoracioSerializer(valoracio, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_valoracio(request, pk):
+    valoracio = get_object_or_404(Valoracio, pk=pk)
+    if valoracio is not None:
+        valoracio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE RECOMPENSA ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_recompenses(request):
+    recompenses = Recompensa.objects.all()
+    serializer = RecompensaSerializer(recompenses, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_recompensa(request, pk):
+    recompensa = get_object_or_404(Recompensa, pk=pk)
+    serializer = RecompensaSerializer(recompensa)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_recompensa(request):
+    data = {
+        'usuari': request.data.get('usuari'),
+        'ruta': request.data.get('ruta'),
+        'puntuacio': request.data.get('puntuacio'),
+        'comentari': request.data.get('comentari')
+    }
+    form = RecompensaForm(data=data)
+    if form.is_valid():
+        recompensa = form.save()
+        serializer = RecompensaSerializer(recompensa)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_recompensa(request, pk):
+    recompensa = get_object_or_404(Recompensa, pk=pk)
+    serializer = RecompensaSerializer(recompensa, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_recompensa(request,pk):
+    recompensa = get_object_or_404(Recompensa, pk=pk)
+    if recompensa is not None:
+        recompensa.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)

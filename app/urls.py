@@ -120,5 +120,28 @@ urlpatterns = [
     path('missatges/<int:pk>/update/', views.update_missatge, name='update_missatge'),
     path('missatges/<int:pk>/delete/', views.delete_missatge, name='delete_missatge'),
     
+    #EVENT DE CALENDARI
+    path('events-de-calendari/', views.get_events_de_calendari, name='get_events_de_calendari'),
+    path('events-de-calendari/<int:pk>/', views.get_event_de_calendari, name='get_event_de_calendari'),
+    path('events-de-calendari/create/', views.create_event_de_calendari, name='create_event_de_calendari'),
+    path('events-de-calendari/<int:pk>/update/', views.update_event_de_calendari, name='update_event_de_calendari'),
+    path('events-de-calendari/<int:pk>/delete/', views.delete_event_de_calendari, name='delete_event_de_calendari'),
+    
+    #EVENT DE CALENDARI PRIVAT
+    path('events-de-calendari-privats/', views.get_events_de_calendari_privats, name='get_events_de_calendari_privats'),
+    path('events-de-calendari-privats/<int:pk>/', views.get_event_de_calendari_privat, name='get_event_de_calendari_privat'),
+    path('events-de-calendari-privats/create/', views.create_event_de_calendari_privat, name='create_event_de_calendari_privat'),
+    path('events-de-calendari-privats/<int:pk>/update/', views.update_event_de_calendari_privat, name='update_event_de_calendari_privat'),
+    path('events-de-calendari-privats/<int:pk>/delete/', views.delete_event_de_calendari_privat, name='delete_event_de_calendari_privat'),
+    
+    #EVENT DE CALENDARI PUBLIC
+    path('events-de-calendari-publics/', views.get_events_de_calendari_publics, name='get_events_de_calendari_publics'),
+    path('events-de-calendari-publics/<int:pk>/', views.get_event_de_calendari_public, name='get_event_de_calendari_public'),
+    path('events-de-calendari-publics/create/', views.create_event_de_calendari_public, name='create_event_de_calendari_public'),
+    path('events-de-calendari-publics/<int:pk>/update/', views.update_event_de_calendari_public, name='update_event_de_calendari_public'),
+    path('events-de-calendari-publics/<int:pk>/delete/', views.delete_event_de_calendari_public, name='delete_event_de_calendari_public'),
+    
+    
+    
     
 ]

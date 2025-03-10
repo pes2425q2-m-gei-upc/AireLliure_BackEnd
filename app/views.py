@@ -767,11 +767,148 @@ def delete_missatge(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE EVENT DE CALENDARI ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_events_de_calendari(request):
+    events_de_calendari = EventDeCalendari.objects.all()
+    serializer = EventDeCalendariSerializer(events_de_calendari, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_event_de_calendari(request, pk):
+    event_de_calendari = get_object_or_404(EventDeCalendari, pk=pk)
+    serializer = EventDeCalendariSerializer(event_de_calendari)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_event_de_calendari(request):
+    data ={
+        'nom': request.data.get('nom'),
+        'descripció': request.data.get('descripció'),
+        'data_inici': request.data.get('data_inici', timezone.now()),
+        'data_fi': request.data.get('data_fi', timezone.now()),
+        'creador': request.data.get('creador')
+    }
+    form = EventDeCalendariForm(data=data)
+    if form.is_valid():
+        ev = form.save()
+        serializer = EventDeCalendariSerializer(ev)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_event_de_calendari(request, pk):
+    event_de_calendari = get_object_or_404(EventDeCalendari, pk=pk)
+    serializer = EventDeCalendariSerializer(event_de_calendari, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_event_de_calendari(request, pk):
+    event_de_calendari = get_object_or_404(EventDeCalendari, pk=pk)
+    if event_de_calendari is not None:
+        event_de_calendari.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE EVENT DE CALENDARI PRIVAT ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_events_de_calendari_privats(request):
+    events_privats = EventDeCalendariPrivat.objects.all()
+    serializer = EventDeCalendariPrivatSerializer(events_privats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_event_de_calendari_privat(request, pk):
+    event_privat = get_object_or_404(EventDeCalendariPrivat, pk=pk)
+    serializer = EventDeCalendariPrivatSerializer(event_privat)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_event_de_calendari_privat(request):
+    data = {
+        'nom': request.data.get('nom'),
+        'descripció': request.data.get('descripció'),
+        'data_inici': request.data.get('data_inici', timezone.now()),
+        'data_fi': request.data.get('data_fi', timezone.now()),
+        'creador': request.data.get('creador'),
+        'xat': request.data.get('xat')
+    }
+    form = EventDeCalendariPrivatForm(data=data)
+    if form.is_valid():
+        ev = form.save()
+        serializer = EventDeCalendariPrivatSerializer(ev)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_event_de_calendari_privat(request, pk):
+    event_privat = get_object_or_404(EventDeCalendariPrivat, pk=pk)
+    serializer = EventDeCalendariPrivatSerializer(event_privat, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_event_de_calendari_privat(request, pk):
+    event_privat = get_object_or_404(EventDeCalendariPrivat, pk=pk)
+    if event_privat is not None:
+        event_privat.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE EVENT DE CALENDARI PUBLIC ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_events_de_calendari_publics(request):
+    events_publics = EventDeCalendariPublic.objects.all()
+    serializer = EventDeCalendariPublicSerializer(events_publics, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_event_de_calendari_public(request, pk):
+    event_public = get_object_or_404(EventDeCalendariPublic, pk=pk)
+    serializer = EventDeCalendariPublicSerializer(event_public)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_event_de_calendari_public(request):
+    data = {
+        'nom': request.data.get('nom'),
+        'descripció': request.data.get('descripció'),
+        'data_inici': request.data.get('data_inici', timezone.now()),
+        'data_fi': request.data.get('data_fi', timezone.now()),
+        'creador': request.data.get('creador'),
+        'limit': request.data.get('limit')
+    }
+    form = EventDeCalendariPublicForm(data=data)
+    if form.is_valid():
+        ev = form.save()
+        serializer = EventDeCalendariPublicSerializer(ev)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_event_de_calendari_public(request, pk):
+    ev = get_object_or_404(EventDeCalendariPublic, pk=pk)
+    serializer = EventDeCalendariPublicSerializer(ev, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_event_de_calendari_public(request, pk):
+    event_public = get_object_or_404(EventDeCalendariPublic, pk=pk)
+    if event_public is not None:
+        event_public.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE APUNTAT ------------------------------------------------------------------------------------------------
 
 # LA PART DE PUNT ------------------------------------------------------------------------------------------------

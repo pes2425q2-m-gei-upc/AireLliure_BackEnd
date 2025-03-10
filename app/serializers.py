@@ -64,6 +64,7 @@ class AssignaAccesibilitatRespiratoriaSerializer(serializers.ModelSerializer):
 class XatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Xat
+        fields = '__all__'
 
 class XatIndividualSerializer(serializers.ModelSerializer):
     class Meta:

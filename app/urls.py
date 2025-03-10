@@ -71,6 +71,38 @@ urlpatterns = [
     path('recompenses/<int:pk>/update/', views.update_recompensa, name='update_recompensa'),
     path('recompenses/<int:pk>/delete/', views.delete_recompensa, name='delete_recompensa'),
     
+    #ASSIGNACIO ESPORTIVA
+    path('assignacions-esportiva/', views.get_assignacions_esportiva, name='get_assignacions_esportiva'),
+    path('assignacions-esportiva/<int:pk>/', views.get_assignacio_esportiva, name='get_assignacio_esportiva'),
+    path('assignacions-esportiva/create/', views.create_assignacio_esportiva, name='create_assignacio_esportiva'),
+    path('assignacions-esportiva/<int:pk>/update/', views.update_assignacio_esportiva, name='update_assignacio_esportiva'),
+    path('assignacions-esportiva/<int:pk>/delete/', views.delete_assignacio_esportiva, name='delete_assignacio_esportiva'),
     
+    #ASSIGNACIO ACCESIBILITAT RESPIRATORIA
+    path('assignacions-accesibilitat-respiratoria/', views.get_assignacions_accesibilitat_respiratoria, name='get_assignacions_accesibilitat_respiratoria'),
+    path('assignacions-accesibilitat-respiratoria/<int:pk>/', views.get_assignacio_accesibilitat_respiratoria, name='get_assignacio_accesibilitat_respiratoria'),
+    path('assignacions-accesibilitat-respiratoria/create/', views.create_assignacio_accesibilitat_respiratoria, name='create_assignacio_accesibilitat_respiratoria'),
+    path('assignacions-accesibilitat-respiratoria/<int:pk>/update/', views.update_assignacio_accesibilitat_respiratoria, name='update_assignacio_accesibilitat_respiratoria'),
+    path('assignacions-accesibilitat-respiratoria/<int:pk>/delete/', views.delete_assignacio_accesibilitat_respiratoria, name='delete_assignacio_accesibilitat_respiratoria'),
 
+    #XAT
+    path('xats/', views.get_xats, name='get_xats'),
+    path('xats/<int:pk>/', views.get_xat, name='get_xat'),
+    path('xats/create/', views.create_xat, name='create_xat'),
+    path('xats/<int:pk>/update/', views.update_xat, name='update_xat'),
+    path('xats/<int:pk>/delete/', views.delete_xat, name='delete_xat'),
+    
+    #XAT INDIVIDUAL
+    path('xats-individual/', views.get_xats_individual, name='get_xats_individual'),
+    path('xats-individual/<int:pk>/', views.get_xat_individual, name='get_xat_individual'),
+    path('xats-individual/create/', views.create_xat_individual, name='create_xat_individual'),
+    path('xats-individual/<int:pk>/update/', views.update_xat_individual, name='update_xat_individual'),
+    path('xats-individual/<int:pk>/delete/', views.delete_xat_individual, name='delete_xat_individual'),
+    
+    #XAT GRUPAL
+    path('xats-grupal/', views.get_xats_grupal, name='get_xats_grupal'),
+    path('xats-grupal/<int:pk>/', views.get_xat_grupal, name='get_xat_grupal'),
+    path('xats-grupal/create/', views.create_xat_grupal, name='create_xat_grupal'),
+    path('xats-grupal/<int:pk>/update/', views.update_xat_grupal, name='update_xat_grupal'),
+    path('xats-grupal/<int:pk>/delete/', views.delete_xat_grupal, name='delete_xat_grupal'),
 ]

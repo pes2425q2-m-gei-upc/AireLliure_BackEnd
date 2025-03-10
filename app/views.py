@@ -441,3 +441,253 @@ def delete_recompensa(request,pk):
         recompensa.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE ASSIGNACIO ESPORTIVA ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_assignacions_esportiva(request):
+    assignacions = AssignaDificultatEsportiva.objects.all()
+    serializer = AssignaDificultatEsportivaSerializer(assignacions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_assignacio_esportiva(request, pk):
+    assignacio = get_object_or_404(AssignaDificultatEsportiva, pk=pk)
+    serializer = AssignaDificultatEsportivaSerializer(assignacio)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_assignacio_esportiva(request):
+    data = {
+        'usuari': request.data.get('usuari'),
+        'dificultat': request.data.get('dificultat'),
+        'ruta': request.data.get('ruta')
+    }
+    form = AssignaDificultatEsportivaForm(data=data)
+    if form.is_valid():
+        assignacio = form.save()
+        serializer = AssignaDificultatEsportivaSerializer(assignacio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_assignacio_esportiva(request, pk):
+    assignacio = get_object_or_404(AssignaDificultatEsportiva, pk=pk)
+    serializer = AssignaDificultatEsportivaSerializer(assignacio, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_assignacio_esportiva(request, pk):
+    assignacio = get_object_or_404(AssignaDificultatEsportiva, pk=pk)
+    if assignacio is not None:
+        assignacio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE ASSIGNACIO ACCESIBILITAT RESPIRATORIA ------------------------------------------------------------------------------------------------
+@api_view(['GET'])
+def get_assignacions_accesibilitat_respiratoria(request):
+    assignacions = AssignaAccesibilitatRespiratoria.objects.all()
+    serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_assignacio_accesibilitat_respiratoria(request, pk):
+    assignacio = get_object_or_404(AssignaAccesibilitatRespiratoria, pk=pk)
+    serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacio)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_assignacio_accesibilitat_respiratoria(request):
+    data = {
+        'usuari': request.data.get('usuari'),
+        'ruta': request.data.get('ruta'),
+        'accesibilitat': request.data.get('accesibilitat')
+    }
+    form = AssignaAccesibilitatRespiratoria(data = data)
+    if form.is_valid():
+        assignacio = form.save()
+        serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_assignacio_accesibilitat_respiratoria(request, pk):
+    assignacio = get_object_or_404(AssignaAccesibilitatRespiratoria, pk=pk)
+    serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacio, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_assignacio_accesibilitat_respiratoria(request, pk):
+    assignacio = get_object_or_404(AssignaAccesibilitatRespiratoria, pk=pk)
+    if assignacio is not None:
+        assignacio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    
+# LA PART DE XAT ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_xats(request):
+    xats = Xat.objects.all()
+    serializer = XatSerializer(xats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_xat(request, pk):
+    xat = get_object_or_404(Xat, pk=pk)
+    serializer = XatSerializer(xat)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_xat(request):
+    data = {
+        'nom': request.data.get('nom')
+    }
+    form = XatForm(data=data)
+    if form.is_valid():
+        xat = form.save()
+        serializer = XatSerializer(xat)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_xat(request, pk):
+    xat = get_object_or_404(Xat, pk=pk)
+    serializer = XatSerializer(xat, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_xat(request, pk):
+    xat = get_object_or_404(Xat, pk=pk)
+    if xat is not None: 
+        xat.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE XAT INDIVIDUAL ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_xats_individual(request):
+    xats_individual = XatIndividual.objects.all()
+    serializer = XatIndividualSerializer(xats_individual, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_xat_individual(request, pk):
+    xat_individual = get_object_or_404(XatIndividual, pk=pk)
+    serializer = XatIndividualSerializer(xat_individual)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_xat_individual(request):
+    data = {
+        'nom': request.data.get('nom')
+    }
+    form = XatIndividualForm(data=data)
+    if form.is_valid():
+        xat_individual = form.save()
+        serializer = XatIndividualSerializer(xat_individual)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_xat_individual(request, pk):
+    xat_individual = get_object_or_404(XatIndividual, pk=pk)
+    serializer = XatIndividualSerializer(xat_individual, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_xat_individual(request, pk):
+    xat_individual = get_object_or_404(XatIndividual, pk=pk)
+    if xat_individual is not None:
+        xat_individual.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE XAT GRUPAL ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def get_xats_grupal(request):
+    xats_grupal = XatGrupal.objects.all()
+    serializer = XatGrupalSerializer(xats_grupal, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_xat_grupal(request, pk):
+    xat_grupal = get_object_or_404(XatGrupal, pk=pk)
+    serializer = XatGrupalSerializer(xat_grupal)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_xat_grupal(request):
+    data = {
+        'nom': request.data.get('nom'),
+        'descripció': request.data.get('descripció'),
+        'creador': request.data.get('creador'),
+        'membres': request.data.get('membres')
+    }
+    form = XatGrupalForm(data=data)
+    if form.is_valid():
+        xat_grupal = form.save()
+        serializer = XatGrupalSerializer(xat_grupal)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_xat_grupal(request, pk):
+    xat_grupal = get_object_or_404(XatGrupal, pk=pk)
+    serializer = XatGrupalSerializer(xat_grupal, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_xat_grupal(request, pk):
+    xat_grupal = get_object_or_404(XatGrupal, pk=pk)
+    if xat_grupal is not None:
+        xat_grupal.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    
+# LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
+
+# LA PART DE MISSATGE ------------------------------------------------------------------------------------------------
+
+# LA PART DE EVENT DE CALENDARI ------------------------------------------------------------------------------------------------
+
+# LA PART DE EVENT DE CALENDARI PRIVAT ------------------------------------------------------------------------------------------------
+
+# LA PART DE EVENT DE CALENDARI PUBLIC ------------------------------------------------------------------------------------------------
+
+# LA PART DE APUNTAT ------------------------------------------------------------------------------------------------
+
+# LA PART DE PUNT ------------------------------------------------------------------------------------------------
+
+# LA PART DE ESTACIO QUALITAT AIRE ------------------------------------------------------------------------------------------------
+
+# LA PART DE ACTIVITAT CULTURAL ------------------------------------------------------------------------------------------------
+
+# LA PART DE CONTAMINANT ------------------------------------------------------------------------------------------------
+
+# LA PART DE PRESENCIA ------------------------------------------------------------------------------------------------

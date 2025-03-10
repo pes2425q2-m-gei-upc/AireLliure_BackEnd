@@ -672,8 +672,100 @@ def delete_xat_grupal(request, pk):
     
 # LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
 
+@api_view(['GET'])
+def get_invitacions(request):
+    invitacions = Invitacio.objects.all()
+    serializer = InvitacioSerializer(invitacions, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_invitacio(request, pk):
+    invitacio = get_object_or_404(Invitacio, pk=pk)
+    serializer = InvitacioSerializer(invitacio)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_invitacio(request):
+    data = {
+        'destinatari': request.data.get('destinatari'),
+        'creador': request.data.get('creador'),
+        'estat': request.data.get('estat'),
+        'xat': request.data.get('xat')
+    }
+    form = InvitacioForm(data=data)
+    if form.is_valid():
+        invitacio = form.save()
+        serializer = InvitacioSerializer(invitacio)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_invitacio(request, pk):
+    invitacio = get_object_or_404(Invitacio,pk=pk)
+    serializer = InvitacioSerializer(invitacio, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_invitacio(request, pk):
+    invitacio = get_object_or_404(Invitacio, pk=pk)
+    if invitacio is not None: 
+        invitacio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 # LA PART DE MISSATGE ------------------------------------------------------------------------------------------------
 
+@api_view(['GET'])
+def get_missatges(request):
+    missatges = Missatge.objects.all()
+    serializer = MissatgeSerializer(missatges, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def get_missatge(request, pk):
+    missatge = get_object_or_404(Missatge, pk=pk)
+    serializer = MissatgeSerializer(missatge)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_missatge(request):
+    data = {
+        'text': request.data.get('text'),
+        'data': request.data.get('data', timezone.now()),
+        'xat': request.data.get('xat'),
+        'autor': request.data.get('autor')
+    }
+    form = MissatgeForm(data=data)
+    if form.is_valid():
+        missatge = form.save()
+        serializer = MissatgeSerializer(missatge)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_missatge(request, pk):
+    missatge = get_object_or_404(Missatge, pk=pk)
+    serializer = MissatgeSerializer(missatge, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_missatge(request, pk):
+    missatge = get_object_or_404(Missatge, pk=pk)
+    if missatge is not None:
+        missatge.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE EVENT DE CALENDARI ------------------------------------------------------------------------------------------------
 
 # LA PART DE EVENT DE CALENDARI PRIVAT ------------------------------------------------------------------------------------------------

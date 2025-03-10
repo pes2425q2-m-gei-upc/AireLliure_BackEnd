@@ -105,4 +105,20 @@ urlpatterns = [
     path('xats-grupal/create/', views.create_xat_grupal, name='create_xat_grupal'),
     path('xats-grupal/<int:pk>/update/', views.update_xat_grupal, name='update_xat_grupal'),
     path('xats-grupal/<int:pk>/delete/', views.delete_xat_grupal, name='delete_xat_grupal'),
+    
+    #INVITACIO
+    path('invitacions/', views.get_invitacions, name='get_invitacions'),
+    path('invitacions/<int:pk>/', views.get_invitacio, name='get_invitacio'),
+    path('invitacions/create/', views.create_invitacio, name='create_invitacio'),
+    path('invitacions/<int:pk>/update/', views.update_invitacio, name='update_invitacio'),
+    path('invitacions/<int:pk>/delete/', views.delete_invitacio, name='delete_invitacio'),
+    
+    #MISSATGE
+    path('missatges/', views.get_missatges, name='get_missatges'),
+    path('missatges/<int:pk>/', views.get_missatge, name='get_missatge'),
+    path('missatges/create/', views.create_missatge, name='create_missatge'),
+    path('missatges/<int:pk>/update/', views.update_missatge, name='update_missatge'),
+    path('missatges/<int:pk>/delete/', views.delete_missatge, name='delete_missatge'),
+    
+    
 ]

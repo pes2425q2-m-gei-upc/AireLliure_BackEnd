@@ -9,12 +9,12 @@ class CategoriaSerializer(serializers.ModelSerializer):
 class DificultatEsportivaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DificultatEsportiva
-        fields = '__all__'
+        fields = ['nombre', 'descripcio']
 
 class AccesibilitatRespiratoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = AccesibilitatRespiratoria
-        fields = '__all__'
+        fields = ['nombre', 'descripcio']
 
 class UsuariSerializer(serializers.ModelSerializer):
     class Meta:

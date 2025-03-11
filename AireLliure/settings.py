@@ -150,7 +150,7 @@ REST_FRAMEWORK = {
 # Configuración de CORS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'https://airelliure-backend.onrender.com']
 
 CORS_ALLOW_CREDENTIALS  = True
 CORS_ORIGIN_ALLOW_ALL = True
@@ -164,6 +164,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000'
+    'https://airelliure-backend.onrender.com'
 ]
 
 # Elimina o comenta temporalmente CSRF_TRUSTED_ORIGINS para pruebas

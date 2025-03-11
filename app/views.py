@@ -9,10 +9,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
-
-
+from .utils import actualitzar_rutes, actualitzar_estacions_qualitat_aire, actualitzar_activitats_culturals
 
 # LA PART DE CATEGORIA
+
 @api_view(['GET'])
 def get_categories(request):
     difficulties_ = DificultatEsportiva.objects.all()
@@ -51,7 +51,6 @@ def create_dificultat_esportiva(request):
         serializer = DificultatEsportivaSerializer(dificultat)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
-
     
 @api_view(['PATCH'])
 def update_dificultat_esportiva(request, pk):
@@ -489,6 +488,7 @@ def delete_assignacio_esportiva(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 # LA PART DE ASSIGNACIO ACCESIBILITAT RESPIRATORIA ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_assignacions_accesibilitat_respiratoria(request):
     assignacions = AssignaAccesibilitatRespiratoria.objects.all()
@@ -532,7 +532,6 @@ def delete_assignacio_accesibilitat_respiratoria(request, pk):
         assignacio.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
-    
     
 # LA PART DE XAT ------------------------------------------------------------------------------------------------
 
@@ -668,8 +667,7 @@ def delete_xat_grupal(request, pk):
         xat_grupal.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
-        
-    
+ 
 # LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])
@@ -717,7 +715,6 @@ def delete_invitacio(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
-
 # LA PART DE MISSATGE ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])
@@ -725,7 +722,6 @@ def get_missatges(request):
     missatges = Missatge.objects.all()
     serializer = MissatgeSerializer(missatges, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 @api_view(['GET'])
 def get_missatge(request, pk):
@@ -767,6 +763,7 @@ def delete_missatge(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE EVENT DE CALENDARI ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_events_de_calendari(request):
     events_de_calendari = EventDeCalendari.objects.all()
@@ -814,6 +811,7 @@ def delete_event_de_calendari(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE EVENT DE CALENDARI PRIVAT ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_events_de_calendari_privats(request):
     events_privats = EventDeCalendariPrivat.objects.all()
@@ -862,6 +860,7 @@ def delete_event_de_calendari_privat(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE EVENT DE CALENDARI PUBLIC ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_events_de_calendari_publics(request):
     events_publics = EventDeCalendariPublic.objects.all()
@@ -910,6 +909,7 @@ def delete_event_de_calendari_public(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE APUNTAT ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_apuntats(request):
     apuntats = Apuntat.objects.all()
@@ -951,6 +951,7 @@ def delete_apuntat(request, pk):
     if apuntat is not None:
         apuntat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 # LA PART DE PUNT ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])
@@ -999,6 +1000,7 @@ def delete_punt(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
     
 # LA PART DE ESTACIO QUALITAT AIRE ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_estacions_qualitat_aire(request):
     estacions_qualitat_aire = EstacioQualitatAire.objects.all()
@@ -1047,6 +1049,7 @@ def delete_estacio_qualitat_aire(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
         
 # LA PART DE ACTIVITAT CULTURAL ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_activitats_culturals(request):
     activitats_culturals = ActivitatCultural.objects.all()
@@ -1092,8 +1095,6 @@ def delete_activitat_cultural(request, pk):
         activitat_cultural.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
-
-    
 
 # LA PART DE CONTAMINANT ------------------------------------------------------------------------------------------------
 
@@ -1186,3 +1187,20 @@ def delete_presencia(request, pk):
         presencia.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+# LA PART DE DADES OBERTES ------------------------------------------------------------------------------------------------
+
+@api_view(['GET'])
+def actualitzar_rutes_manualment(request):
+    actualitzar_rutes()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def actualitzar_estacions_qualitat_aire_manualment(request):
+    actualitzar_estacions_qualitat_aire()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def actualitzar_activitats_culturals_manualment(request):
+    actualitzar_activitats_culturals()
+    return Response(status=status.HTTP_200_OK)

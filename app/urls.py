@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     # Aquí irán tus URLs cuando las necesites
     
@@ -182,6 +183,10 @@ urlpatterns = [
     path('presencies/<int:pk>/', views.get_presencia, name='get_presencia'),
     path('presencies/create/', views.create_presencia, name='create_presencia'),
     path('presencies/<int:pk>/update/', views.update_presencia, name='update_presencia'),
-    path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia')
+    path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia'),
     
+    #DADES OBERTES
+    path('actualitzar-rutes/', views.actualitzar_rutes_manualment, name='actualitzar_rutes_manualment'),
+    path('actualitzar_estacions_qualitat_aire/', views.actualitzar_estacions_qualitat_aire_manualment, name='actualitzar_estacions_qualitat_aire_manualment'),
+    path('actualitzar_activitats_culturals/', views.actualitzar_activitats_culturals_manualment, name='actualitzar_activitats_culturals_manualment'),
 ]

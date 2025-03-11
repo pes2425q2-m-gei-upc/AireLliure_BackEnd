@@ -54,6 +54,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middlewares.ActualitzarRutes',
+    'app.middlewares.ActualitzarEstacionsQualitatAire',
+    'app.middlewares.ActualitzarActivitatsCulturals',
 ]
 
 ROOT_URLCONF = 'AireLliure.urls'

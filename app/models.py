@@ -269,3 +269,7 @@ class Presencia(models.Model):
             models.UniqueConstraint(fields=['punt', 'contaminant', 'data'], name='presencia_unic'),
             models.CheckConstraint(check=models.Q(valor__gte=0), name='valor_valid')
         ]
+
+class JobExecution(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    last_run = models.DateTimeField(default=timezone.now)

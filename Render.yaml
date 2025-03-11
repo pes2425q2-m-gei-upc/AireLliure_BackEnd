@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: aire-lliure
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn AireLliure.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: PORT
+        value: 8000
+    autoDeploy: true
+    region: us-east-1

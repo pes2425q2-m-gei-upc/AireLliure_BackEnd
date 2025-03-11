@@ -22,6 +22,7 @@ urlpatterns = [
     path('accessibilitats-respiratoria/<str:pk>/delete/', views.delete_accessibilitat_respiratoria, name='delete_accessibilitat_respiratoria'),
     
     #USUARI
+    path('login/', views.login_usuari, name='login_usuari'),
     path('usuaris/', views.get_usuaris, name='get_usuaris'),
     path('usuaris/<str:pk>/', views.get_usuari, name='get_usuari'),
     path('usuaris/create/', views.create_usuari, name='create_usuari'),

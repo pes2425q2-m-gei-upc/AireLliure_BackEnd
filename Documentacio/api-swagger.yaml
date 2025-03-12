@@ -1,0 +1,1622 @@
+openapi: 3.0.0
+info:
+  title: API Django
+  description: Documentació de l'API amb totes les rutes
+  version: 1.0.0
+  
+servers:
+  - url: https://airelliure-backend.onrender.com
+  - url: http://localhost:8000
+paths:
+  /categories/:
+    get:
+      summary: Obtenir totes les categories
+      operationId: getCategories
+      tags:
+        - Categoria
+      responses:
+        '200':
+          description: Categories obtingudes correctament
+
+  /dificultats-esportiva/:
+    get:
+      summary: Obtenir totes les dificultats esportives
+      operationId: getDificultatsEsportiva
+      tags:
+        - Dificultat Esportiva
+      responses:
+        '200':
+          description: Dificultats obtingudes correctament
+  /dificultats-esportiva/create/:
+    post:
+      summary: Crear una nova dificultat esportiva
+      operationId: createDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      responses:
+        '201':
+          description: Dificultat creada correctament
+
+  /dificultats-esportiva/{id}/:
+    get:
+      summary: Obtenir una dificultat esportiva per ID
+      operationId: getDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dificultat obtinguda correctament
+          
+  /dificultats-esportiva/{id}/update/:
+    patch:
+      summary: Actualitzar una dificultat esportiva
+      operationId: updateDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dificultat actualitzada correctament
+  
+  /dificultats-esportiva/{id}/delete/:
+    delete:
+      summary: Eliminar una dificultat esportiva
+      operationId: deleteDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Dificultat eliminada correctament
+
+  /accessibilitats-respiratoria/:
+    get:
+      summary: Obtenir totes les accessibilitats respiratòries
+      operationId: getAccessibilitatsRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      responses:
+        '200':
+          description: Accessibilitats obtingudes correctament
+  
+  /accessibilitats-respiratoria/create:
+    post:
+      summary: Crear una nova accessibilitat respiratòria
+      operationId: createAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      responses:
+        '201':
+          description: Accessibilitat creada correctament
+
+  /accessibilitats-respiratoria/{id}/:
+    get:
+      summary: Obtenir una accessibilitat respiratòria per ID
+      operationId: getAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Accessibilitat obtinguda correctament
+          
+  /accessibilitats-respiratoria/{id}/update/:
+    patch:
+      summary: Actualitzar una accessibilitat respiratòria
+      operationId: updateAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Accessibilitat actualitzada correctament
+          
+  /accessibilitats-respiratoria/{id}/delete/:
+    delete:
+      summary: Eliminar una accessibilitat respiratòria
+      operationId: deleteAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Accessibilitat eliminada correctament
+
+  /usuaris/:
+    get:
+      summary: Obtenir tots els usuaris
+      operationId: getUsuaris
+      tags:
+        - Usuari
+      responses:
+        '200':
+          description: Usuaris obtinguts correctament
+          
+  /usuaris/create/:
+    post:
+      summary: Crear un nou usuari
+      operationId: createUsuari
+      tags:
+        - Usuari
+      responses:
+        '201':
+          description: Usuari creat correctament
+
+  /usuaris/{id}/:
+    get:
+      summary: Obtenir un usuari per ID
+      operationId: getUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuari obtingut correctament
+          
+  /usuaris/{id}/update/:
+    patch:
+      summary: Actualitzar un usuari
+      operationId: updateUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuari actualitzat correctament
+          
+  /usuaris/{id}/delete/:
+    delete:
+      summary: Eliminar un usuari
+      operationId: deleteUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuari eliminat correctament
+
+  /login/:
+    post:
+      summary: Iniciar sessió
+      operationId: loginUsuari
+      tags:
+        - Usuari
+      responses:
+        '200':
+          description: Login correcte
+
+  /admins/:
+    get:
+      summary: Obtenir tots els administradors
+      operationId: getAdmins
+      tags:
+        - Usuari Admin
+      responses:
+        '200':
+          description: Administradors obtinguts correctament
+          
+  /admins/create/:
+    post:
+      summary: Crear un nou administrador
+      operationId: createAdmin
+      tags:
+        - Usuari Admin
+      responses:
+        '201':
+          description: Administrador creat correctament
+
+  /admins/{id}/:
+    get:
+      summary: Obtenir un administrador per ID
+      operationId: getAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Administrador obtingut correctament
+          
+  /admins/{id}/update/:  
+    patch:
+      summary: Actualitzar un administrador
+      operationId: updateAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Administrador actualitzat correctament
+  
+  /admins/{id}/delete/:
+    delete:
+      summary: Eliminar un administrador
+      operationId: deleteAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Administrador eliminat correctament
+         
+  /bloqueigs/:
+    get:
+      summary: Obtenir tots els bloqueigs
+      operationId: getBloqueigs
+      tags:
+        - Bloqueig
+      responses:
+        '200':
+          description: Bloqueigs obtinguts correctament
+          
+  /bloqueigs/create:
+    post:
+      summary: Crear un bloqueig
+      operationId: createBloqueig
+      tags:
+        - Bloqueig
+      responses:
+        '201':
+          description: Bloqueig creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /bloqueigs/{id}/:
+    get:
+      summary: Obtenir un bloqueig per ID
+      operationId: getBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bloqueig obtingut correctament
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
+  
+  /bloqueigs/{id}/update/:
+    patch:
+      summary: Actualitzar un bloqueig
+      operationId: updateBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bloqueig actualitzat correctament
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /bloqueigs/{id}/delete/:
+    delete:
+      summary: Eliminar un bloqueig
+      operationId: deleteBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Bloqueig eliminat correctament
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
+
+  /amistats/:
+    get:
+      summary: Obtenir totes les amistats
+      operationId: getAmistats
+      tags:
+        - Amistat
+      responses:
+        '200':
+          description: Amistats obtingudes correctament
+          
+  /amistats/create/:
+    post:
+      summary: Crear una amistat
+      operationId: createAmistat
+      tags:
+        - Amistat
+      responses:
+        '201':
+          description: Amistat creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /amistats/{id}/:
+    get:
+      summary: Obtenir una amistat per ID
+      operationId: getAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Amistat obtinguda correctament
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
+          
+  /amistats/{id}/update/:
+    patch:
+      summary: Actualitzar una amistat
+      operationId: updateAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Amistat actualitzada correctament
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /amistats/{id}/delete/:
+    delete:
+      summary: Eliminar una amistat
+      operationId: deleteAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Amistat eliminada correctament
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
+
+  /rutas/:
+    get:
+      summary: Obtenir totes les rutes
+      operationId: getRutas
+      tags:
+        - Rutas
+      responses:
+        '200':
+          description: Rutes obtingudes correctament
+          
+  /rutas/create/:
+    post:
+      summary: Crear una ruta
+      operationId: createRuta
+      tags:
+        - Rutas
+      responses:
+        '201':
+          description: Ruta creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /rutas/{id}/:
+    get:
+      summary: Obtenir una ruta per ID
+      operationId: getRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ruta obtinguda correctament
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id. 
+          
+  /rutas/{id}/update/:
+    patch:
+      summary: Actualitzar una ruta
+      operationId: updateRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ruta actualitzada correctament
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+        
+  /rutas/{id}/delete/:
+    delete:
+      summary: Eliminar una ruta
+      operationId: deleteRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ruta eliminada correctament
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id.
+
+  /xats/:
+    get:
+      summary: Obtenir tots els xats
+      operationId: getXats
+      tags:
+        - Xats
+      responses:
+        '200':
+          description: Xats obtinguts correctament
+          
+  /xats/create/:
+    post:
+      summary: Crear un xat
+      operationId: createXat
+      tags:
+        - Xats
+      responses:
+        '201':
+          description: Xat creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /xats/{id}/:
+    get:
+      summary: Obtenir un xat per ID
+      operationId: getXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat obtingut correctament
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
+          
+  /xats/{id}/update/:
+    patch:
+      summary: Actualitzar un xat
+      operationId: updateXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat actualitzat correctament
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /xats/{id}/delete/:      
+    delete:
+      summary: Eliminar un xat
+      operationId: deleteXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
+    
+  /xats-individual/:
+    get:
+      summary: Obtenir tots els xats individuals
+      operationId: getXatsIndividual
+      tags:
+        - Xat Individual
+      responses:
+        '200':
+          description: Llista de xats individuals
+
+  /xats-individual/create/:
+    post:
+      summary: Crear un xat individual
+      operationId: createXatIndividual
+      tags:
+        - Xat Individual
+      responses:
+        '201':
+          description: Xat individual creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+
+  /xats-individual/{pk}/:
+    get:
+      summary: Obtenir un xat individual per ID
+      operationId: getXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del xat individual
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id.
+
+  /xats-individual/{pk}/update/:
+    patch:
+      summary: Actualitzar un xat individual
+      operationId: updateXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat individual actualitzat correctament
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /xats-individual/{pk}/delete/:
+    delete:
+      summary: Eliminar un xat individual
+      operationId: deleteXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat individual eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id
+
+  /xats-grupal/:
+    get:
+      summary: Obtenir tots els xats grupals
+      operationId: getXatsGrupal
+      tags:
+        - Xat Grupal
+      responses:
+        '200':
+          description: Llista de xats grupals
+          
+  /xats-grupal/create/:
+    post:
+      summary: Crear un xat grupal
+      operationId: createXatGrupal
+      tags:
+        - Xat Grupal
+      responses:
+        '201':
+          description: Xat grupal creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+
+  /xats-grupal/{pk}/:
+    get:
+      summary: Obtenir un xat grupal per ID
+      operationId: getXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del xat grupal
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id
+
+  /xats-grupal/{pk}/update/:
+    patch:
+      summary: Actualitzar un xat grupal
+      operationId: updateXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat grupal actualitzat correctament
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /xats-grupal/{pk}/delete/:
+    delete:
+      summary: Eliminar un xat grupal
+      operationId: deleteXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat grupal eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id.
+
+  /invitacions/:
+    get:
+      summary: Obtenir totes les invitacions
+      operationId: getInvitacions
+      tags:
+        - Invitació
+      responses:
+        '200':
+          description: Llista d'invitacions
+          
+  /invitacions/create/:
+    post:
+      summary: Crear una invitació
+      operationId: createInvitacio
+      tags:
+        - Invitació
+      responses:
+        '201':
+          description: Invitació creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /invitacions/{pk}/:
+    get:
+      summary: Obtenir una invitació per ID
+      operationId: getInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls de la invitació
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+          
+  /invitacions/{pk}/update/:
+    patch:
+      summary: Actualitzar una invitació
+      operationId: updateInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Invitació actualitzada correctament
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+        
+  /invitacions/{pk}/delete/:
+    delete:
+      summary: Eliminar una invitació
+      operationId: deleteInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Invitació eliminada correctament
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+        
+  /missatges/:
+    get:
+      summary: Obtenir tots els missatges
+      operationId: getMissatges
+      tags:
+        - Missatge
+      responses:
+        '200':
+          description: Llista de missatges
+          
+  /missatges/create/:
+    post:
+      summary: Crear un missatge
+      operationId: createMissatge
+      tags:
+        - Missatge
+      responses:
+        '201':
+          description: Missatge creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+
+  /missatges/{pk}/:
+    get:
+      summary: Obtenir un missatge per ID
+      operationId: getMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del missatge
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
+          
+  /missatges/{pk}/update/:
+    patch:
+      summary: Actualitzar un missatge
+      operationId: updateMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Missatge actualitzat correctament
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+          
+  /missatges/{pk}/delete/:
+    delete:
+      summary: Eliminar un missatge
+      operationId: deleteMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Missatge eliminat correctament
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
+
+  /events-de-calendari/:
+    get:
+      summary: Obtenir events de calendari
+      operationId: get_events_de_calendari
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+          
+  /events-de-calendari/create:
+    post:
+      summary: Crear un event de calendari
+      operationId: create_event_de_calendari
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
+
+  /events-de-calendari/{pk}/:
+    get:
+      summary: Obtenir un event de calendari específic
+      operationId: get_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No existeix un event de calendari amb aquest id. 
+          
+  /events-de-calendari/{pk}/update/:
+    patch:
+      summary: Actualitzar un event de calendari específic
+      operationId: update_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No existeix un event de calendari amb aquest id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+  
+  /events-de-calendari/{pk}/delete/:
+    delete:
+      summary: Eliminar un event de calendari específic
+      operationId: delete_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No existeix un event de calendari amb aquest id.
+
+  /events-de-calendari-privats/:
+    get:
+      summary: Obtenir events de calendari privats
+      operationId: get_events_de_calendari_privats
+      tags:
+        - Events Calendari Privat
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /events-de-calendari-privats/create:
+    post:
+      summary: Crear un event de calendari privat
+      operationId: create_event_de_calendari_privat
+      tags:
+        - Events Calendari Privat
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
+
+  /events-de-calendari-privats/{pk}/:
+    get:
+      summary: Obtener un evento de calendario privado específico
+      operationId: get_event_de_calendari_privat
+      tags:
+        - Events Calendari Privat
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event privat amb aquest id. 
+          
+  /events-de-calendari-privats/{pk}/update/:
+    patch:
+      summary: Actualitzar un event de calendari privat específic
+      operationId: update_event_de_calendari_privat
+      tags:
+        - Events Calendari Privat
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event privat amb aquesta id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+          
+  /events-de-calendari-privats/{pk}/delete/:
+    delete:
+      summary: Eliminar un event de calendari privat específic
+      operationId: delete_event_de_calendari_privat
+      tags:
+        - Events Calendari Privat
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event privat amb aquesta id
+
+  /events-de-calendari-publics/:
+    get:
+      summary: Obtenir events de calendari públics
+      operationId: get_events_de_calendari_publics
+      tags:
+        - Events Calendari Public
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /events-de-calendari-publics/create:
+    post:
+      summary: Crear un evento de calendario público
+      operationId: create_event_de_calendari_public
+      tags:
+        - Events Calendari Public
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
+
+  /events-de-calendari-publics/{pk}/:
+    get:
+      summary: Obtenir un event de calendari públic específic
+      operationId: get_event_de_calendari_public
+      tags:
+        - Events Calendari Public
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event de calendari public amb aquesta id
+    
+  /events-de-calendari-publics/{pk}/update/:
+    patch:
+      summary: Actualizar un evento de calendario público específico
+      operationId: update_event_de_calendari_public
+      tags:
+        - Events Calendari Public
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event de calendari public amb aquesta id
+        '400':
+          description: Bad Request. Algún valor esta malament.
+  
+  /events-de-calendari-publics/{pk}/delete/:
+    delete:
+      summary: Eliminar un evento de calendario público específico
+      operationId: delete_event_de_calendari_public
+      tags:
+        - Events Calendari Public
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /apuntats/:
+    get:
+      summary: Obtenir llista de apuntats
+      operationId: get_apuntats
+      tags:
+        - Apuntats
+      responses:
+        '200':
+          description: Llista de missatges
+          
+  /apuntats/create/:
+    post:
+      summary: Crear un apuntat
+      operationId: create_apuntat
+      tags:
+        - Apuntats
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
+
+  /apuntats/{pk}/:
+    get:
+      summary: Obtenir un apuntat específic
+      operationId: get_apuntat
+      tags:
+        - Apuntats
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
+  
+  /apuntats/{pk}/update/:
+    patch:
+      summary: Actualitzar un apuntat específic
+      operationId: update_apuntat
+      tags:
+        - Apuntats
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+          
+  /apuntats/{pk}/delete/:
+    delete:
+      summary: Eliminar un apuntat específic
+      operationId: delete_apuntat
+      tags:
+        - Apuntats
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
+
+  /punts/:
+    get:
+      summary: Obtenir lista de punts
+      operationId: get_punts
+      tags:
+        - Punts
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /punts/create/:
+    post:
+      summary: Crear un punto
+      operationId: create_punt
+      tags:
+        - Punts
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+
+  /punts/{pk}/:
+    get:
+      summary: Obtenir un punt específic
+      operationId: get_punt
+      tags:
+        - Punts
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap punt amb aquest id
+  /punts/{pk}/update/:  
+    patch:
+      summary: Actualitzar un punt específic
+      operationId: update_punt
+      tags:
+        - Punts
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'haa trobat un punt amb aquest id
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+  
+  /punts/{pk}/delete/: 
+    delete:
+      summary: Eliminar un punt específic
+      operationId: delete_punt
+      tags:
+        - Punts
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap punt amb aquest id. 
+
+  /estacions-qualitat-aire/:
+    get:
+      summary: Obtenir estacions de calitat del aire
+      operationId: get_estacions_qualitat_aire
+      tags:
+        - Estacions Qualitat Aire
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /estacions-qualitat-aire/create/:
+    post:
+      summary: Crear una estació de calitat del aire
+      operationId: create_estacio_qualitat_aire
+      tags:
+        - Estacions Qualitat Aire
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algun s'ha introduit malament. 
+
+  /estacions-qualitat-aire/{pk}/:
+    get:
+      summary: Obtenir una estació de calitat del aire específica
+      operationId: get_estacio_qualitat_aire
+      tags:
+        - Estacions Qualitat Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
+          
+  /estacions-qualitat-aire/{pk}/update:
+    patch:
+      summary: Actualitzar una estació de calitat del aire específica
+      operationId: update_estacio_qualitat_aire
+      tags:
+        - Estacions Qualitat Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
+        '400':
+          description: Bad Request. Aglun valor s'ha introduit malament. 
+  
+  /estacions-qualitat-aire/{pk}/delete/:
+    delete:
+      summary: Eliminar una estació de calitat del aire específica
+      operationId: delete_estacio_qualitat_aire
+      tags:
+        - Estacions Qualitat Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
+
+  /activitats-culturals/:
+    get:
+      summary: Obtenir activitats culturals
+      operationId: get_activitats_culturals
+      tags:
+        - Activitat Cultural
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /activitats-culturals/create/:
+    post:
+      summary: Crear una activitat cultural
+      operationId: create_activitat_cultural
+      tags:
+        - Activitat Cultural
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /activitats-culturals/{pk}/:
+    get:
+      summary: Obtenir una activitat cultural específica
+      operationId: get_activitat_cultural
+      tags:
+        - Activitat Cultural
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
+  
+  /activitats-culturals/{pk}/update/:
+    patch:
+      summary: Actualitzar una activitat cultural específica
+      operationId: update_activitat_cultural
+      tags:
+        - Activitat Cultural
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+  /activitats-culturals/{pk}/delete/:
+    delete:
+      summary: Eliminar una activitat cultural específica
+      operationId: delete_activitat_cultural
+      tags:
+        - Activitat Cultural
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
+
+  /contaminants/:
+    get:
+      summary: Obtenir contaminants
+      operationId: get_contaminants
+      tags:
+        - Contaminants
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /contaminants/create/:
+    post:
+      summary: Crear un contaminant
+      operationId: create_contaminant
+      tags:
+        - Contaminants
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+
+  /contaminants/{pk}/:
+    get:
+      summary: Obtenir un contaminant específic
+      operationId: get_contaminant
+      tags:
+        - Contaminants
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
+  
+  /contaminants/{pk}/update/:
+    patch:
+      summary: Actualitzar un contaminant específic
+      operationId: update_contaminant
+      tags:
+        - Contaminants
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+  
+  /contaminants/{pk}/delete/:
+    delete:
+      summary: Eliminar un contaminant específic
+      operationId: delete_contaminant
+      tags:
+        - Contaminants
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
+
+  /presencies/:
+    get:
+      summary: Obtenir presencias
+      operationId: get_presencies
+      tags:
+        - Presencies
+      responses:
+        '200':
+          description: Llista de missatges
+  
+  /presencies/create/:
+    post:
+      summary: Crear una presencia
+      operationId: create_presencia
+      tags:
+        - Presencies
+      responses:
+        '200':
+          description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /presencies/{pk}/:
+    get:
+      summary: Obtenir una presencia específica
+      operationId: get_presencia
+      tags:
+        - Presencies
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.
+          
+  /presencies/{pk}/update/:
+    patch:
+      summary: Actualitzar una presencia específica
+      operationId: update_presencia
+      tags:
+        - Presencies
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /presencies/{pk}/delete/:
+    delete:
+      summary: Eliminar una presencia específica
+      operationId: delete_presencia
+      tags:
+        - Presencies
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.

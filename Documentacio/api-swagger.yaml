@@ -226,6 +226,8 @@ paths:
                   type: string
                 nom:
                   type: string
+                estat:
+                  type: string
                 punts:
                   type: integer
                 deshabilitador:
@@ -274,6 +276,8 @@ paths:
                 password:
                   type: string
                 nom:
+                  type: string
+                estat:
                   type: string
                 punts:
                   type: integer
@@ -338,6 +342,8 @@ paths:
                   type: string
                 nom:
                   type: string
+                estat:
+                  type: string
                 punts:
                   type: integer
                 deshabilitador:
@@ -386,6 +392,8 @@ paths:
                 password:
                   type: string
                 nom:
+                  type: string
+                estat:
                   type: string
                 punts:
                   type: integer
@@ -2620,5 +2628,3 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
-          
-      

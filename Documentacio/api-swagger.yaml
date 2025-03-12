@@ -787,7 +787,7 @@ paths:
         '404':
           description: No s'ha trobat cap valoracio amb aquest id
   
-  /valoracions/{id}/update:
+  /valoracions/{id}/update/:
     patch:
       summary: Actualitzar una valoració específica
       operationId: update_valoracio
@@ -2628,3 +2628,4 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
+          

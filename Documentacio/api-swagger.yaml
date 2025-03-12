@@ -117,7 +117,7 @@ paths:
         '200':
           description: Accessibilitats obtingudes correctament
   
-  /accessibilitats-respiratoria/create:
+  /accessibilitats-respiratoria/create/:
     post:
       summary: Crear una nova accessibilitat respiratòria
       operationId: createAccessibilitatRespiratoria
@@ -421,7 +421,7 @@ paths:
         '200':
           description: Bloqueigs obtinguts correctament
           
-  /bloqueigs/create:
+  /bloqueigs/create/:
     post:
       summary: Crear un bloqueig
       operationId: createBloqueig
@@ -1050,7 +1050,7 @@ paths:
       summary: Obtener todas las asignaciones de accesibilidad respiratoria
       operationId: get_assignacions_accesibilitat_respiratoria
       tags:
-        - Accesibilitat Respiratoria
+        - Assignacio Accesibilitat Respiratoria
       responses:
         '200':
           description: OK
@@ -1060,7 +1060,7 @@ paths:
       summary: Crear una asignación de accesibilidad respiratoria
       operationId: create_assignacio_accesibilitat_respiratoria
       tags:
-        - Accesibilitat Respiratoria
+        - Assignacio Accesibilitat Respiratoria
       requestBody:
         required: true
         content:
@@ -1085,7 +1085,7 @@ paths:
       summary: Obtener una asignación de accesibilidad respiratoria específica
       operationId: get_assignacio_accesibilitat_respiratoria
       tags:
-        - Accesibilitat Respiratoria
+        - Assignacio Accesibilitat Respiratoria
       parameters:
         - name: id
           in: path
@@ -1103,7 +1103,7 @@ paths:
       summary: Actualizar una asignación de accesibilidad respiratoria específica
       operationId: update_assignacio_accesibilitat_respiratoria
       tags:
-        - Accesibilitat Respiratoria
+        - Assignacio Accesibilitat Respiratoria
       parameters:
         - name: id
           in: path
@@ -1136,7 +1136,7 @@ paths:
       summary: Eliminar una asignació de accesibilitat respiratoria específica
       operationId: delete_assignacio_accesibilitat_respiratoria
       tags:
-        - Accesibilitat Respiratoria
+        - Assignacio Accesibilitat Respiratoria
       parameters:
         - name: id
           in: path
@@ -2620,3 +2620,5 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
+          
+      

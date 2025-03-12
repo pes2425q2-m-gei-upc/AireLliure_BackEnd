@@ -1,0 +1,1367 @@
+openapi: 3.0.0
+info:
+  title: API Django
+  description: Documentació de l'API amb totes les rutes
+  version: 1.0.0
+  
+servers:
+  - url: https://airelliure-backend.onrender.com
+  - url: http://localhost:8000
+paths:
+  /categories/:
+    get:
+      summary: Obtenir totes les categories
+      operationId: getCategories
+      tags:
+        - Categoria
+      responses:
+        '200':
+          description: Categories obtingudes correctament
+
+  /dificultats-esportiva/:
+    get:
+      summary: Obtenir totes les dificultats esportives
+      operationId: getDificultatsEsportiva
+      tags:
+        - Dificultat Esportiva
+      responses:
+        '200':
+          description: Dificultats obtingudes correctament
+  /dificultats-esportiva/create/:
+    post:
+      summary: Crear una nova dificultat esportiva
+      operationId: createDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      responses:
+        '201':
+          description: Dificultat creada correctament
+
+  /dificultats-esportiva/{id}/:
+    get:
+      summary: Obtenir una dificultat esportiva per ID
+      operationId: getDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dificultat obtinguda correctament
+          
+  /dificultats-esportiva/{id}/update/:
+    patch:
+      summary: Actualitzar una dificultat esportiva
+      operationId: updateDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dificultat actualitzada correctament
+  
+  /dificultats-esportiva/{id}/delete/:
+    delete:
+      summary: Eliminar una dificultat esportiva
+      operationId: deleteDificultatEsportiva
+      tags:
+        - Dificultat Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Dificultat eliminada correctament
+
+  /accessibilitats-respiratoria/:
+    get:
+      summary: Obtenir totes les accessibilitats respiratòries
+      operationId: getAccessibilitatsRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      responses:
+        '200':
+          description: Accessibilitats obtingudes correctament
+  
+  /accessibilitats-respiratoria/create:
+    post:
+      summary: Crear una nova accessibilitat respiratòria
+      operationId: createAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      responses:
+        '201':
+          description: Accessibilitat creada correctament
+
+  /accessibilitats-respiratoria/{id}/:
+    get:
+      summary: Obtenir una accessibilitat respiratòria per ID
+      operationId: getAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Accessibilitat obtinguda correctament
+          
+  /accessibilitats-respiratoria/{id}/update/:
+    patch:
+      summary: Actualitzar una accessibilitat respiratòria
+      operationId: updateAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Accessibilitat actualitzada correctament
+          
+  /accessibilitats-respiratoria/{id}/delete/:
+    delete:
+      summary: Eliminar una accessibilitat respiratòria
+      operationId: deleteAccessibilitatRespiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Accessibilitat eliminada correctament
+
+  /usuaris/:
+    get:
+      summary: Obtenir tots els usuaris
+      operationId: getUsuaris
+      tags:
+        - Usuari
+      responses:
+        '200':
+          description: Usuaris obtinguts correctament
+          
+  /usuaris/create/:
+    post:
+      summary: Crear un nou usuari
+      operationId: createUsuari
+      tags:
+        - Usuari
+      responses:
+        '201':
+          description: Usuari creat correctament
+
+  /usuaris/{id}/:
+    get:
+      summary: Obtenir un usuari per ID
+      operationId: getUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuari obtingut correctament
+          
+  /usuaris/{id}/update/:
+    patch:
+      summary: Actualitzar un usuari
+      operationId: updateUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Usuari actualitzat correctament
+          
+  /usuaris/{id}/delete/:
+    delete:
+      summary: Eliminar un usuari
+      operationId: deleteUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Usuari eliminat correctament
+
+  /login/:
+    post:
+      summary: Iniciar sessió
+      operationId: loginUsuari
+      tags:
+        - Usuari
+      responses:
+        '200':
+          description: Login correcte
+
+  /admins/:
+    get:
+      summary: Obtenir tots els administradors
+      operationId: getAdmins
+      tags:
+        - Usuari Admin
+      responses:
+        '200':
+          description: Administradors obtinguts correctament
+          
+  /admins/create/:
+    post:
+      summary: Crear un nou administrador
+      operationId: createAdmin
+      tags:
+        - Usuari Admin
+      responses:
+        '201':
+          description: Administrador creat correctament
+
+  /admins/{id}/:
+    get:
+      summary: Obtenir un administrador per ID
+      operationId: getAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Administrador obtingut correctament
+          
+  /admins/{id}/update/:  
+    patch:
+      summary: Actualitzar un administrador
+      operationId: updateAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Administrador actualitzat correctament
+  
+  /admins/{id}/delete/:
+    delete:
+      summary: Eliminar un administrador
+      operationId: deleteAdmin
+      tags:
+        - Usuari Admin
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Administrador eliminat correctament
+         
+  /bloqueigs/:
+    get:
+      summary: Obtenir tots els bloqueigs
+      operationId: getBloqueigs
+      tags:
+        - Bloqueig
+      responses:
+        '200':
+          description: Bloqueigs obtinguts correctament
+    post:
+      summary: Crear un bloqueig
+      operationId: createBloqueig
+      tags:
+        - Bloqueig
+      responses:
+        '201':
+          description: Bloqueig creat correctament
+
+  /bloqueigs/{id}/:
+    get:
+      summary: Obtenir un bloqueig per ID
+      operationId: getBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bloqueig obtingut correctament
+    put:
+      summary: Actualitzar un bloqueig
+      operationId: updateBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bloqueig actualitzat correctament
+    delete:
+      summary: Eliminar un bloqueig
+      operationId: deleteBloqueig
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Bloqueig eliminat correctament
+
+  /amistats/:
+    get:
+      summary: Obtenir totes les amistats
+      operationId: getAmistats
+      tags:
+        - Amistat
+      responses:
+        '200':
+          description: Amistats obtingudes correctament
+    post:
+      summary: Crear una amistat
+      operationId: createAmistat
+      tags:
+        - Amistat
+      responses:
+        '201':
+          description: Amistat creada correctament
+
+  /amistats/{id}/:
+    get:
+      summary: Obtenir una amistat per ID
+      operationId: getAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Amistat obtinguda correctament
+    put:
+      summary: Actualitzar una amistat
+      operationId: updateAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Amistat actualitzada correctament
+    delete:
+      summary: Eliminar una amistat
+      operationId: deleteAmistat
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Amistat eliminada correctament
+
+  /rutas/:
+    get:
+      summary: Obtenir totes les rutes
+      operationId: getRutas
+      tags:
+        - Rutas
+      responses:
+        '200':
+          description: Rutes obtingudes correctament
+    post:
+      summary: Crear una ruta
+      operationId: createRuta
+      tags:
+        - Rutas
+      responses:
+        '201':
+          description: Ruta creada correctament
+
+  /rutas/{id}/:
+    get:
+      summary: Obtenir una ruta per ID
+      operationId: getRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ruta obtinguda correctament
+    put:
+      summary: Actualitzar una ruta
+      operationId: updateRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Ruta actualitzada correctament
+    delete:
+      summary: Eliminar una ruta
+      operationId: deleteRuta
+      tags:
+        - Rutas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Ruta eliminada correctament
+
+  /xats/:
+    get:
+      summary: Obtenir tots els xats
+      operationId: getXats
+      tags:
+        - Xats
+      responses:
+        '200':
+          description: Xats obtinguts correctament
+    post:
+      summary: Crear un xat
+      operationId: createXat
+      tags:
+        - Xats
+      responses:
+        '201':
+          description: Xat creat correctament
+
+  /xats/{id}/:
+    get:
+      summary: Obtenir un xat per ID
+      operationId: getXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat obtingut correctament
+    put:
+      summary: Actualitzar un xat
+      operationId: updateXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat actualitzat correctament
+    delete:
+      summary: Eliminar un xat
+      operationId: deleteXat
+      tags:
+        - Xats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat eliminat correctament
+    
+  /xats-individual/:
+    get:
+      summary: Obtenir tots els xats individuals
+      operationId: getXatsIndividual
+      tags:
+        - Xat Individual
+      responses:
+        '200':
+          description: Llista de xats individuals
+
+    post:
+      summary: Crear un xat individual
+      operationId: createXatIndividual
+      tags:
+        - Xat Individual
+
+      responses:
+        '201':
+          description: Xat individual creat correctament
+
+  /xats-individual/{pk}/:
+    get:
+      summary: Obtenir un xat individual per ID
+      operationId: getXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del xat individual
+
+    put:
+      summary: Actualitzar un xat individual
+      operationId: updateXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat individual actualitzat correctament
+
+    delete:
+      summary: Eliminar un xat individual
+      operationId: deleteXatIndividual
+      tags:
+        - Xat Individual
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat individual eliminat correctament
+
+  /xats-grupal/:
+    get:
+      summary: Obtenir tots els xats grupals
+      operationId: getXatsGrupal
+      tags:
+        - Xat Grupal
+      responses:
+        '200':
+          description: Llista de xats grupals
+
+    post:
+      summary: Crear un xat grupal
+      operationId: createXatGrupal
+      tags:
+        - Xat Grupal
+      responses:
+        '201':
+          description: Xat grupal creat correctament
+
+  /xats-grupal/{pk}/:
+    get:
+      summary: Obtenir un xat grupal per ID
+      operationId: getXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del xat grupal
+
+    put:
+      summary: Actualitzar un xat grupal
+      operationId: updateXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Xat grupal actualitzat correctament
+
+    delete:
+      summary: Eliminar un xat grupal
+      operationId: deleteXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Xat grupal eliminat correctament
+
+  /invitacions/:
+    get:
+      summary: Obtenir totes les invitacions
+      operationId: getInvitacions
+      tags:
+        - Invitació
+      responses:
+        '200':
+          description: Llista d'invitacions
+
+    post:
+      summary: Crear una invitació
+      operationId: createInvitacio
+      tags:
+        - Invitació
+      responses:
+        '201':
+          description: Invitació creada correctament
+
+  /invitacions/{pk}/:
+    get:
+      summary: Obtenir una invitació per ID
+      operationId: getInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls de la invitació
+
+    put:
+      summary: Actualitzar una invitació
+      operationId: updateInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Invitació actualitzada correctament
+
+    delete:
+      summary: Eliminar una invitació
+      operationId: deleteInvitacio
+      tags:
+        - Invitació
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Invitació eliminada correctament
+
+  /missatges/:
+    get:
+      summary: Obtenir tots els missatges
+      operationId: getMissatges
+      tags:
+        - Missatge
+      responses:
+        '200':
+          description: Llista de missatges
+
+    post:
+      summary: Crear un missatge
+      operationId: createMissatge
+      tags:
+        - Missatge
+      responses:
+        '201':
+          description: Missatge creat correctament
+
+  /missatges/{pk}/:
+    get:
+      summary: Obtenir un missatge per ID
+      operationId: getMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalls del missatge
+
+    put:
+      summary: Actualitzar un missatge
+      operationId: updateMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Missatge actualitzat correctament
+
+    delete:
+      summary: Eliminar un missatge
+      operationId: deleteMissatge
+      tags:
+        - Missatge
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Missatge eliminat correctament
+
+  /events-de-calendari/:
+    get:
+      summary: Obtener eventos de calendario
+      operationId: get_events_de_calendari
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un evento de calendario
+      operationId: create_event_de_calendari
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /events-de-calendari/{pk}/:
+    get:
+      summary: Obtener un evento de calendario específico
+      operationId: get_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un evento de calendario específico
+      operationId: update_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un evento de calendario específico
+      operationId: delete_event_de_calendari
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /events-de-calendari-privats/:
+    get:
+      summary: Obtener eventos de calendario privados
+      operationId: get_events_de_calendari_privats
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un evento de calendario privado
+      operationId: create_event_de_calendari_privat
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /events-de-calendari-privats/{pk}/:
+    get:
+      summary: Obtener un evento de calendario privado específico
+      operationId: get_event_de_calendari_privat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un evento de calendario privado específico
+      operationId: update_event_de_calendari_privat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un evento de calendario privado específico
+      operationId: delete_event_de_calendari_privat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /events-de-calendari-publics/:
+    get:
+      summary: Obtener eventos de calendario públicos
+      operationId: get_events_de_calendari_publics
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un evento de calendario público
+      operationId: create_event_de_calendari_public
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /events-de-calendari-publics/{pk}/:
+    get:
+      summary: Obtener un evento de calendario público específico
+      operationId: get_event_de_calendari_public
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un evento de calendario público específico
+      operationId: update_event_de_calendari_public
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un evento de calendario público específico
+      operationId: delete_event_de_calendari_public
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /apuntats/:
+    get:
+      summary: Obtener lista de apuntados
+      operationId: get_apuntats
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un apuntado
+      operationId: create_apuntat
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /apuntats/{pk}/:
+    get:
+      summary: Obtener un apuntado específico
+      operationId: get_apuntat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un apuntado específico
+      operationId: update_apuntat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un apuntado específico
+      operationId: delete_apuntat
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /punts/:
+    get:
+      summary: Obtener lista de puntos
+      operationId: get_punts
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un punto
+      operationId: create_punt
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /punts/{pk}/:
+    get:
+      summary: Obtener un punto específico
+      operationId: get_punt
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un punto específico
+      operationId: update_punt
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un punto específico
+      operationId: delete_punt
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /estacions-qualitat-aire/:
+    get:
+      summary: Obtener estaciones de calidad de aire
+      operationId: get_estacions_qualitat_aire
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear una estación de calidad de aire
+      operationId: create_estacio_qualitat_aire
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /estacions-qualitat-aire/{pk}/:
+    get:
+      summary: Obtener una estación de calidad de aire específica
+      operationId: get_estacio_qualitat_aire
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar una estación de calidad de aire específica
+      operationId: update_estacio_qualitat_aire
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar una estación de calidad de aire específica
+      operationId: delete_estacio_qualitat_aire
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /activitats-culturals/:
+    get:
+      summary: Obtener actividades culturales
+      operationId: get_activitats_culturals
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear una actividad cultural
+      operationId: create_activitat_cultural
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /activitats-culturals/{pk}/:
+    get:
+      summary: Obtener una actividad cultural específica
+      operationId: get_activitat_cultural
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar una actividad cultural específica
+      operationId: update_activitat_cultural
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar una actividad cultural específica
+      operationId: delete_activitat_cultural
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /contaminants/:
+    get:
+      summary: Obtener contaminantes
+      operationId: get_contaminants
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear un contaminante
+      operationId: create_contaminant
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /contaminants/{pk}/:
+    get:
+      summary: Obtener un contaminante específico
+      operationId: get_contaminant
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar un contaminante específico
+      operationId: update_contaminant
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar un contaminante específico
+      operationId: delete_contaminant
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /presencies/:
+    get:
+      summary: Obtener presencias
+      operationId: get_presencies
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+    post:
+      summary: Crear una presencia
+      operationId: create_presencia
+      tags:
+        - Events Calendari
+      responses:
+        '200':
+          description: Llista de missatges
+
+  /presencies/{pk}/:
+    get:
+      summary: Obtener una presencia específica
+      operationId: get_presencia
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    put:
+      summary: Actualizar una presencia específica
+      operationId: update_presencia
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges
+    delete:
+      summary: Eliminar una presencia específica
+      operationId: delete_presencia
+      tags:
+        - Events Calendari
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Llista de missatges

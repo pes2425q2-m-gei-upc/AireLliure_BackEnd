@@ -26,6 +26,7 @@ def get_categories(request):
     }, status=status.HTTP_200_OK)
 
 #DIFICULTAT ESPORTIVA ------------------------------------------------------------------------------------------------
+
 @api_view(['GET'])
 def get_dificultats_esportiva(request):
     difficulties = DificultatEsportiva.objects.all()

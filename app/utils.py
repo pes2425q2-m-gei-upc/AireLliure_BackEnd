@@ -7,59 +7,38 @@ OPEN_DATA_BCN_URL = "https://opendata-ajuntament.barcelona.cat/data/api/action/p
 DADES_OBERTES_DE_LA_GENERALITAT_URL = "https://analisi.transparenciacatalunya.cat/resource/tasf-thgu.json"
 SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
 
-def actualitzar_rutes():
-    job, created = JobExecution.objects.get_or_create(name="actualitzar_rutes")
+def actualizar_datos(model, url, unique_field, interval):
+    job, created = JobExecution.objects.get_or_create(name=f"actualizar_{model._meta.model_name}")
 
-    if now() - job.last_run >= timedelta(days=1):
-        response = requests.get(OPEN_DATA_BCN_URL)
+    if now() - job.last_run >= interval:
+        response = requests.get(url)
         if response.status_code == 200:
-            datos = response.json()
+            nuevos_datos = response.json()
+            existentes = {getattr(obj, unique_field): obj for obj in model.objects.all()}
+            nuevos = {dato[unique_field]: dato for dato in nuevos_datos}
 
-            # Borra los datos actuales
-            Ruta.objects.all().delete()
+            # Identificar objetos a eliminar
+            ids_a_eliminar = set(existentes.keys()) - set(nuevos.keys())
+            model.objects.filter(**{f"{unique_field}__in": ids_a_eliminar}).delete()
 
-            # Guarda los nuevos datos
-            objetos = [Ruta(**dato) for dato in datos]
-            Ruta.objects.bulk_create(objetos)
+            # Identificar objetos a crear o actualizar
+            objetos_a_guardar = []
+            for dato in nuevos_datos:
+                obj, created = model.objects.update_or_create(
+                    **{unique_field: dato[unique_field]}, defaults=dato
+                )
+                objetos_a_guardar.append(obj)
 
-            # Actualiza el tiempo de última ejecución
+            model.objects.bulk_update(objetos_a_guardar, nuevos_datos[0].keys())
+            
             job.last_run = now()
             job.save()
+
+def actualitzar_rutes():
+    actualizar_datos(Ruta, OPEN_DATA_BCN_URL, "id", timedelta(weeks=1))
 
 def actualitzar_estacions_qualitat_aire():
-    job, created = JobExecution.objects.get_or_create(name="actualitzar_estacions_qualitat_aire")
-
-    if now() - job.last_run >= timedelta(days=1):
-        response = requests.get(DADES_OBERTES_DE_LA_GENERALITAT_URL)
-        if response.status_code == 200:
-            datos = response.json()
-
-            # Borra los datos actuales
-            EstacioQualitatAire.objects.all().delete()
-
-            # Guarda los nuevos datos
-            objetos = [EstacioQualitatAire(**dato) for dato in datos]
-            EstacioQualitatAire.objects.bulk_create(objetos)
-
-            # Actualiza el tiempo de última ejecución
-            job.last_run = now()
-            job.save()
+    actualizar_datos(EstacioQualitatAire, DADES_OBERTES_DE_LA_GENERALITAT_URL, "codi", timedelta(days=1))
 
 def actualitzar_activitats_culturals():
-    job, created = JobExecution.objects.get_or_create(name="actualitzar_activitats_culturals")
-
-    if now() - job.last_run >= timedelta(days=1):
-        response = requests.get(SERVEI_ACTIVITATS_CULTURALS_API)
-        if response.status_code == 200:
-            datos = response.json()
-
-            # Borra los datos actuales
-            ActivitatCultural.objects.all().delete()
-
-            # Guarda los nuevos datos
-            objetos = [ActivitatCultural(**dato) for dato in datos]
-            ActivitatCultural.objects.bulk_create(objetos)
-
-            # Actualiza el tiempo de última ejecución
-            job.last_run = now()
-            job.save()
+    actualizar_datos(ActivitatCultural, SERVEI_ACTIVITATS_CULTURALS_URL, "id", timedelta(days=1))

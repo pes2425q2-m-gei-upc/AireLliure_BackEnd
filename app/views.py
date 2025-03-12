@@ -39,6 +39,7 @@ def get_dificultat_esportiva(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
+@csrf_exempt
 @permission_classes([AllowAny])
 def create_dificultat_esportiva(request):
     data = {

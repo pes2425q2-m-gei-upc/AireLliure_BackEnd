@@ -562,8 +562,10 @@ def get_xats(request):
 @api_view(['GET'])
 def get_xat(request, pk):
     xat = get_object_or_404(Xat, pk=pk)
+    missatges_xat = Missatge.objects.filter(xat=xat)
+    serializer_missatges = MissatgeSerializer(missatges_xat, many=True)
     serializer = XatSerializer(xat)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response({'xat': serializer.data, 'missatges': serializer_missatges.data}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

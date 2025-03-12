@@ -308,6 +308,8 @@ paths:
       responses:
         '200':
           description: Bloqueigs obtinguts correctament
+          
+  /bloqueigs/create:
     post:
       summary: Crear un bloqueig
       operationId: createBloqueig
@@ -316,6 +318,8 @@ paths:
       responses:
         '201':
           description: Bloqueig creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /bloqueigs/{id}/:
     get:
@@ -332,7 +336,11 @@ paths:
       responses:
         '200':
           description: Bloqueig obtingut correctament
-    put:
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
+  
+  /bloqueigs/{id}/update/:
+    patch:
       summary: Actualitzar un bloqueig
       operationId: updateBloqueig
       tags:
@@ -346,6 +354,12 @@ paths:
       responses:
         '200':
           description: Bloqueig actualitzat correctament
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /bloqueigs/{id}/delete/:
     delete:
       summary: Eliminar un bloqueig
       operationId: deleteBloqueig
@@ -360,6 +374,8 @@ paths:
       responses:
         '204':
           description: Bloqueig eliminat correctament
+        '404': 
+          description: No s'ha trobat cap bloqueig amb aquest id.
 
   /amistats/:
     get:
@@ -370,6 +386,8 @@ paths:
       responses:
         '200':
           description: Amistats obtingudes correctament
+          
+  /amistats/create/:
     post:
       summary: Crear una amistat
       operationId: createAmistat
@@ -378,6 +396,8 @@ paths:
       responses:
         '201':
           description: Amistat creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /amistats/{id}/:
     get:
@@ -394,7 +414,11 @@ paths:
       responses:
         '200':
           description: Amistat obtinguda correctament
-    put:
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
+          
+  /amistats/{id}/update/:
+    patch:
       summary: Actualitzar una amistat
       operationId: updateAmistat
       tags:
@@ -408,6 +432,12 @@ paths:
       responses:
         '200':
           description: Amistat actualitzada correctament
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /amistats/{id}/delete/:
     delete:
       summary: Eliminar una amistat
       operationId: deleteAmistat
@@ -422,6 +452,8 @@ paths:
       responses:
         '204':
           description: Amistat eliminada correctament
+        '404': 
+          description: No s'ha trobat cap amistat amb aquest id.
 
   /rutas/:
     get:
@@ -432,6 +464,8 @@ paths:
       responses:
         '200':
           description: Rutes obtingudes correctament
+          
+  /rutas/create/:
     post:
       summary: Crear una ruta
       operationId: createRuta
@@ -440,6 +474,8 @@ paths:
       responses:
         '201':
           description: Ruta creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /rutas/{id}/:
     get:
@@ -456,7 +492,11 @@ paths:
       responses:
         '200':
           description: Ruta obtinguda correctament
-    put:
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id. 
+          
+  /rutas/{id}/update/:
+    patch:
       summary: Actualitzar una ruta
       operationId: updateRuta
       tags:
@@ -470,6 +510,12 @@ paths:
       responses:
         '200':
           description: Ruta actualitzada correctament
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+        
+  /rutas/{id}/delete/:
     delete:
       summary: Eliminar una ruta
       operationId: deleteRuta
@@ -484,6 +530,8 @@ paths:
       responses:
         '204':
           description: Ruta eliminada correctament
+        '404':
+          description: No s'ha trobat cap ruta amb aquest id.
 
   /xats/:
     get:
@@ -494,6 +542,8 @@ paths:
       responses:
         '200':
           description: Xats obtinguts correctament
+          
+  /xats/create/:
     post:
       summary: Crear un xat
       operationId: createXat
@@ -502,6 +552,8 @@ paths:
       responses:
         '201':
           description: Xat creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /xats/{id}/:
     get:
@@ -518,7 +570,11 @@ paths:
       responses:
         '200':
           description: Xat obtingut correctament
-    put:
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
+          
+  /xats/{id}/update/:
+    patch:
       summary: Actualitzar un xat
       operationId: updateXat
       tags:
@@ -532,6 +588,12 @@ paths:
       responses:
         '200':
           description: Xat actualitzat correctament
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /xats/{id}/delete/:      
     delete:
       summary: Eliminar un xat
       operationId: deleteXat
@@ -546,6 +608,8 @@ paths:
       responses:
         '204':
           description: Xat eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat amb aquest id.
     
   /xats-individual/:
     get:
@@ -557,15 +621,17 @@ paths:
         '200':
           description: Llista de xats individuals
 
+  /xats-individual/create/:
     post:
       summary: Crear un xat individual
       operationId: createXatIndividual
       tags:
         - Xat Individual
-
       responses:
         '201':
           description: Xat individual creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
 
   /xats-individual/{pk}/:
     get:
@@ -582,8 +648,11 @@ paths:
       responses:
         '200':
           description: Detalls del xat individual
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id.
 
-    put:
+  /xats-individual/{pk}/update/:
+    patch:
       summary: Actualitzar un xat individual
       operationId: updateXatIndividual
       tags:
@@ -597,7 +666,12 @@ paths:
       responses:
         '200':
           description: Xat individual actualitzat correctament
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
+  /xats-individual/{pk}/delete/:
     delete:
       summary: Eliminar un xat individual
       operationId: deleteXatIndividual
@@ -612,6 +686,8 @@ paths:
       responses:
         '204':
           description: Xat individual eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat individual amb aquest id
 
   /xats-grupal/:
     get:
@@ -622,7 +698,8 @@ paths:
       responses:
         '200':
           description: Llista de xats grupals
-
+          
+  /xats-grupal/create/:
     post:
       summary: Crear un xat grupal
       operationId: createXatGrupal
@@ -631,6 +708,8 @@ paths:
       responses:
         '201':
           description: Xat grupal creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
 
   /xats-grupal/{pk}/:
     get:
@@ -647,8 +726,11 @@ paths:
       responses:
         '200':
           description: Detalls del xat grupal
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id
 
-    put:
+  /xats-grupal/{pk}/update/:
+    patch:
       summary: Actualitzar un xat grupal
       operationId: updateXatGrupal
       tags:
@@ -662,7 +744,12 @@ paths:
       responses:
         '200':
           description: Xat grupal actualitzat correctament
-
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /xats-grupal/{pk}/delete/:
     delete:
       summary: Eliminar un xat grupal
       operationId: deleteXatGrupal
@@ -677,6 +764,8 @@ paths:
       responses:
         '204':
           description: Xat grupal eliminat correctament
+        '404':
+          description: No s'ha trobat cap xat grupal amb aquest id.
 
   /invitacions/:
     get:
@@ -687,7 +776,8 @@ paths:
       responses:
         '200':
           description: Llista d'invitacions
-
+          
+  /invitacions/create/:
     post:
       summary: Crear una invitació
       operationId: createInvitacio
@@ -696,6 +786,8 @@ paths:
       responses:
         '201':
           description: Invitació creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /invitacions/{pk}/:
     get:
@@ -712,8 +804,11 @@ paths:
       responses:
         '200':
           description: Detalls de la invitació
-
-    put:
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+          
+  /invitacions/{pk}/update/:
+    patch:
       summary: Actualitzar una invitació
       operationId: updateInvitacio
       tags:
@@ -727,7 +822,12 @@ paths:
       responses:
         '200':
           description: Invitació actualitzada correctament
-
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+        
+  /invitacions/{pk}/delete/:
     delete:
       summary: Eliminar una invitació
       operationId: deleteInvitacio
@@ -742,7 +842,9 @@ paths:
       responses:
         '204':
           description: Invitació eliminada correctament
-
+        '404':
+          description: No s'ha trobat cap invitació amb aquest id.
+        
   /missatges/:
     get:
       summary: Obtenir tots els missatges
@@ -752,7 +854,8 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-
+          
+  /missatges/create/:
     post:
       summary: Crear un missatge
       operationId: createMissatge
@@ -761,6 +864,8 @@ paths:
       responses:
         '201':
           description: Missatge creat correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
 
   /missatges/{pk}/:
     get:
@@ -777,8 +882,11 @@ paths:
       responses:
         '200':
           description: Detalls del missatge
-
-    put:
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
+          
+  /missatges/{pk}/update/:
+    patch:
       summary: Actualitzar un missatge
       operationId: updateMissatge
       tags:
@@ -792,7 +900,12 @@ paths:
       responses:
         '200':
           description: Missatge actualitzat correctament
-
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
+          
+  /missatges/{pk}/delete/:
     delete:
       summary: Eliminar un missatge
       operationId: deleteMissatge
@@ -807,28 +920,34 @@ paths:
       responses:
         '204':
           description: Missatge eliminat correctament
+        '404':
+          description: No s'ha trobat cap missatge amb aquest id.
 
   /events-de-calendari/:
     get:
-      summary: Obtener eventos de calendario
+      summary: Obtenir events de calendari
       operationId: get_events_de_calendari
       tags:
         - Events Calendari
       responses:
         '200':
           description: Llista de missatges
+          
+  /events-de-calendari/create:
     post:
-      summary: Crear un evento de calendario
+      summary: Crear un event de calendari
       operationId: create_event_de_calendari
       tags:
         - Events Calendari
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari/{pk}/:
     get:
-      summary: Obtener un evento de calendario específico
+      summary: Obtenir un event de calendari específic
       operationId: get_event_de_calendari
       tags:
         - Events Calendari
@@ -841,8 +960,12 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar un evento de calendario específico
+        '404':
+          description: No existeix un event de calendari amb aquest id. 
+          
+  /events-de-calendari/{pk}/update/:
+    patch:
+      summary: Actualitzar un event de calendari específic
       operationId: update_event_de_calendari
       tags:
         - Events Calendari
@@ -855,8 +978,14 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No existeix un event de calendari amb aquest id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+  
+  /events-de-calendari/{pk}/delete/:
     delete:
-      summary: Eliminar un evento de calendario específico
+      summary: Eliminar un event de calendari específic
       operationId: delete_event_de_calendari
       tags:
         - Events Calendari
@@ -869,31 +998,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No existeix un event de calendari amb aquest id.
 
   /events-de-calendari-privats/:
     get:
-      summary: Obtener eventos de calendario privados
+      summary: Obtenir events de calendari privats
       operationId: get_events_de_calendari_privats
       tags:
-        - Events Calendari
+        - Events Calendari Privat
       responses:
         '200':
           description: Llista de missatges
+  
+  /events-de-calendari-privats/create:
     post:
-      summary: Crear un evento de calendario privado
+      summary: Crear un event de calendari privat
       operationId: create_event_de_calendari_privat
       tags:
-        - Events Calendari
+        - Events Calendari Privat
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari-privats/{pk}/:
     get:
       summary: Obtener un evento de calendario privado específico
       operationId: get_event_de_calendari_privat
       tags:
-        - Events Calendari
+        - Events Calendari Privat
       parameters:
         - name: pk
           in: path
@@ -903,11 +1038,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar un evento de calendario privado específico
+        '404':
+          description: No s'ha trobat un event privat amb aquest id. 
+          
+  /events-de-calendari-privats/{pk}/update/:
+    patch:
+      summary: Actualitzar un event de calendari privat específic
       operationId: update_event_de_calendari_privat
       tags:
-        - Events Calendari
+        - Events Calendari Privat
       parameters:
         - name: pk
           in: path
@@ -917,11 +1056,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event privat amb aquesta id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+          
+  /events-de-calendari-privats/{pk}/delete/:
     delete:
-      summary: Eliminar un evento de calendario privado específico
+      summary: Eliminar un event de calendari privat específic
       operationId: delete_event_de_calendari_privat
       tags:
-        - Events Calendari
+        - Events Calendari Privat
       parameters:
         - name: pk
           in: path
@@ -931,31 +1076,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event privat amb aquesta id
 
   /events-de-calendari-publics/:
     get:
-      summary: Obtener eventos de calendario públicos
+      summary: Obtenir events de calendari públics
       operationId: get_events_de_calendari_publics
       tags:
-        - Events Calendari
+        - Events Calendari Public
       responses:
         '200':
           description: Llista de missatges
+  
+  /events-de-calendari-publics/create:
     post:
       summary: Crear un evento de calendario público
       operationId: create_event_de_calendari_public
       tags:
-        - Events Calendari
+        - Events Calendari Public
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari-publics/{pk}/:
     get:
-      summary: Obtener un evento de calendario público específico
+      summary: Obtenir un event de calendari públic específic
       operationId: get_event_de_calendari_public
       tags:
-        - Events Calendari
+        - Events Calendari Public
       parameters:
         - name: pk
           in: path
@@ -965,11 +1116,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
+        '404':
+          description: No s'ha trobat un event de calendari public amb aquesta id
+    
+  /events-de-calendari-publics/{pk}/update/:
+    patch:
       summary: Actualizar un evento de calendario público específico
       operationId: update_event_de_calendari_public
       tags:
-        - Events Calendari
+        - Events Calendari Public
       parameters:
         - name: pk
           in: path
@@ -979,11 +1134,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat un event de calendari public amb aquesta id
+        '400':
+          description: Bad Request. Algún valor esta malament.
+  
+  /events-de-calendari-publics/{pk}/delete/:
     delete:
       summary: Eliminar un evento de calendario público específico
       operationId: delete_event_de_calendari_public
       tags:
-        - Events Calendari
+        - Events Calendari Public
       parameters:
         - name: pk
           in: path
@@ -996,28 +1157,32 @@ paths:
 
   /apuntats/:
     get:
-      summary: Obtener lista de apuntados
+      summary: Obtenir llista de apuntats
       operationId: get_apuntats
       tags:
-        - Events Calendari
+        - Apuntats
       responses:
         '200':
           description: Llista de missatges
+          
+  /apuntats/create/:
     post:
-      summary: Crear un apuntado
+      summary: Crear un apuntat
       operationId: create_apuntat
       tags:
-        - Events Calendari
+        - Apuntats
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algún valor esta malament.
 
   /apuntats/{pk}/:
     get:
-      summary: Obtener un apuntado específico
+      summary: Obtenir un apuntat específic
       operationId: get_apuntat
       tags:
-        - Events Calendari
+        - Apuntats
       parameters:
         - name: pk
           in: path
@@ -1027,11 +1192,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar un apuntado específico
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
+  
+  /apuntats/{pk}/update/:
+    patch:
+      summary: Actualitzar un apuntat específic
       operationId: update_apuntat
       tags:
-        - Events Calendari
+        - Apuntats
       parameters:
         - name: pk
           in: path
@@ -1041,11 +1210,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
+        '400':
+          description: Bad Request. Algún valor esta malament.
+          
+  /apuntats/{pk}/delete/:
     delete:
-      summary: Eliminar un apuntado específico
+      summary: Eliminar un apuntat específic
       operationId: delete_apuntat
       tags:
-        - Events Calendari
+        - Apuntats
       parameters:
         - name: pk
           in: path
@@ -1055,31 +1230,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat un apuntat amb aquest id.
 
   /punts/:
     get:
-      summary: Obtener lista de puntos
+      summary: Obtenir lista de punts
       operationId: get_punts
       tags:
-        - Events Calendari
+        - Punts
       responses:
         '200':
           description: Llista de missatges
+  
+  /punts/create/:
     post:
       summary: Crear un punto
       operationId: create_punt
       tags:
-        - Events Calendari
+        - Punts
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament. 
 
   /punts/{pk}/:
     get:
-      summary: Obtener un punto específico
+      summary: Obtenir un punt específic
       operationId: get_punt
       tags:
-        - Events Calendari
+        - Punts
       parameters:
         - name: pk
           in: path
@@ -1089,11 +1270,14 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar un punto específico
+        '404':
+          description: No s'ha trobat cap punt amb aquest id
+  /punts/{pk}/update/:  
+    patch:
+      summary: Actualitzar un punt específic
       operationId: update_punt
       tags:
-        - Events Calendari
+        - Punts
       parameters:
         - name: pk
           in: path
@@ -1103,11 +1287,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'haa trobat un punt amb aquest id
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+  
+  /punts/{pk}/delete/: 
     delete:
-      summary: Eliminar un punto específico
+      summary: Eliminar un punt específic
       operationId: delete_punt
       tags:
-        - Events Calendari
+        - Punts
       parameters:
         - name: pk
           in: path
@@ -1117,31 +1307,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap punt amb aquest id. 
 
   /estacions-qualitat-aire/:
     get:
-      summary: Obtener estaciones de calidad de aire
+      summary: Obtenir estacions de calitat del aire
       operationId: get_estacions_qualitat_aire
       tags:
-        - Events Calendari
+        - Estacions Qualitat Aire
       responses:
         '200':
           description: Llista de missatges
+  
+  /estacions-qualitat-aire/create/:
     post:
-      summary: Crear una estación de calidad de aire
+      summary: Crear una estació de calitat del aire
       operationId: create_estacio_qualitat_aire
       tags:
-        - Events Calendari
+        - Estacions Qualitat Aire
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algun s'ha introduit malament. 
 
   /estacions-qualitat-aire/{pk}/:
     get:
-      summary: Obtener una estación de calidad de aire específica
+      summary: Obtenir una estació de calitat del aire específica
       operationId: get_estacio_qualitat_aire
       tags:
-        - Events Calendari
+        - Estacions Qualitat Aire
       parameters:
         - name: pk
           in: path
@@ -1151,11 +1347,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar una estación de calidad de aire específica
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
+          
+  /estacions-qualitat-aire/{pk}/update:
+    patch:
+      summary: Actualitzar una estació de calitat del aire específica
       operationId: update_estacio_qualitat_aire
       tags:
-        - Events Calendari
+        - Estacions Qualitat Aire
       parameters:
         - name: pk
           in: path
@@ -1165,11 +1365,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
+        '400':
+          description: Bad Request. Aglun valor s'ha introduit malament. 
+  
+  /estacions-qualitat-aire/{pk}/delete/:
     delete:
-      summary: Eliminar una estación de calidad de aire específica
+      summary: Eliminar una estació de calitat del aire específica
       operationId: delete_estacio_qualitat_aire
       tags:
-        - Events Calendari
+        - Estacions Qualitat Aire
       parameters:
         - name: pk
           in: path
@@ -1179,31 +1385,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
 
   /activitats-culturals/:
     get:
-      summary: Obtener actividades culturales
+      summary: Obtenir activitats culturals
       operationId: get_activitats_culturals
       tags:
-        - Events Calendari
+        - Activitat Cultural
       responses:
         '200':
           description: Llista de missatges
+
+  /activitats-culturals/create/:
     post:
-      summary: Crear una actividad cultural
+      summary: Crear una activitat cultural
       operationId: create_activitat_cultural
       tags:
-        - Events Calendari
+        - Activitat Cultural
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /activitats-culturals/{pk}/:
     get:
-      summary: Obtener una actividad cultural específica
+      summary: Obtenir una activitat cultural específica
       operationId: get_activitat_cultural
       tags:
-        - Events Calendari
+        - Activitat Cultural
       parameters:
         - name: pk
           in: path
@@ -1213,11 +1425,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar una actividad cultural específica
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
+  
+  /activitats-culturals/{pk}/update/:
+    patch:
+      summary: Actualitzar una activitat cultural específica
       operationId: update_activitat_cultural
       tags:
-        - Events Calendari
+        - Activitat Cultural
       parameters:
         - name: pk
           in: path
@@ -1227,11 +1443,16 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+  /activitats-culturals/{pk}/delete/:
     delete:
-      summary: Eliminar una actividad cultural específica
+      summary: Eliminar una activitat cultural específica
       operationId: delete_activitat_cultural
       tags:
-        - Events Calendari
+        - Activitat Cultural
       parameters:
         - name: pk
           in: path
@@ -1241,31 +1462,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat una Activitat Cultural amb aquest id.
 
   /contaminants/:
     get:
-      summary: Obtener contaminantes
+      summary: Obtenir contaminants
       operationId: get_contaminants
       tags:
-        - Events Calendari
+        - Contaminants
       responses:
         '200':
           description: Llista de missatges
+  
+  /contaminants/create/:
     post:
-      summary: Crear un contaminante
+      summary: Crear un contaminant
       operationId: create_contaminant
       tags:
-        - Events Calendari
+        - Contaminants
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
 
   /contaminants/{pk}/:
     get:
-      summary: Obtener un contaminante específico
+      summary: Obtenir un contaminant específic
       operationId: get_contaminant
       tags:
-        - Events Calendari
+        - Contaminants
       parameters:
         - name: pk
           in: path
@@ -1275,11 +1502,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar un contaminante específico
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
+  
+  /contaminants/{pk}/update/:
+    patch:
+      summary: Actualitzar un contaminant específic
       operationId: update_contaminant
       tags:
-        - Events Calendari
+        - Contaminants
       parameters:
         - name: pk
           in: path
@@ -1289,11 +1520,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+  
+  /contaminants/{pk}/delete/:
     delete:
-      summary: Eliminar un contaminante específico
+      summary: Eliminar un contaminant específic
       operationId: delete_contaminant
       tags:
-        - Events Calendari
+        - Contaminants
       parameters:
         - name: pk
           in: path
@@ -1303,31 +1540,37 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap contaminant amb aquest id.
 
   /presencies/:
     get:
-      summary: Obtener presencias
+      summary: Obtenir presencias
       operationId: get_presencies
       tags:
-        - Events Calendari
+        - Presencies
       responses:
         '200':
           description: Llista de missatges
+  
+  /presencies/create/:
     post:
       summary: Crear una presencia
       operationId: create_presencia
       tags:
-        - Events Calendari
+        - Presencies
       responses:
         '200':
           description: Llista de missatges
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /presencies/{pk}/:
     get:
-      summary: Obtener una presencia específica
+      summary: Obtenir una presencia específica
       operationId: get_presencia
       tags:
-        - Events Calendari
+        - Presencies
       parameters:
         - name: pk
           in: path
@@ -1337,11 +1580,15 @@ paths:
       responses:
         '200':
           description: Llista de missatges
-    put:
-      summary: Actualizar una presencia específica
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.
+          
+  /presencies/{pk}/update/:
+    patch:
+      summary: Actualitzar una presencia específica
       operationId: update_presencia
       tags:
-        - Events Calendari
+        - Presencies
       parameters:
         - name: pk
           in: path
@@ -1351,11 +1598,17 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+          
+  /presencies/{pk}/delete/:
     delete:
       summary: Eliminar una presencia específica
       operationId: delete_presencia
       tags:
-        - Events Calendari
+        - Presencies
       parameters:
         - name: pk
           in: path
@@ -1365,3 +1618,5 @@ paths:
       responses:
         '200':
           description: Llista de missatges
+        '404':
+          description: No s'ha trobat cap presencia amb aquest id.

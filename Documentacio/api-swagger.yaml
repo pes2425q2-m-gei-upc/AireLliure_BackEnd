@@ -33,6 +33,17 @@ paths:
       operationId: createDificultatEsportiva
       tags:
         - Dificultat Esportiva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '201':
           description: Dificultat creada correctament
@@ -65,6 +76,17 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '200':
           description: Dificultat actualitzada correctament
@@ -101,6 +123,17 @@ paths:
       operationId: createAccessibilitatRespiratoria
       tags:
         - Accesibilitat Respiratoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '201':
           description: Accessibilitat creada correctament
@@ -133,6 +166,17 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '200':
           description: Accessibilitat actualitzada correctament
@@ -169,6 +213,23 @@ paths:
       operationId: createUsuari
       tags:
         - Usuari
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correu:
+                  type: string
+                password:
+                  type: string
+                nom:
+                  type: string
+                punts:
+                  type: integer
+                deshabilitador:
+                  type: string
       responses:
         '201':
           description: Usuari creat correctament
@@ -201,6 +262,23 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correu:
+                  type: string
+                password:
+                  type: string
+                nom:
+                  type: string
+                punts:
+                  type: integer
+                deshabilitador:
+                  type: string
       responses:
         '200':
           description: Usuari actualitzat correctament
@@ -247,6 +325,23 @@ paths:
       operationId: createAdmin
       tags:
         - Usuari Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correu:
+                  type: string
+                password:
+                  type: string
+                nom:
+                  type: string
+                punts:
+                  type: integer
+                deshabilitador:
+                  type: string
       responses:
         '201':
           description: Administrador creat correctament
@@ -279,6 +374,23 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correu:
+                  type: string
+                password:
+                  type: string
+                nom:
+                  type: string
+                punts:
+                  type: integer
+                deshabilitador:
+                  type: string
       responses:
         '200':
           description: Administrador actualitzat correctament
@@ -315,6 +427,17 @@ paths:
       operationId: createBloqueig
       tags:
         - Bloqueig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bloqueja:
+                  type: string
+                bloquejat:
+                  type: string
       responses:
         '201':
           description: Bloqueig creat correctament
@@ -351,6 +474,17 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bloqueja:
+                  type: string
+                bloquejat:
+                  type: string
       responses:
         '200':
           description: Bloqueig actualitzat correctament
@@ -393,6 +527,21 @@ paths:
       operationId: createAmistat
       tags:
         - Amistat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                solicita:
+                  type: string
+                accepta:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
       responses:
         '201':
           description: Amistat creada correctament
@@ -429,6 +578,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                solicita:
+                  type: string
+                accepta:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
       responses:
         '200':
           description: Amistat actualitzada correctament
@@ -471,6 +635,19 @@ paths:
       operationId: createRuta
       tags:
         - Rutas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                descripcio:
+                  type: string
+                nom:
+                  type: string
+                dist_km:
+                  format: float
       responses:
         '201':
           description: Ruta creada correctament
@@ -507,6 +684,19 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                descripcio:
+                  type: string
+                nom:
+                  type: string
+                dist_km:
+                  format: float
       responses:
         '200':
           description: Ruta actualitzada correctament
@@ -532,7 +722,432 @@ paths:
           description: Ruta eliminada correctament
         '404':
           description: No s'ha trobat cap ruta amb aquest id.
+          
+  /valoracions/:
+    get:
+      summary: Obtenir totes les valoracions
+      operationId: get_valoracions
+      tags:
+        - Valoracions
+      responses:
+        '200':
+          description: Llista valoracions
+      
+  /valoracions/create/:
+    post:
+      summary: Crear una nueva valoración
+      operationId: create_valoracio
+      tags:
+        - Valoracions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                puntuacio:
+                  format: float
+                comentari:
+                  type: string
+              
+      responses:
+        '201':
+          description: Valoracio creada correctament
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+                  
+  /valoracions/{id}/:
+    get:
+      summary: Obtener una valoración específica
+      operationId: get_valoracio
+      tags: 
+        - Valoracions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap valoracio amb aquest id
+  
+  /valoracions/{id}/update:
+    patch:
+      summary: Actualitzar una valoració específica
+      operationId: update_valoracio
+      tags: 
+        - Valoracions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                puntuacio:
+                  format: float
+                comentari:
+                  type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap valoracio amb aquest id.
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament.
+  
+  /valoracions/{id}/delete/:
+    delete:
+      summary: Eliminar una valoració específica
+      operationId: delete_valoracio
+      tags:
+        - Valoracions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: S'ha esborrat correctament. 
+        '404':
+          description: No s'ha trobat cap valoracio amb aquest id.
+      
+  /recompenses/:
+    get:
+      summary: Obtener todas las recompensas
+      operationId: get_recompenses
+      tags:
+        - Recompensa
+      responses:
+        '200':
+          description: OK
+      
+  /recompensas/create/:
+    post:
+      summary: Crear una recompensa
+      operationId: create_recompensa
+      tags: 
+        - Recompensa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                data_recompensa:
+                  format: date
+                puntuacio:
+                  format: float
+      responses:
+        '201':
+          description: Creat la nova recompensa
+        '400':
+          description: Bad Request! Algun valor s'ha introduit malament.
+      
+  /recompenses/{id}/:
+    get:
+      summary: Obtenir una recompensa específica
+      operationId: get_recompensa
+      tags:
+        - Recompensa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap recompensa amb aquest id.
+      
+        
+  /recompenses/{id}/update/:
+    patch:
+      summary: Actualitzar una recompensa específica
+      operationId: update_recompensa
+      tags: 
+        - Recompensa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                data_recompensa:
+                  format: date
+                puntuacio:
+                  format: float
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap recompensa amb aquest id
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+    
+  /recompenses/{id}/delete/:
+    delete:
+      summary: Eliminar una recompensa específica
+      operationId: delete_recompensa
+      tags: 
+        - Recompensa
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: S'ha esborrat correctament
+        '404':
+          description: No s'ha trobat cap recompensa amb aquest id.
 
+  /assignacions-esportiva/:
+    get:
+      summary: Obtenir totes les assignacions esportives
+      operationId: get_assignacions_esportiva
+      tags:
+        - Assignacio Esportiva
+      responses:
+        '200':
+          description: OK
+      
+  /assignacions-esportiva/create/:
+    post:
+      summary: Crear una asignació esportiva
+      operationId: create_assignacio_esportiva
+      tags: 
+        - Assignacio Esportiva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                dificultat_esportiva:
+                  type: string
+      responses:
+        '201':
+          description: Creat la nova assignacio esportiva
+        '400':
+          description: Bad Request! Algun valor s'ha introduit malament.
+
+  /assignacions-esportiva/{id}/:
+    get:
+      summary: Obtenir una assignació esportiva específica
+      operationId: get_assignacio_esportiva
+      tags:
+        - Assignacio Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap assignacio esportiva amb aquest id.
+        
+  /assignacions-esportiva/{id}/update/:
+    patch:
+      summary: Actualitzar una asignació esportiva específica
+      operationId: update_assignacio_esportiva
+      tags: 
+        - Assignacio Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                dificultat_esportiva:
+                  type: string
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap assignacio esportiva amb aquest id
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+        
+  /assignacions-esportiva/{id}/delete/:
+    delete:
+      summary: Eliminar una asignació esportiva específica
+      operationId: delete_assignacio_esportiva
+      tags: 
+        - Assignacio Esportiva
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: S'ha esborrat correctament
+        '404':
+          description: No s'ha trobat cap assignacio esportiva amb aquest id.
+
+  /assignacions-accesibilitat-respiratoria/:
+    get:
+      summary: Obtener todas las asignaciones de accesibilidad respiratoria
+      operationId: get_assignacions_accesibilitat_respiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      responses:
+        '200':
+          description: OK
+    
+  /assignacions-accesibilitat-respiratoria/create/: 
+    post:
+      summary: Crear una asignación de accesibilidad respiratoria
+      operationId: create_assignacio_accesibilitat_respiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                accesibilitat_respiratoria:
+                  type: string
+      responses:
+        '201':
+          description: Creat la nova accessibilitat respiratoria
+        '400':
+          description: Bad Request! Algun valor s'ha introduit malament.
+
+  /assignacions-accesibilitat-respiratoria/{id}/:
+    get:
+      summary: Obtener una asignación de accesibilidad respiratoria específica
+      operationId: get_assignacio_accesibilitat_respiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap accessibilitat respiratoria amb aquest id.
+  
+  /assignacions-accesibilitat-respiratoria/{id}/update/:
+    patch:
+      summary: Actualizar una asignación de accesibilidad respiratoria específica
+      operationId: update_assignacio_accesibilitat_respiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                ruta: 
+                  type: integer
+                accesibilitat_respiratoria:
+                  type: string
+      responses: 
+        '200':
+          description: OK
+        '404':
+          description: No s'ha trobat cap accessibilitat respiratoria amb aquest id
+        '400':
+          description: Bad Request. Algun valor s'ha introduit malament
+  
+  /assignacions-accesibilitat-respiratoria/{id}/delete/:
+    delete:
+      summary: Eliminar una asignació de accesibilitat respiratoria específica
+      operationId: delete_assignacio_accesibilitat_respiratoria
+      tags:
+        - Accesibilitat Respiratoria
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: S'ha esborrat correctament
+        '404':
+          description: No s'ha trobat cap accessibilitat respiratoria amb aquest id.
   /xats/:
     get:
       summary: Obtenir tots els xats
@@ -549,6 +1164,15 @@ paths:
       operationId: createXat
       tags:
         - Xats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
       responses:
         '201':
           description: Xat creat correctament
@@ -585,6 +1209,15 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
       responses:
         '200':
           description: Xat actualitzat correctament
@@ -627,6 +1260,18 @@ paths:
       operationId: createXatIndividual
       tags:
         - Xat Individual
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari1:
+                  type: string
+                usuari2:
+                  type: string
+              
       responses:
         '201':
           description: Xat individual creat correctament
@@ -663,6 +1308,18 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari1:
+                  type: string
+                usuari2:
+                  type: string
+              
       responses:
         '200':
           description: Xat individual actualitzat correctament
@@ -705,6 +1362,21 @@ paths:
       operationId: createXatGrupal
       tags:
         - Xat Grupal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                creador:
+                  type: string
+                descripcio:
+                  type: string
+                membres:
+                  type: array
+                  items:
+                    type: string
       responses:
         '201':
           description: Xat grupal creat correctament
@@ -741,6 +1413,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                creador:
+                  type: string
+                descripcio:
+                  type: string
+                membres:
+                  type: array
+                  items:
+                    type: string
       responses:
         '200':
           description: Xat grupal actualitzat correctament
@@ -783,6 +1470,21 @@ paths:
       operationId: createInvitacio
       tags:
         - Invitació
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destinatari:
+                  type: string
+                creador:
+                  type: string
+                estat:
+                  type: string
+                xat:
+                    type: integer
       responses:
         '201':
           description: Invitació creada correctament
@@ -819,6 +1521,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destinatari:
+                  type: string
+                creador:
+                  type: string
+                estat:
+                  type: string
+                xat:
+                    type: integer
       responses:
         '200':
           description: Invitació actualitzada correctament
@@ -861,6 +1578,21 @@ paths:
       operationId: createMissatge
       tags:
         - Missatge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                data:
+                  format: date
+                xat:
+                  type: integer
+                autor:
+                    type: string
       responses:
         '201':
           description: Missatge creat correctament
@@ -897,6 +1629,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                data:
+                  format: date
+                xat:
+                  type: integer
+                autor:
+                    type: string
       responses:
         '200':
           description: Missatge actualitzat correctament
@@ -939,6 +1686,23 @@ paths:
       operationId: create_event_de_calendari
       tags:
         - Events Calendari
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -975,6 +1739,23 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -1017,6 +1798,25 @@ paths:
       operationId: create_event_de_calendari_privat
       tags:
         - Events Calendari Privat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
+                xat:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges
@@ -1053,6 +1853,25 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
+                xat:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges
@@ -1095,6 +1914,25 @@ paths:
       operationId: create_event_de_calendari_public
       tags:
         - Events Calendari Public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
+                limit:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges
@@ -1131,6 +1969,25 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
+                creador:
+                  type: string
+                limit:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges
@@ -1171,6 +2028,18 @@ paths:
       operationId: create_apuntat
       tags:
         - Apuntats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuari:
+                  type: string
+                event:
+                  type: integer
+                
       responses:
         '200':
           description: Llista de missatges
@@ -1207,6 +2076,18 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                event:
+                  type: integer
+                
       responses:
         '200':
           description: Llista de missatges
@@ -1249,6 +2130,21 @@ paths:
       operationId: create_punt
       tags:
         - Punts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                latitud:
+                  type: string
+                longitud:
+                  type: string
+                altitud:
+                  type: string
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -1284,6 +2180,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                latitud:
+                  type: string
+                longitud:
+                  type: string
+                altitud:
+                  type: string
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -1326,6 +2237,17 @@ paths:
       operationId: create_estacio_qualitat_aire
       tags:
         - Estacions Qualitat Aire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom_estacio:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -1362,6 +2284,17 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom_estacio:
+                  type: string
+                descripcio:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -1404,6 +2337,21 @@ paths:
       operationId: create_activitat_cultural
       tags:
         - Activitat Cultural
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom_activitat:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
       responses:
         '200':
           description: Llista de missatges
@@ -1440,6 +2388,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom_activitat:
+                  type: string
+                descripcio:
+                  type: string
+                data_inici:
+                  format: date
+                data_fi:
+                  format: date
       responses:
         '200':
           description: Llista de missatges
@@ -1481,6 +2444,17 @@ paths:
       operationId: create_contaminant
       tags:
         - Contaminants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                informacio:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -1517,6 +2491,17 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nom:
+                  type: string
+                informacio:
+                  type: string
       responses:
         '200':
           description: Llista de missatges
@@ -1559,6 +2544,21 @@ paths:
       operationId: create_presencia
       tags:
         - Presencies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                punt_id:
+                  type: integer
+                contaminant:
+                  type: string
+                data:
+                  format: date
+                valor:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges

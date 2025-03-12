@@ -39,6 +39,7 @@ def get_dificultat_esportiva(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
+@csrf_exempt
 @permission_classes([AllowAny])
 def create_dificultat_esportiva(request):
     data = {
@@ -145,6 +146,22 @@ def create_usuari(request):
         serializer = UsuariSerializer(usuari)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_usuari(request):
+    correu = request.data.get('correu')
+    password = request.data.get('password')
+
+    try:
+        usuari = Usuari.objects.get(correu=correu)
+        if usuari.password == password:  # Cal modificar per que es fagi amb un hash
+            serializer = UsuariSerializer(usuari)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    except Usuari.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PATCH'])
 def update_usuari(request, pk):

@@ -850,7 +850,7 @@ paths:
         '200':
           description: OK
       
-  /recompensas/create/:
+  /recompenses/create/:
     post:
       summary: Crear una recompensa
       operationId: create_recompensa
@@ -2628,4 +2628,5 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
+          
           

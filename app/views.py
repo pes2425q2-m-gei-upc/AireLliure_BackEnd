@@ -1088,7 +1088,6 @@ def create_activitat_cultural(request):
         'descripcio': request.data.get('descripcio'),
         'data_inici': request.data.get('data_inici'),
         'data_fi': request.data.get('data_fi'),
-        'punt': request.data.get('punt')
     }
     form = ActivitatCulturalForm(data=data)
     if form.is_valid():

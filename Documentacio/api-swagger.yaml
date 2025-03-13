@@ -1694,7 +1694,7 @@ paths:
         '200':
           description: Llista de missatges
           
-  /events-de-calendari/create:
+  /events-de-calendari/create/:
     post:
       summary: Crear un event de calendari
       operationId: create_event_de_calendari
@@ -1709,7 +1709,7 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
@@ -1762,7 +1762,7 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
@@ -1806,7 +1806,7 @@ paths:
         '200':
           description: Llista de missatges
   
-  /events-de-calendari-privats/create:
+  /events-de-calendari-privats/create/:
     post:
       summary: Crear un event de calendari privat
       operationId: create_event_de_calendari_privat
@@ -1821,7 +1821,7 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
@@ -1876,13 +1876,13 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
                 data_fi:
                   format: date
-                creador:
+                creador_event:
                   type: string
                 xat:
                   type: integer
@@ -1922,7 +1922,7 @@ paths:
         '200':
           description: Llista de missatges
   
-  /events-de-calendari-publics/create:
+  /events-de-calendari-publics/create/:
     post:
       summary: Crear un evento de calendario público
       operationId: create_event_de_calendari_public
@@ -1937,13 +1937,13 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
                 data_fi:
                   format: date
-                creador:
+                creador_event:
                   type: string
                 limit:
                   type: integer
@@ -1992,7 +1992,7 @@ paths:
               properties:
                 nom:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 data_inici:
                   format: date
@@ -2262,6 +2262,14 @@ paths:
                   type: string
                 descripcio:
                   type: string
+                latitud:
+                  format: float
+                longitud:
+                  format: float
+                altitud:
+                  format: float
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -2286,7 +2294,7 @@ paths:
         '404':
           description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
           
-  /estacions-qualitat-aire/{pk}/update:
+  /estacions-qualitat-aire/{pk}/update/:
     patch:
       summary: Actualitzar una estació de calitat del aire específica
       operationId: update_estacio_qualitat_aire
@@ -2309,6 +2317,14 @@ paths:
                   type: string
                 descripcio:
                   type: string
+                latitud:
+                  format: float
+                longitud:
+                  format: float
+                altitud:
+                  format: float
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -2366,6 +2382,14 @@ paths:
                   format: date
                 data_fi:
                   format: date
+                latitud:
+                  format: float
+                longitud:
+                  format: float
+                altitud:
+                  format: float
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -2417,6 +2441,14 @@ paths:
                   format: date
                 data_fi:
                   format: date
+                latitud:
+                  format: float
+                longitud:
+                  format: float
+                altitud:
+                  format: float
+                index_qualitat_aire:
+                  format: float
       responses:
         '200':
           description: Llista de missatges
@@ -2565,7 +2597,7 @@ paths:
             schema:
               type: object
               properties:
-                punt_id:
+                punt:
                   type: integer
                 contaminant:
                   type: string
@@ -2609,6 +2641,21 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                punt:
+                  type: integer
+                contaminant:
+                  type: string
+                data:
+                  format: date
+                valor:
+                  type: integer
       responses:
         '200':
           description: Llista de missatges
@@ -2634,3 +2681,5 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
+          
+          

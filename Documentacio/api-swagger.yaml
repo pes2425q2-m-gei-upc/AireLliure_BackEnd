@@ -1275,6 +1275,8 @@ paths:
             schema:
               type: object
               properties:
+                nom:
+                  type: string
                 usuari1:
                   type: string
                 usuari2:

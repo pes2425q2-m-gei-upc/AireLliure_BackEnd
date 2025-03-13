@@ -615,7 +615,9 @@ def get_xat_individual(request, pk):
 @permission_classes([AllowAny])
 def create_xat_individual(request):
     data = {
-        'nom': request.data.get('nom')
+        'nom': request.data.get('nom'),
+        'usuari1': request.data.get('usuari1'),
+        'usuari2': request.data.get('usuari2')
     }
     form = XatIndividualForm(data=data)
     if form.is_valid():

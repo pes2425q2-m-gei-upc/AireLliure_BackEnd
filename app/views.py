@@ -662,8 +662,8 @@ def get_xat_grupal(request, pk):
 def create_xat_grupal(request):
     data = {
         'nom': request.data.get('nom'),
-        'descripció': request.data.get('descripció'),
         'creador': request.data.get('creador'),
+        'descripció': request.data.get('descripció'),
         'membres': request.data.get('membres')
     }
     form = XatGrupalForm(data=data)

@@ -1379,9 +1379,11 @@ paths:
             schema:
               type: object
               properties:
+                nom:
+                  type: string
                 creador:
                   type: string
-                descripcio:
+                descripció:
                   type: string
                 membres:
                   type: array
@@ -1430,6 +1432,8 @@ paths:
             schema:
               type: object
               properties:
+                nom:
+                  type: string
                 creador:
                   type: string
                 descripcio:
@@ -2630,5 +2634,3 @@ paths:
           description: Llista de missatges
         '404':
           description: No s'ha trobat cap presencia amb aquest id.
-          
-          

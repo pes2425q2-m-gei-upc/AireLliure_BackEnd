@@ -867,10 +867,10 @@ paths:
                   type: string
                 ruta: 
                   type: integer
-                data_recompensa:
-                  format: date
-                puntuacio:
+                punts:
                   format: float
+                comentari:
+                  format: string
       responses:
         '201':
           description: Creat la nova recompensa
@@ -919,10 +919,10 @@ paths:
                   type: string
                 ruta: 
                   type: integer
-                data_recompensa:
-                  format: date
-                puntuacio:
+                punts:
                   format: float
+                comentari:
+                  format: string
       responses: 
         '200':
           description: OK

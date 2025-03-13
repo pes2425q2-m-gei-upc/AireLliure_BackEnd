@@ -432,7 +432,7 @@ def create_recompensa(request):
     data = {
         'usuari': request.data.get('usuari'),
         'ruta': request.data.get('ruta'),
-        'puntuacio': request.data.get('puntuacio'),
+        'punts': request.data.get('punts'),
         'comentari': request.data.get('comentari')
     }
     form = RecompensaForm(data=data)

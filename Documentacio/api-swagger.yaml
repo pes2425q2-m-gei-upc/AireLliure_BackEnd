@@ -976,7 +976,7 @@ paths:
                   type: string
                 ruta: 
                   type: integer
-                dificultat_esportiva:
+                dificultat:
                   type: string
       responses:
         '201':
@@ -1025,7 +1025,7 @@ paths:
                   type: string
                 ruta: 
                   type: integer
-                dificultat_esportiva:
+                dificultat:
                   type: string
       responses: 
         '200':

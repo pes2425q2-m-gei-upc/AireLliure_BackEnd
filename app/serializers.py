@@ -36,11 +36,6 @@ class AmistatSerializer(serializers.ModelSerializer):
         model = Amistat
         fields = '__all__'
 
-class RutaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ruta
-        fields = '__all__'
-
 class ValoracioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Valoracio
@@ -109,6 +104,12 @@ class ApuntatSerializer(serializers.ModelSerializer):
 class PuntSerializer(serializers.ModelSerializer):
     class Meta:
         model = Punt
+        fields = '__all__'
+
+class RutaSerializer(serializers.ModelSerializer):
+    punts = PuntSerializer(many=True, required=False)
+    class Meta:
+        model = Ruta
         fields = '__all__'
 
 class EstacioQualitatAireSerializer(serializers.ModelSerializer):

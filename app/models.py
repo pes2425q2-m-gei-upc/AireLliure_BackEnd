@@ -23,6 +23,7 @@ class Usuari(models.Model):
     estat = models.CharField(max_length=255)
     punts = models.IntegerField(default=0)
     deshabilitador = models.ForeignKey('Admin', on_delete=models.CASCADE, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.nom

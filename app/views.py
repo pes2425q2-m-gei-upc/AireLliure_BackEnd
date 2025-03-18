@@ -40,6 +40,7 @@ def get_dificultat_esportiva(request, pk):
     return Response(serializer.data, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
+@csrf_exempt
 @permission_classes([AllowAny])
 def create_dificultat_esportiva(request):
     data = {
@@ -145,6 +146,22 @@ def create_usuari(request):
         serializer = UsuariSerializer(usuari)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_usuari(request):
+    correu = request.data.get('correu')
+    password = request.data.get('password')
+
+    try:
+        usuari = Usuari.objects.get(correu=correu)
+        if usuari.password == password:  # Cal modificar per que es fagi amb un hash
+            serializer = UsuariSerializer(usuari)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    except Usuari.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PATCH'])
 def update_usuari(request, pk):
@@ -415,7 +432,7 @@ def create_recompensa(request):
     data = {
         'usuari': request.data.get('usuari'),
         'ruta': request.data.get('ruta'),
-        'puntuacio': request.data.get('puntuacio'),
+        'punts': request.data.get('punts'),
         'comentari': request.data.get('comentari')
     }
     form = RecompensaForm(data=data)
@@ -545,8 +562,10 @@ def get_xats(request):
 @api_view(['GET'])
 def get_xat(request, pk):
     xat = get_object_or_404(Xat, pk=pk)
+    missatges_xat = Missatge.objects.filter(xat=xat)
+    serializer_missatges = MissatgeSerializer(missatges_xat, many=True)
     serializer = XatSerializer(xat)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response({'xat': serializer.data, 'missatges': serializer_missatges.data}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -596,7 +615,9 @@ def get_xat_individual(request, pk):
 @permission_classes([AllowAny])
 def create_xat_individual(request):
     data = {
-        'nom': request.data.get('nom')
+        'nom': request.data.get('nom'),
+        'usuari1': request.data.get('usuari1'),
+        'usuari2': request.data.get('usuari2')
     }
     form = XatIndividualForm(data=data)
     if form.is_valid():
@@ -641,8 +662,8 @@ def get_xat_grupal(request, pk):
 def create_xat_grupal(request):
     data = {
         'nom': request.data.get('nom'),
-        'descripció': request.data.get('descripció'),
         'creador': request.data.get('creador'),
+        'descripció': request.data.get('descripció'),
         'membres': request.data.get('membres')
     }
     form = XatGrupalForm(data=data)
@@ -1071,7 +1092,6 @@ def create_activitat_cultural(request):
         'descripcio': request.data.get('descripcio'),
         'data_inici': request.data.get('data_inici'),
         'data_fi': request.data.get('data_fi'),
-        'punt': request.data.get('punt')
     }
     form = ActivitatCulturalForm(data=data)
     if form.is_valid():

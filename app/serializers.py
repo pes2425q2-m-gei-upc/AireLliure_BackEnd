@@ -131,3 +131,8 @@ class PresenciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Presencia
         fields = '__all__'
+
+class JobExecutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobExecution
+        fields = '__all__'

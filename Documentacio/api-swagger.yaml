@@ -3,7 +3,7 @@ info:
   title: API Django
   description: Documentació de l'API amb totes les rutes
   version: 1.0.0
-  
+
 servers:
   - url: https://airelliure-backend.onrender.com
   - url: http://localhost:8000
@@ -15,7 +15,7 @@ paths:
       tags:
         - Categoria
       responses:
-        '200':
+        "200":
           description: Categories obtingudes correctament
 
   /dificultats-esportiva/:
@@ -25,7 +25,7 @@ paths:
       tags:
         - Dificultat Esportiva
       responses:
-        '200':
+        "200":
           description: Dificultats obtingudes correctament
   /dificultats-esportiva/create/:
     post:
@@ -45,7 +45,7 @@ paths:
                 descripcio:
                   type: string
       responses:
-        '201':
+        "201":
           description: Dificultat creada correctament
 
   /dificultats-esportiva/{id}/:
@@ -61,9 +61,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Dificultat obtinguda correctament
-          
+
   /dificultats-esportiva/{id}/update/:
     patch:
       summary: Actualitzar una dificultat esportiva
@@ -88,9 +88,9 @@ paths:
                 descripcio:
                   type: string
       responses:
-        '200':
+        "200":
           description: Dificultat actualitzada correctament
-  
+
   /dificultats-esportiva/{id}/delete/:
     delete:
       summary: Eliminar una dificultat esportiva
@@ -104,7 +104,7 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Dificultat eliminada correctament
 
   /accessibilitats-respiratoria/:
@@ -114,9 +114,9 @@ paths:
       tags:
         - Accesibilitat Respiratoria
       responses:
-        '200':
+        "200":
           description: Accessibilitats obtingudes correctament
-  
+
   /accessibilitats-respiratoria/create/:
     post:
       summary: Crear una nova accessibilitat respiratòria
@@ -135,7 +135,7 @@ paths:
                 descripcio:
                   type: string
       responses:
-        '201':
+        "201":
           description: Accessibilitat creada correctament
 
   /accessibilitats-respiratoria/{id}/:
@@ -151,9 +151,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Accessibilitat obtinguda correctament
-          
+
   /accessibilitats-respiratoria/{id}/update/:
     patch:
       summary: Actualitzar una accessibilitat respiratòria
@@ -178,9 +178,9 @@ paths:
                 descripcio:
                   type: string
       responses:
-        '200':
+        "200":
           description: Accessibilitat actualitzada correctament
-          
+
   /accessibilitats-respiratoria/{id}/delete/:
     delete:
       summary: Eliminar una accessibilitat respiratòria
@@ -194,7 +194,7 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Accessibilitat eliminada correctament
 
   /usuaris/:
@@ -204,9 +204,9 @@ paths:
       tags:
         - Usuari
       responses:
-        '200':
+        "200":
           description: Usuaris obtinguts correctament
-          
+
   /usuaris/create/:
     post:
       summary: Crear un nou usuari
@@ -232,8 +232,10 @@ paths:
                   type: integer
                 deshabilitador:
                   type: string
+                about:
+                  type: string
       responses:
-        '201':
+        "201":
           description: Usuari creat correctament
 
   /usuaris/{id}/:
@@ -249,9 +251,9 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Usuari obtingut correctament
-          
+
   /usuaris/{id}/update/:
     patch:
       summary: Actualitzar un usuari
@@ -283,10 +285,12 @@ paths:
                   type: integer
                 deshabilitador:
                   type: string
+                about:
+                  type: string
       responses:
-        '200':
+        "200":
           description: Usuari actualitzat correctament
-          
+
   /usuaris/{id}/delete/:
     delete:
       summary: Eliminar un usuari
@@ -300,7 +304,7 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Usuari eliminat correctament
 
   /login/:
@@ -310,7 +314,7 @@ paths:
       tags:
         - Usuari
       responses:
-        '200':
+        "200":
           description: Login correcte
 
   /admins/:
@@ -320,9 +324,9 @@ paths:
       tags:
         - Usuari Admin
       responses:
-        '200':
+        "200":
           description: Administradors obtinguts correctament
-          
+
   /admins/create/:
     post:
       summary: Crear un nou administrador
@@ -349,7 +353,7 @@ paths:
                 deshabilitador:
                   type: string
       responses:
-        '201':
+        "201":
           description: Administrador creat correctament
 
   /admins/{id}/:
@@ -365,10 +369,10 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Administrador obtingut correctament
-          
-  /admins/{id}/update/:  
+
+  /admins/{id}/update/:
     patch:
       summary: Actualitzar un administrador
       operationId: updateAdmin
@@ -400,9 +404,9 @@ paths:
                 deshabilitador:
                   type: string
       responses:
-        '200':
+        "200":
           description: Administrador actualitzat correctament
-  
+
   /admins/{id}/delete/:
     delete:
       summary: Eliminar un administrador
@@ -416,9 +420,9 @@ paths:
           schema:
             type: string
       responses:
-        '204':
+        "204":
           description: Administrador eliminat correctament
-         
+
   /bloqueigs/:
     get:
       summary: Obtenir tots els bloqueigs
@@ -426,9 +430,9 @@ paths:
       tags:
         - Bloqueig
       responses:
-        '200':
+        "200":
           description: Bloqueigs obtinguts correctament
-          
+
   /bloqueigs/create/:
     post:
       summary: Crear un bloqueig
@@ -447,9 +451,9 @@ paths:
                 bloquejat:
                   type: string
       responses:
-        '201':
+        "201":
           description: Bloqueig creat correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /bloqueigs/{id}/:
@@ -465,11 +469,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Bloqueig obtingut correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap bloqueig amb aquest id.
-  
+
   /bloqueigs/{id}/update/:
     patch:
       summary: Actualitzar un bloqueig
@@ -494,13 +498,13 @@ paths:
                 bloquejat:
                   type: string
       responses:
-        '200':
+        "200":
           description: Bloqueig actualitzat correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap bloqueig amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-          
+
   /bloqueigs/{id}/delete/:
     delete:
       summary: Eliminar un bloqueig
@@ -514,9 +518,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Bloqueig eliminat correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap bloqueig amb aquest id.
 
   /amistats/:
@@ -526,9 +530,9 @@ paths:
       tags:
         - Amistat
       responses:
-        '200':
+        "200":
           description: Amistats obtingudes correctament
-          
+
   /amistats/create/:
     post:
       summary: Crear una amistat
@@ -551,9 +555,9 @@ paths:
                 data_fi:
                   format: date
       responses:
-        '201':
+        "201":
           description: Amistat creada correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /amistats/{id}/:
@@ -569,11 +573,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Amistat obtinguda correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap amistat amb aquest id.
-          
+
   /amistats/{id}/update/:
     patch:
       summary: Actualitzar una amistat
@@ -602,13 +606,13 @@ paths:
                 data_fi:
                   format: date
       responses:
-        '200':
+        "200":
           description: Amistat actualitzada correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap amistat amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-          
+
   /amistats/{id}/delete/:
     delete:
       summary: Eliminar una amistat
@@ -622,9 +626,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Amistat eliminada correctament
-        '404': 
+        "404":
           description: No s'ha trobat cap amistat amb aquest id.
 
   /rutas/:
@@ -634,9 +638,9 @@ paths:
       tags:
         - Rutas
       responses:
-        '200':
+        "200":
           description: Rutes obtingudes correctament
-          
+
   /rutas/create/:
     post:
       summary: Crear una ruta
@@ -657,9 +661,9 @@ paths:
                 dist_km:
                   format: float
       responses:
-        '201':
+        "201":
           description: Ruta creada correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /rutas/{id}/:
@@ -675,11 +679,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Ruta obtinguda correctament
-        '404':
-          description: No s'ha trobat cap ruta amb aquest id. 
-          
+        "404":
+          description: No s'ha trobat cap ruta amb aquest id.
+
   /rutas/{id}/update/:
     patch:
       summary: Actualitzar una ruta
@@ -706,13 +710,13 @@ paths:
                 dist_km:
                   format: float
       responses:
-        '200':
+        "200":
           description: Ruta actualitzada correctament
-        '404':
+        "404":
           description: No s'ha trobat cap ruta amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-        
+
   /rutas/{id}/delete/:
     delete:
       summary: Eliminar una ruta
@@ -726,11 +730,11 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Ruta eliminada correctament
-        '404':
+        "404":
           description: No s'ha trobat cap ruta amb aquest id.
-          
+
   /valoracions/:
     get:
       summary: Obtenir totes les valoracions
@@ -738,9 +742,9 @@ paths:
       tags:
         - Valoracions
       responses:
-        '200':
+        "200":
           description: Llista valoracions
-      
+
   /valoracions/create/:
     post:
       summary: Crear una nueva valoración
@@ -756,24 +760,24 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 puntuacio:
                   format: float
                 comentari:
                   type: string
-              
+
       responses:
-        '201':
+        "201":
           description: Valoracio creada correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-                  
+
   /valoracions/{id}/:
     get:
       summary: Obtener una valoración específica
       operationId: get_valoracio
-      tags: 
+      tags:
         - Valoracions
       parameters:
         - name: id
@@ -782,16 +786,16 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap valoracio amb aquest id
-  
+
   /valoracions/{id}/update/:
     patch:
       summary: Actualitzar una valoració específica
       operationId: update_valoracio
-      tags: 
+      tags:
         - Valoracions
       parameters:
         - name: id
@@ -808,20 +812,20 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 puntuacio:
                   format: float
                 comentari:
                   type: string
       responses:
-        '200':
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap valoracio amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-  
+
   /valoracions/{id}/delete/:
     delete:
       summary: Eliminar una valoració específica
@@ -835,11 +839,11 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
-          description: S'ha esborrat correctament. 
-        '404':
+        "204":
+          description: S'ha esborrat correctament.
+        "404":
           description: No s'ha trobat cap valoracio amb aquest id.
-      
+
   /recompenses/:
     get:
       summary: Obtener todas las recompensas
@@ -847,14 +851,14 @@ paths:
       tags:
         - Recompensa
       responses:
-        '200':
+        "200":
           description: OK
-      
+
   /recompenses/create/:
     post:
       summary: Crear una recompensa
       operationId: create_recompensa
-      tags: 
+      tags:
         - Recompensa
       requestBody:
         required: true
@@ -865,18 +869,18 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 punts:
                   format: float
                 comentari:
                   format: string
       responses:
-        '201':
+        "201":
           description: Creat la nova recompensa
-        '400':
+        "400":
           description: Bad Request! Algun valor s'ha introduit malament.
-      
+
   /recompenses/{id}/:
     get:
       summary: Obtenir una recompensa específica
@@ -889,18 +893,17 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap recompensa amb aquest id.
-      
-        
+
   /recompenses/{id}/update/:
     patch:
       summary: Actualitzar una recompensa específica
       operationId: update_recompensa
-      tags: 
+      tags:
         - Recompensa
       parameters:
         - name: id
@@ -917,25 +920,25 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 punts:
                   format: float
                 comentari:
                   format: string
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap recompensa amb aquest id
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament
-    
+
   /recompenses/{id}/delete/:
     delete:
       summary: Eliminar una recompensa específica
       operationId: delete_recompensa
-      tags: 
+      tags:
         - Recompensa
       parameters:
         - name: id
@@ -943,10 +946,10 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '204':
+      responses:
+        "204":
           description: S'ha esborrat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap recompensa amb aquest id.
 
   /assignacions-esportiva/:
@@ -956,14 +959,14 @@ paths:
       tags:
         - Assignacio Esportiva
       responses:
-        '200':
+        "200":
           description: OK
-      
+
   /assignacions-esportiva/create/:
     post:
       summary: Crear una asignació esportiva
       operationId: create_assignacio_esportiva
-      tags: 
+      tags:
         - Assignacio Esportiva
       requestBody:
         required: true
@@ -974,14 +977,14 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 dificultat:
                   type: string
       responses:
-        '201':
+        "201":
           description: Creat la nova assignacio esportiva
-        '400':
+        "400":
           description: Bad Request! Algun valor s'ha introduit malament.
 
   /assignacions-esportiva/{id}/:
@@ -996,17 +999,17 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap assignacio esportiva amb aquest id.
-        
+
   /assignacions-esportiva/{id}/update/:
     patch:
       summary: Actualitzar una asignació esportiva específica
       operationId: update_assignacio_esportiva
-      tags: 
+      tags:
         - Assignacio Esportiva
       parameters:
         - name: id
@@ -1023,23 +1026,23 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 dificultat:
                   type: string
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap assignacio esportiva amb aquest id
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament
-        
+
   /assignacions-esportiva/{id}/delete/:
     delete:
       summary: Eliminar una asignació esportiva específica
       operationId: delete_assignacio_esportiva
-      tags: 
+      tags:
         - Assignacio Esportiva
       parameters:
         - name: id
@@ -1047,10 +1050,10 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '204':
+      responses:
+        "204":
           description: S'ha esborrat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap assignacio esportiva amb aquest id.
 
   /assignacions-accesibilitat-respiratoria/:
@@ -1060,10 +1063,10 @@ paths:
       tags:
         - Assignacio Accesibilitat Respiratoria
       responses:
-        '200':
+        "200":
           description: OK
-    
-  /assignacions-accesibilitat-respiratoria/create/: 
+
+  /assignacions-accesibilitat-respiratoria/create/:
     post:
       summary: Crear una asignación de accesibilidad respiratoria
       operationId: create_assignacio_accesibilitat_respiratoria
@@ -1078,14 +1081,14 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 accesibilitat_respiratoria:
                   type: string
       responses:
-        '201':
+        "201":
           description: Creat la nova accessibilitat respiratoria
-        '400':
+        "400":
           description: Bad Request! Algun valor s'ha introduit malament.
 
   /assignacions-accesibilitat-respiratoria/{id}/:
@@ -1100,12 +1103,12 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap accessibilitat respiratoria amb aquest id.
-  
+
   /assignacions-accesibilitat-respiratoria/{id}/update/:
     patch:
       summary: Actualizar una asignación de accesibilidad respiratoria específica
@@ -1127,18 +1130,18 @@ paths:
               properties:
                 usuari:
                   type: string
-                ruta: 
+                ruta:
                   type: integer
                 accesibilitat_respiratoria:
                   type: string
-      responses: 
-        '200':
+      responses:
+        "200":
           description: OK
-        '404':
+        "404":
           description: No s'ha trobat cap accessibilitat respiratoria amb aquest id
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament
-  
+
   /assignacions-accesibilitat-respiratoria/{id}/delete/:
     delete:
       summary: Eliminar una asignació de accesibilitat respiratoria específica
@@ -1151,10 +1154,10 @@ paths:
           required: true
           schema:
             type: integer
-      responses: 
-        '204':
+      responses:
+        "204":
           description: S'ha esborrat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap accessibilitat respiratoria amb aquest id.
   /xats/:
     get:
@@ -1163,9 +1166,9 @@ paths:
       tags:
         - Xats
       responses:
-        '200':
+        "200":
           description: Xats obtinguts correctament
-          
+
   /xats/create/:
     post:
       summary: Crear un xat
@@ -1182,9 +1185,9 @@ paths:
                 nom:
                   type: string
       responses:
-        '201':
+        "201":
           description: Xat creat correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /xats/{id}/:
@@ -1200,11 +1203,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Xat obtingut correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat amb aquest id.
-          
+
   /xats/{id}/update/:
     patch:
       summary: Actualitzar un xat
@@ -1227,14 +1230,14 @@ paths:
                 nom:
                   type: string
       responses:
-        '200':
+        "200":
           description: Xat actualitzat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-          
-  /xats/{id}/delete/:      
+
+  /xats/{id}/delete/:
     delete:
       summary: Eliminar un xat
       operationId: deleteXat
@@ -1247,11 +1250,11 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Xat eliminat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat amb aquest id.
-    
+
   /xats-individual/:
     get:
       summary: Obtenir tots els xats individuals
@@ -1259,7 +1262,7 @@ paths:
       tags:
         - Xat Individual
       responses:
-        '200':
+        "200":
           description: Llista de xats individuals
 
   /xats-individual/create/:
@@ -1281,12 +1284,12 @@ paths:
                   type: string
                 usuari2:
                   type: string
-              
+
       responses:
-        '201':
+        "201":
           description: Xat individual creat correctament
-        '400':
-          description: Bad Request. Algun valor s'ha introduit malament. 
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /xats-individual/{pk}/:
     get:
@@ -1301,9 +1304,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Detalls del xat individual
-        '404':
+        "404":
           description: No s'ha trobat cap xat individual amb aquest id.
 
   /xats-individual/{pk}/update/:
@@ -1329,13 +1332,13 @@ paths:
                   type: string
                 usuari2:
                   type: string
-              
+
       responses:
-        '200':
+        "200":
           description: Xat individual actualitzat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat individual amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /xats-individual/{pk}/delete/:
@@ -1351,9 +1354,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Xat individual eliminat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat individual amb aquest id
 
   /xats-grupal/:
@@ -1363,9 +1366,9 @@ paths:
       tags:
         - Xat Grupal
       responses:
-        '200':
+        "200":
           description: Llista de xats grupals
-          
+
   /xats-grupal/create/:
     post:
       summary: Crear un xat grupal
@@ -1390,10 +1393,10 @@ paths:
                   items:
                     type: string
       responses:
-        '201':
+        "201":
           description: Xat grupal creat correctament
-        '400':
-          description: Bad Request. Algun valor s'ha introduit malament. 
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /xats-grupal/{pk}/:
     get:
@@ -1408,9 +1411,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Detalls del xat grupal
-        '404':
+        "404":
           description: No s'ha trobat cap xat grupal amb aquest id
 
   /xats-grupal/{pk}/update/:
@@ -1443,13 +1446,13 @@ paths:
                   items:
                     type: string
       responses:
-        '200':
+        "200":
           description: Xat grupal actualitzat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat grupal amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-          
+
   /xats-grupal/{pk}/delete/:
     delete:
       summary: Eliminar un xat grupal
@@ -1463,9 +1466,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Xat grupal eliminat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap xat grupal amb aquest id.
 
   /invitacions/:
@@ -1475,9 +1478,9 @@ paths:
       tags:
         - Invitació
       responses:
-        '200':
+        "200":
           description: Llista d'invitacions
-          
+
   /invitacions/create/:
     post:
       summary: Crear una invitació
@@ -1498,11 +1501,11 @@ paths:
                 estat:
                   type: string
                 xat:
-                    type: integer
+                  type: integer
       responses:
-        '201':
+        "201":
           description: Invitació creada correctament
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /invitacions/{pk}/:
@@ -1518,11 +1521,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Detalls de la invitació
-        '404':
+        "404":
           description: No s'ha trobat cap invitació amb aquest id.
-          
+
   /invitacions/{pk}/update/:
     patch:
       summary: Actualitzar una invitació
@@ -1549,15 +1552,15 @@ paths:
                 estat:
                   type: string
                 xat:
-                    type: integer
+                  type: integer
       responses:
-        '200':
+        "200":
           description: Invitació actualitzada correctament
-        '404':
+        "404":
           description: No s'ha trobat cap invitació amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-        
+
   /invitacions/{pk}/delete/:
     delete:
       summary: Eliminar una invitació
@@ -1571,11 +1574,11 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Invitació eliminada correctament
-        '404':
+        "404":
           description: No s'ha trobat cap invitació amb aquest id.
-        
+
   /missatges/:
     get:
       summary: Obtenir tots els missatges
@@ -1583,9 +1586,9 @@ paths:
       tags:
         - Missatge
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-          
+
   /missatges/create/:
     post:
       summary: Crear un missatge
@@ -1606,12 +1609,12 @@ paths:
                 xat:
                   type: integer
                 autor:
-                    type: string
+                  type: string
       responses:
-        '201':
+        "201":
           description: Missatge creat correctament
-        '400':
-          description: Bad Request. Algun valor s'ha introduit malament. 
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /missatges/{pk}/:
     get:
@@ -1626,11 +1629,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Detalls del missatge
-        '404':
+        "404":
           description: No s'ha trobat cap missatge amb aquest id.
-          
+
   /missatges/{pk}/update/:
     patch:
       summary: Actualitzar un missatge
@@ -1657,15 +1660,15 @@ paths:
                 xat:
                   type: integer
                 autor:
-                    type: string
+                  type: string
       responses:
-        '200':
+        "200":
           description: Missatge actualitzat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap missatge amb aquest id.
-        '400':
-          description: Bad Request. Algun valor s'ha introduit malament. 
-          
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+
   /missatges/{pk}/delete/:
     delete:
       summary: Eliminar un missatge
@@ -1679,9 +1682,9 @@ paths:
           schema:
             type: integer
       responses:
-        '204':
+        "204":
           description: Missatge eliminat correctament
-        '404':
+        "404":
           description: No s'ha trobat cap missatge amb aquest id.
 
   /events-de-calendari/:
@@ -1691,9 +1694,9 @@ paths:
       tags:
         - Events Calendari
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-          
+
   /events-de-calendari/create/:
     post:
       summary: Crear un event de calendari
@@ -1718,9 +1721,9 @@ paths:
                 creador:
                   type: string
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari/{pk}/:
@@ -1736,11 +1739,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
-          description: No existeix un event de calendari amb aquest id. 
-          
+        "404":
+          description: No existeix un event de calendari amb aquest id.
+
   /events-de-calendari/{pk}/update/:
     patch:
       summary: Actualitzar un event de calendari específic
@@ -1771,13 +1774,13 @@ paths:
                 creador:
                   type: string
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No existeix un event de calendari amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
-  
+
   /events-de-calendari/{pk}/delete/:
     delete:
       summary: Eliminar un event de calendari específic
@@ -1791,9 +1794,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No existeix un event de calendari amb aquest id.
 
   /events-de-calendari-privats/:
@@ -1803,9 +1806,9 @@ paths:
       tags:
         - Events Calendari Privat
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /events-de-calendari-privats/create/:
     post:
       summary: Crear un event de calendari privat
@@ -1832,9 +1835,9 @@ paths:
                 xat:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari-privats/{pk}/:
@@ -1850,11 +1853,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
-          description: No s'ha trobat un event privat amb aquest id. 
-          
+        "404":
+          description: No s'ha trobat un event privat amb aquest id.
+
   /events-de-calendari-privats/{pk}/update/:
     patch:
       summary: Actualitzar un event de calendari privat específic
@@ -1887,13 +1890,13 @@ paths:
                 xat:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un event privat amb aquesta id.
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
-          
+
   /events-de-calendari-privats/{pk}/delete/:
     delete:
       summary: Eliminar un event de calendari privat específic
@@ -1907,9 +1910,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un event privat amb aquesta id
 
   /events-de-calendari-publics/:
@@ -1919,9 +1922,9 @@ paths:
       tags:
         - Events Calendari Public
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /events-de-calendari-publics/create/:
     post:
       summary: Crear un evento de calendario público
@@ -1948,9 +1951,9 @@ paths:
                 limit:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
 
   /events-de-calendari-publics/{pk}/:
@@ -1966,11 +1969,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un event de calendari public amb aquesta id
-    
+
   /events-de-calendari-publics/{pk}/update/:
     patch:
       summary: Actualizar un evento de calendario público específico
@@ -2003,13 +2006,13 @@ paths:
                 limit:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un event de calendari public amb aquesta id
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
-  
+
   /events-de-calendari-publics/{pk}/delete/:
     delete:
       summary: Eliminar un evento de calendario público específico
@@ -2023,7 +2026,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
 
   /apuntats/:
@@ -2033,9 +2036,9 @@ paths:
       tags:
         - Apuntats
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-          
+
   /apuntats/create/:
     post:
       summary: Crear un apuntat
@@ -2053,11 +2056,11 @@ paths:
                   type: string
                 event:
                   type: integer
-                
+
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
 
   /apuntats/{pk}/:
@@ -2073,11 +2076,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un apuntat amb aquest id.
-  
+
   /apuntats/{pk}/update/:
     patch:
       summary: Actualitzar un apuntat específic
@@ -2101,15 +2104,15 @@ paths:
                   type: string
                 event:
                   type: integer
-                
+
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un apuntat amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algún valor esta malament.
-          
+
   /apuntats/{pk}/delete/:
     delete:
       summary: Eliminar un apuntat específic
@@ -2123,9 +2126,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat un apuntat amb aquest id.
 
   /punts/:
@@ -2135,9 +2138,9 @@ paths:
       tags:
         - Punts
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /punts/create/:
     post:
       summary: Crear un punto
@@ -2160,10 +2163,10 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
-          description: Bad Request. Algun valor s'ha introduit malament. 
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /punts/{pk}/:
     get:
@@ -2178,11 +2181,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap punt amb aquest id
-  /punts/{pk}/update/:  
+  /punts/{pk}/update/:
     patch:
       summary: Actualitzar un punt específic
       operationId: update_punt
@@ -2210,14 +2213,14 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'haa trobat un punt amb aquest id
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-  
-  /punts/{pk}/delete/: 
+
+  /punts/{pk}/delete/:
     delete:
       summary: Eliminar un punt específic
       operationId: delete_punt
@@ -2230,10 +2233,10 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
-          description: No s'ha trobat cap punt amb aquest id. 
+        "404":
+          description: No s'ha trobat cap punt amb aquest id.
 
   /estacions-qualitat-aire/:
     get:
@@ -2242,9 +2245,9 @@ paths:
       tags:
         - Estacions Qualitat Aire
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /estacions-qualitat-aire/create/:
     post:
       summary: Crear una estació de calitat del aire
@@ -2271,10 +2274,10 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
-          description: Bad Request. Algun s'ha introduit malament. 
+        "400":
+          description: Bad Request. Algun s'ha introduit malament.
 
   /estacions-qualitat-aire/{pk}/:
     get:
@@ -2289,11 +2292,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
-          
+
   /estacions-qualitat-aire/{pk}/update/:
     patch:
       summary: Actualitzar una estació de calitat del aire específica
@@ -2326,13 +2329,13 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
-        '400':
-          description: Bad Request. Aglun valor s'ha introduit malament. 
-  
+        "400":
+          description: Bad Request. Aglun valor s'ha introduit malament.
+
   /estacions-qualitat-aire/{pk}/delete/:
     delete:
       summary: Eliminar una estació de calitat del aire específica
@@ -2346,9 +2349,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap estacio de qualitat de l'aire amb aquest id.
 
   /activitats-culturals/:
@@ -2358,7 +2361,7 @@ paths:
       tags:
         - Activitat Cultural
       responses:
-        '200':
+        "200":
           description: Llista de missatges
 
   /activitats-culturals/create/:
@@ -2391,9 +2394,9 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /activitats-culturals/{pk}/:
@@ -2409,11 +2412,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat una Activitat Cultural amb aquest id.
-  
+
   /activitats-culturals/{pk}/update/:
     patch:
       summary: Actualitzar una activitat cultural específica
@@ -2450,11 +2453,11 @@ paths:
                 index_qualitat_aire:
                   format: float
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat una Activitat Cultural amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
   /activitats-culturals/{pk}/delete/:
     delete:
@@ -2469,9 +2472,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat una Activitat Cultural amb aquest id.
 
   /contaminants/:
@@ -2481,9 +2484,9 @@ paths:
       tags:
         - Contaminants
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /contaminants/create/:
     post:
       summary: Crear un contaminant
@@ -2502,9 +2505,9 @@ paths:
                 informacio:
                   type: string
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament
 
   /contaminants/{pk}/:
@@ -2520,11 +2523,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap contaminant amb aquest id.
-  
+
   /contaminants/{pk}/update/:
     patch:
       summary: Actualitzar un contaminant específic
@@ -2549,13 +2552,13 @@ paths:
                 informacio:
                   type: string
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap contaminant amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament
-  
+
   /contaminants/{pk}/delete/:
     delete:
       summary: Eliminar un contaminant específic
@@ -2569,9 +2572,9 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap contaminant amb aquest id.
 
   /presencies/:
@@ -2581,9 +2584,9 @@ paths:
       tags:
         - Presencies
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-  
+
   /presencies/create/:
     post:
       summary: Crear una presencia
@@ -2606,9 +2609,9 @@ paths:
                 valor:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
 
   /presencies/{pk}/:
@@ -2624,11 +2627,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap presencia amb aquest id.
-          
+
   /presencies/{pk}/update/:
     patch:
       summary: Actualitzar una presencia específica
@@ -2657,13 +2660,13 @@ paths:
                 valor:
                   type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap presencia amb aquest id.
-        '400':
+        "400":
           description: Bad Request. Algun valor s'ha introduit malament.
-          
+
   /presencies/{pk}/delete/:
     delete:
       summary: Eliminar una presencia específica
@@ -2677,9 +2680,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: Llista de missatges
-        '404':
+        "404":
           description: No s'ha trobat cap presencia amb aquest id.
-          
-          

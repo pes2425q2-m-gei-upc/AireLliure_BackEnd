@@ -11,62 +11,138 @@ SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
 
 def actualitzar_rutes():
     job, created = JobExecution.objects.get_or_create(name="actualizar_rutas")
+    #print("job, created = JobExecution.objects.get_or_create(name=\"actualizar_rutas\")")
+
     if created or now() - job.last_run >= timedelta(weeks=1):
+        #print("if created or now() - job.last_run >= timedelta(weeks=1):")
 
         response = requests.get(OPEN_DATA_BCN_URL)
+        #print("response = requests.get(OPEN_DATA_BCN_URL)")
+
         if response.status_code == 200:
+            #print("if response.status_code == 200:")
 
             dades = response.json()
-            dades_punts = {}
-            punts_guardats = {}
-            dades_rutes = {}
+            #print("dades = response.json()")
+            
+            dades_punts = []
+            punts_guardats = []
+            dades_rutes = []
 
             for ruta_info in dades:
+                #print("for ruta_info in dades:")
+
                 ruta_id = ruta_info.get("register_id")
+                #print("ruta_id = ruta_info.get(\"register_id\")")
+
                 ruta_nombre = ruta_info.get("name")
+                #print("ruta_nombre = ruta_info.get(\"name\")")
+
                 ruta_descripcio = ruta_info.get("body")
-                latitud = ruta_info.get("geo_epgs_4326_lat")
-                longitud = ruta_info.get("geo_epgs_4326_lon")
+                #print("ruta_descripcio = ruta_info.get(\"body\")")
+
+                latitud = ruta_info.get("geo_epgs_4326_latlon").get("lat")
+                #print("latitud = ruta_info.get(\"geo_epgs_4326_latlon\").get(\"lat\")")
+
+                longitud = ruta_info.get("geo_epgs_4326_latlon").get("lon")
+                #print("longitud = ruta_info.get(\"geo_epgs_4326_latlon\").get(\"lon\")")
 
                 if latitud and longitud:
+                    #print("if latitud and longitud:")
+
                     punt_info = {
                         "latitud": float(latitud),
                         "longitud": float(longitud),
                         "altitud": 0.0,
                         "index_qualitat_aire": 0.0
                     }
+                    #print("punt_info = {\n\"latitud\": float(latitud),\n\"longitud\": float(longitud),\n\"altitud\": 0.0,\n\"index_qualitat_aire\": 0.0}")
+                    #print("punt_info = {" + punt_info + "}")
+                    
                     dades_punts.append(punt_info)
+                    #print("dades_punts.append(punt_info)")
+                
+                print("dades_punts = [" + str(dades_punts) + "]")
 
                 if ruta_id and ruta_nombre and ruta_descripcio:
+                    #print("if ruta_id and ruta_nombre and ruta_descripcio:")
+
                     ruta_info = {
                         "id": ruta_id,
                         "nom": ruta_nombre,
                         "descripcio": ruta_descripcio,
                         "dist_km": 0.0
                     }
+                    #print("ruta_info = {\n\"id\": ruta_id,\n\"nom\": ruta_nombre,\n\"descripcio\": ruta_descripcio,\n\"dist_km\": 0.0}")
+                    #print("ruta_info = {"+ ruta_info + "}")
+
                     dades_rutes.append(ruta_info)
+                    #print("dades_rutes.append(ruta_info)")
+
+            print("dades_rutes = [" + str(dades_rutes) + "]")
             
             for punt_info in dades_punts:
+                #print("for punt_info in dades_punts:")
+
                 punt_serializer = PuntSerializer(data=punt_info)
+                #print("punt_serializer = PuntSerializer(data=punt_info)")
+
                 if punt_serializer.is_valid():
+                    #print("if punt_serializer.is_valid():")
+
                     with transaction.atomic():
+                        #print("with transaction.atomic():")
+
                         if not Punt.objects.filter(latitud=float(latitud), longitud=float(longitud)).exists():
+                            #print("if not Punt.objects.filter(latitud=float(latitud), longitud=float(longitud)).exists():")
+
                             punt_serializer.save()
+                            #print("punt guardat: " + str(punt_serializer.data["id"]))
+                            #print("punt_serializer.save()")
+
                     punts_guardats.append(punt_serializer.data)
+                    #print("punts_guardats.append(punt_serializer.data)")
+
+            print("punts_guardats = [" + str(punts_guardats) + "]")
             
+            print("zip(dades_rutes, punts_guardats) = " + str(zip(dades_rutes, punts_guardats)))
+
             for ruta_info, punt_info in zip(dades_rutes, punts_guardats):
+                #print("for ruta_info, punt_info in zip(dades_rutes, punts_guardats):")
+
                 ruta_info["punts"] = [punt_info["id"]]
-                    
+                #print("ruta_info[\"punts\"] = [punt_info[\"id\"]]")
+
+            print("dades_rutes = [" + str(dades_rutes) + "]")
+
             for ruta_info in dades_rutes:
+                #print("for ruta_info in dades_rutes:")
+
                 ruta_serializer = RutaSerializer(data=ruta_info)
+                #print("ruta_serializer = RutaSerializer(data=ruta_info)")
+
                 if ruta_serializer.is_valid():
+                    #print("if ruta_serializer.is_valid():")
+
                     with transaction.atomic():
+                        #print("with transaction.atomic():")
+
                         if not Ruta.objects.filter(id=ruta_id).exists():
+                            #print("if not Ruta.objects.filter(id=ruta_id).exists():")
+                            
                             ruta_serializer.save()
+                            #print("ruta guardada: " + str(ruta_serializer.data["id"]))
+                            #print("ruta_serializer.save()")
             
             job.last_run = now()
+            #print("job.last_run = now()")
+
             with transaction.atomic():
+                #print("with transaction.atomic():")
+
                 job.save()
+                #print("job.save()")
+                #print("job actualitzat: " + job.name)
 
 def actualitzar_estacions_qualitat_aire():
     job, created = JobExecution.objects.get_or_create(name="actualitzar_estacions_qualitat_aire")
@@ -76,11 +152,11 @@ def actualitzar_estacions_qualitat_aire():
         if response.status_code == 200:
 
             dades = response.json()
-            dades_estacions ={}
-            estacions_guardades = {}
-            dades_contaminants = {}
-            contaminants_guardats = {}
-            dades_presencia = {}
+            dades_estacions = []
+            estacions_guardades = []
+            dades_contaminants = []
+            contaminants_guardats = []
+            dades_presencia = []
 
             for presencia_info in dades:
                 nom_estacio = presencia_info.get("nom_estacio")
@@ -122,6 +198,7 @@ def actualitzar_estacions_qualitat_aire():
                     with transaction.atomic():
                         if not EstacioQualitatAire.objects.filter(nom=nom_estacio).exists():
                             estacio_serializer.save()
+                            print("estacio actualitzada: " + str(estacio_serializer.data["id"]))
                     estacions_guardades.append(estacio_serializer.data)
 
             for contaminant_info in dades_contaminants:
@@ -130,9 +207,13 @@ def actualitzar_estacions_qualitat_aire():
                     with transaction.atomic():
                         if not Contaminant.objects.filter(nom=contaminant).exists():
                             contaminant_serializer.save()
+                            print("contaminant actualitzat: " + str(contaminant_serializer.data["id"]))
                     contaminants_guardats.append(contaminant_serializer.data)
 
-            for estacio_info, contaminant_info, presencia_info in zip(dades_estacions, dades_contaminants, dades_presencia):
+            for estacio_info, contaminant_info, presencia_info in zip(estacions_guardades, contaminants_guardats, dades_presencia):
+                print("estacio_info: " + estacio_info)
+                print("contaminant_info: " + contaminant_info)
+                print("presencia_info: " + presencia_info)
                 presencia_info["punt"] = estacio_info["id"]
                 presencia_info["contaminant"] = contaminant_info["id"]
                 
@@ -140,10 +221,12 @@ def actualitzar_estacions_qualitat_aire():
                 if presencia_serializer.is_valid():
                     with transaction.atomic():
                         presencia_serializer.save()
+                        print("presencia actualitzat: " + str(presencia_serializer.data["id"]))
             
             job.last_run = now()
             with transaction.atomic():
                 job.save()
+                print("job actualitzat: " + job.name)
 
 def actualitzar_activitats_culturals():
     job, created = JobExecution.objects.get_or_create(name=f"actualitzar_activitats_culturals")

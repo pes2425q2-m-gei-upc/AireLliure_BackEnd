@@ -64,6 +64,8 @@ class Ruta(models.Model):
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()
 
+    punts = models.ManyToManyField('Punt', related_name='rutes')
+
     class Meta:
         constraints = [
             models.CheckConstraint(check=models.Q(dist_km__gte=0), name='dist_km_valid')
@@ -222,12 +224,12 @@ class Apuntat(models.Model):
 class Punt(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
-    altitud = models.FloatField()
-    index_qualitat_aire = models.FloatField()
+    altitud = models.FloatField(default=0)
+    index_qualitat_aire = models.FloatField(blank=True, null=True)
 
     class Meta: 
         constraints = [
-            models.UniqueConstraint(fields=['latitud', 'longitud', 'altitud'], name='punt_unic')
+            models.UniqueConstraint(fields=['latitud', 'longitud'], name='punt_unic')
         ]
     
     def __str__(self):
@@ -269,3 +271,7 @@ class Presencia(models.Model):
             models.UniqueConstraint(fields=['punt', 'contaminant', 'data'], name='presencia_unic'),
             models.CheckConstraint(check=models.Q(valor__gte=0), name='valor_valid')
         ]
+
+class JobExecution(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    last_run = models.DateTimeField(default=timezone.now)

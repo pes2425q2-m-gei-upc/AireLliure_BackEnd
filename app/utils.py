@@ -11,19 +11,37 @@ SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
 
 def actualitzar_rutes():
     job, created = JobExecution.objects.get_or_create(name="actualizar_rutas")
+
+    if created: print("job actualizar_rutas created")
+    else:       print("job actualizar_rutas retrieved")
     
     if created or now() - job.last_run >= timedelta(weeks=1):
         response = requests.get(OPEN_DATA_BCN_URL)
+        
+        print(OPEN_DATA_BCN_URL + " response: " + response.status_code)
+
         if response.status_code == 200:
             dades = response.json()
 
+            print("conversió json: " + dades)
+
             with transaction.atomic():
                 for ruta_info in dades:
+
                     ruta_id = ruta_info.get('register_id')
+                    print(ruta_id)
+
                     ruta_nombre = ruta_info.get('name')
+                    print(ruta_nombre)
+
                     ruta_descripcio = ruta_info.get('body')
+                    print(ruta_descripcio)
+
                     latitud = ruta_info.get('geo_epgs_4326_lat')
+                    print(latitud)
+
                     longitud = ruta_info.get('geo_epgs_4326_lon')
+                    print(longitud)
 
                     if latitud and longitud:
                         punto_info = {
@@ -32,9 +50,20 @@ def actualitzar_rutes():
                             'altitud': 0.0,
                             'index_qualitat_aire': 0.0
                         }
+
+                        print("punto info: " + punto_info)
+                        
                         punto_serializer = PuntSerializer(data=punto_info)
-                        if punto_serializer.is_valid() and not Punt.objects.filter(latitud=float(latitud), longitud=float(longitud)).exists():
-                            punto = punto_serializer.save()
+
+                        print("punto_serializer: " + punto_serializer.data)
+                        
+                        if punto_serializer.is_valid():
+                            print("punto_serializer is valid")
+
+                            if not Punt.objects.filter(latitud=float(latitud), longitud=float(longitud)).exists():
+                                print("punto no existe")
+                                punto = punto_serializer.save()
+                                print("punto guardado")
 
                     if ruta_id and ruta_nombre and ruta_descripcio and punto:
                         ruta_info = {
@@ -44,31 +73,63 @@ def actualitzar_rutes():
                             'dist_km': 0.0,
                             'punts': [punto.id]
                         }
+
+                        print("ruta info: " + ruta_info)
+
                         ruta_serializer = RutaSerializer(data=ruta_info)
-                        if ruta_serializer.is_valid() and not Ruta.objects.filter(id=ruta_id).exists():
-                            ruta_serializer.save()
+
+                        print("ruta_serializer: " + ruta_serializer.data)
+                        
+                        if ruta_serializer.is_valid():
+                            print("ruta_serializer is valid")
+                            if not Ruta.objects.filter(id=ruta_id).exists():
+                                print("ruta no existe")
+                                ruta_serializer.save()
+                                print("ruta guardada")
             
             job.last_run = now()
             job.save()
+            print("job actualizar_rutas updated")
 
 def actualitzar_estacions_qualitat_aire():
     job, created = JobExecution.objects.get_or_create(name="actualitzar_estacions_qualitat_aire")
 
+    if created: print("job actualitzar_estacions_qualitat_aire created")
+    else:       print("job actualitzar_estacions_qualitat_aire retrieved")
+
     if created or now() - job.last_run >= timedelta(days=1):
         response = requests.get(DADES_OBERTES_DE_LA_GENERALITAT_URL)
+
+        print(DADES_OBERTES_DE_LA_GENERALITAT_URL + " response: " + response.status_code)
+
         if response.status_code == 200:
             dades = response.json()
+            
+            print("conversió json: " + dades)
             
             with transaction.atomic():
                 for presencia_dades in dades:
                     nom_estacio = presencia_dades.get('nom_estacio')
-                    altitud = presencia_dades.get('altitud')
-                    latitud = presencia_dades.get('latitud')
-                    longitud = presencia_dades.get('longitud')
-                    contaminant = presencia_dades.get('contaminant')
-                    data = presencia_dades.get('data')
-                    valor = presencia_dades.get('magnitud')
+                    print(nom_estacio)
 
+                    altitud = presencia_dades.get('altitud')
+                    print(altitud)
+
+                    latitud = presencia_dades.get('latitud')
+                    print(latitud)
+                    
+                    longitud = presencia_dades.get('longitud')
+                    print(longitud)
+                    
+                    contaminant = presencia_dades.get('contaminant')
+                    print(contaminant)
+                    
+                    data = presencia_dades.get('data')
+                    print(data)
+                    
+                    valor = presencia_dades.get('magnitud')
+                    print(valor)
+                    
                     if altitud and latitud and longitud and nom_estacio:
                         estacio_info = {
                             'nom': nom_estacio,
@@ -78,18 +139,38 @@ def actualitzar_estacions_qualitat_aire():
                             'altitud': float(altitud),
                             'index_qualitat_aire': 0.0
                         }
+
+                        print("estacio info: " + estacio_info)
+                        
                         estacio_serializer =EstacioQualitatAireSerializer(data=estacio_info)
-                        if estacio_serializer.is_valid() and not EstacioQualitatAire.objects.filter(nom=nom_estacio).exists():
-                            estacio = estacio_serializer.save()
+
+                        print("estacio_serializer: " + estacio_serializer.data)
+
+                        if estacio_serializer.is_valid():
+                            print("estacio_serializer is valid")
+                            if not EstacioQualitatAire.objects.filter(nom=nom_estacio).exists():
+                                print("estacio no existe")
+                                estacio = estacio_serializer.save()
+                                print("estacio guardada")
                     
                     if contaminant:
                         contaminant_info = {
                             'nom': contaminant,
                             'informacio': ''
                         }
+                        
+                        print("contaminant_info: " + contaminant_info)
+
                         contaminant_serializer = ContaminantSerializer(data=contaminant_info)
-                        if contaminant_serializer.is_valid() and not Contaminant.objects.filter(nom=contaminant).exists():
-                            contaminant = contaminant_serializer.save()
+
+                        print("contaminant_serializer: " + contaminant_serializer.data)
+                        
+                        if contaminant_serializer.is_valid():
+                            print("contaminant_serializer is valid")
+                            if not Contaminant.objects.filter(nom=contaminant).exists():
+                                print("contaminant no existe")
+                                contaminant = contaminant_serializer.save()
+                                print("contaminant guardada")
 
                     if estacio and contaminant and data:
                         presencia_info = {
@@ -98,12 +179,22 @@ def actualitzar_estacions_qualitat_aire():
                             'data': data,
                             'valor': valor
                         }
+
+                        print("presencia_info: " + presencia_info)
+
                         presencia_serializer = PresenciaSerializer(data=presencia_info)
+
+                        print("presencia_serializer: " + presencia_serializer.data)
+
                         if presencia_serializer.is_valid():
+                            print("presencia_serializer is valid")
                             presencia_serializer.save()
+                            print("presencia guardada")
             
             job.last_run = now()
             job.save()
+            print("job actualitzar_estacions_qualitat_aire updated")
+
 
 def actualitzar_activitats_culturals():
     job, created = JobExecution.objects.get_or_create(name=f"actualitzar_activitats_culturals")

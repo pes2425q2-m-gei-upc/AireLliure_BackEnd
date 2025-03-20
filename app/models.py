@@ -64,7 +64,7 @@ class Ruta(models.Model):
     descripcio = models.TextField()
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()
-    punt_inici = models.ForeignKey('Punt', on_delete=models.CASCADE, related_name='rutes')
+    punt_inici = models.ForeignKey('Punt', on_delete=models.CASCADE, related_name='rutes', null=True, blank=True)
     class Meta:
         constraints = [
             models.CheckConstraint(check=models.Q(dist_km__gte=0), name='dist_km_valid')

@@ -1,4 +1,5 @@
 import requests
+import uuid
 from django.utils.timezone import now, timedelta
 from .models import JobExecution, Presencia, Contaminant, Ruta, Punt, EstacioQualitatAire, ActivitatCultural
 from django.db import transaction
@@ -9,6 +10,9 @@ OPEN_DATA_BCN_URL = "https://opendata-ajuntament.barcelona.cat/data/dataset/8f9f
 DADES_OBERTES_DE_LA_GENERALITAT_URL = "https://analisi.transparenciacatalunya.cat/resource/tasf-thgu.json" #"?$select=nom_estacio,altitud,latitud,longitud,contaminant,data,magnitud"
 SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
 
+def genera_ruta_id(register_id) -> int:
+    return register_id % (2**31)
+
 def actualitzar_rutes():
     job, created = JobExecution.objects.get_or_create(name="actualizar_rutas")
     if created or now() - job.last_run >= timedelta(weeks=1):
@@ -17,18 +21,20 @@ def actualitzar_rutes():
         if response.status_code == 200:
 
             dades = response.json()
-            dades_punts = {}
-            punts_guardats = {}
-            dades_rutes = {}
+            dades_punts = []
+            punts_guardats = []
+            dades_rutes = []
 
             for ruta_info in dades:
-                ruta_id = ruta_info.get("register_id")
+
+                ruta_id = genera_ruta_id(ruta_info.get("register_id"))
                 ruta_nombre = ruta_info.get("name")
                 ruta_descripcio = ruta_info.get("body")
-                latitud = ruta_info.get("geo_epgs_4326_lat")
-                longitud = ruta_info.get("geo_epgs_4326_lon")
+                latitud = ruta_info.get("geo_epgs_4326_latlon").get("lat")
+                longitud = ruta_info.get("geo_epgs_4326_latlon").get("lon")
 
                 if latitud and longitud:
+
                     punt_info = {
                         "latitud": float(latitud),
                         "longitud": float(longitud),
@@ -38,6 +44,7 @@ def actualitzar_rutes():
                     dades_punts.append(punt_info)
 
                 if ruta_id and ruta_nombre and ruta_descripcio:
+
                     ruta_info = {
                         "id": ruta_id,
                         "nom": ruta_nombre,
@@ -47,16 +54,17 @@ def actualitzar_rutes():
                     dades_rutes.append(ruta_info)
             
             for punt_info in dades_punts:
-                punt_serializer = PuntSerializer(data=punt_info)
-                if punt_serializer.is_valid():
-                    with transaction.atomic():
-                        if not Punt.objects.filter(latitud=float(latitud), longitud=float(longitud)).exists():
-                            punt_serializer.save()
-                    punts_guardats.append(punt_serializer.data)
-            
+                with transaction.atomic():
+                    punt_obj, created = Punt.objects.get_or_create(
+                        latitud=punt_info["latitud"],
+                        longitud=punt_info["longitud"],
+                        defaults=punt_info  # Usa los demás valores solo si se crea un nuevo punto
+                    )
+                punts_guardats.append({"id": punt_obj.id, **punt_info})
+
             for ruta_info, punt_info in zip(dades_rutes, punts_guardats):
-                ruta_info["punts"] = [punt_info["id"]]
-                    
+                ruta_info["punt_inici"] = punt_info["id"]
+
             for ruta_info in dades_rutes:
                 ruta_serializer = RutaSerializer(data=ruta_info)
                 if ruta_serializer.is_valid():
@@ -76,11 +84,11 @@ def actualitzar_estacions_qualitat_aire():
         if response.status_code == 200:
 
             dades = response.json()
-            dades_estacions ={}
-            estacions_guardades = {}
-            dades_contaminants = {}
-            contaminants_guardats = {}
-            dades_presencia = {}
+            dades_estacions = []
+            estacions_guardades = []
+            dades_contaminants = []
+            contaminants_guardats = []
+            dades_presencia = []
 
             for presencia_info in dades:
                 nom_estacio = presencia_info.get("nom_estacio")
@@ -122,6 +130,7 @@ def actualitzar_estacions_qualitat_aire():
                     with transaction.atomic():
                         if not EstacioQualitatAire.objects.filter(nom=nom_estacio).exists():
                             estacio_serializer.save()
+                            print("estacio actualitzada: " + str(estacio_serializer.data["id"]))
                     estacions_guardades.append(estacio_serializer.data)
 
             for contaminant_info in dades_contaminants:
@@ -130,9 +139,13 @@ def actualitzar_estacions_qualitat_aire():
                     with transaction.atomic():
                         if not Contaminant.objects.filter(nom=contaminant).exists():
                             contaminant_serializer.save()
+                            print("contaminant actualitzat: " + str(contaminant_serializer.data["id"]))
                     contaminants_guardats.append(contaminant_serializer.data)
 
-            for estacio_info, contaminant_info, presencia_info in zip(dades_estacions, dades_contaminants, dades_presencia):
+            for estacio_info, contaminant_info, presencia_info in zip(estacions_guardades, contaminants_guardats, dades_presencia):
+                print("estacio_info: " + estacio_info)
+                print("contaminant_info: " + contaminant_info)
+                print("presencia_info: " + presencia_info)
                 presencia_info["punt"] = estacio_info["id"]
                 presencia_info["contaminant"] = contaminant_info["id"]
                 
@@ -140,10 +153,12 @@ def actualitzar_estacions_qualitat_aire():
                 if presencia_serializer.is_valid():
                     with transaction.atomic():
                         presencia_serializer.save()
+                        print("presencia actualitzat: " + str(presencia_serializer.data["id"]))
             
             job.last_run = now()
             with transaction.atomic():
                 job.save()
+                print("job actualitzat: " + job.name)
 
 def actualitzar_activitats_culturals():
     job, created = JobExecution.objects.get_or_create(name=f"actualitzar_activitats_culturals")

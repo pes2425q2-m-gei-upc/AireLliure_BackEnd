@@ -339,7 +339,6 @@ def get_ruta(request, pk):
 @permission_classes([AllowAny])
 def create_ruta(request):
     data = {
-        'etiqueta': request.data.get('etiqueta'),
         'descripcio': request.data.get('descripcio'),
         'nom': request.data.get('nom'),
         'dist_km': request.data.get('dist_km')

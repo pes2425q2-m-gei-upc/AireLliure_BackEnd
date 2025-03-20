@@ -65,7 +65,7 @@ class Ruta(models.Model):
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()
 
-    punts = models.ManyToManyField('Punt', related_name='rutes')
+    punt_inici = models.ForeignKey('Punt', on_delete=models.CASCADE, related_name='rutes', null=True, blank=True)
 
     class Meta:
         constraints = [

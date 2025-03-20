@@ -136,7 +136,7 @@ def create_usuari(request):
         'correu': request.data.get('correu'),
         'password': request.data.get('password'),
         'nom': request.data.get('nom'),
-        'estat': request.data.get('estat'),
+        'estat': request.data.get('estat', "actiu"),
         'punts': request.data.get('punts', 0),
         'deshabilitador': request.data.get('deshabilitador', None),
         'about': request.data.get('about', None)

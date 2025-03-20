@@ -64,9 +64,7 @@ class Ruta(models.Model):
     descripcio = models.TextField()
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()
-
     punts = models.ManyToManyField('Punt', related_name='rutes')
-
     class Meta:
         constraints = [
             models.CheckConstraint(check=models.Q(dist_km__gte=0), name='dist_km_valid')

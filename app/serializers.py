@@ -108,7 +108,6 @@ class PuntSerializer(serializers.ModelSerializer):
 
 class RutaSerializer(serializers.ModelSerializer):
     id = serializers.CharField(required=False)
-    punts = serializers.PrimaryKeyRelatedField(many=True, queryset=Punt.objects.all(), required=False)
     class Meta:
         model = Ruta
         fields = '__all__'

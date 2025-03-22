@@ -257,6 +257,11 @@ class Contaminant(models.Model):
 
     def __str__(self):
         return f"{self.nom} + {self.informacio}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['nom'], name='nom_contaminant_unic')
+        ]
 
 class Presencia(models.Model):
     punt = models.ForeignKey(Punt, on_delete=models.CASCADE)

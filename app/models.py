@@ -228,7 +228,7 @@ class Punt(models.Model):
     altitud = models.FloatField(default=0)
     index_qualitat_aire = models.FloatField(blank=True, null=True)
 
-    class Meta: 
+    class Meta:
         constraints = [
             models.UniqueConstraint(fields=['latitud', 'longitud'], name='punt_unic')
         ]

@@ -1211,6 +1211,25 @@ def delete_presencia(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+@api_view(['GET'])
+def get_presencies_punt(request, pk):
+    punt = get_object_or_404(Punt, pk=pk)
+    if punt is not None:
+        presencies = Presencia.objects.filter(punt=punt.id)
+        serializer = PresenciaSerializer(presencies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_presencies_punt_lon_lat(request, lon, lat):
+    punt = Punt.objects.filter(longitud=lon, latitud=lat)
+    if punt is not None:
+        presencies = Presencia.objects.filter(punt=punt.id)
+        serializer = PresenciaSerializer(presencies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_404_NOT_FOUND)
+    
 # LA PART DE DADES OBERTES ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])

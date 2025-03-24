@@ -185,6 +185,8 @@ urlpatterns = [
     path('presencies/create/', views.create_presencia, name='create_presencia'),
     path('presencies/<int:pk>/update/', views.update_presencia, name='update_presencia'),
     path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia'),
+    path('presencies/punt/<int:pk>/', views.get_presencies_punt, name='get_presencies_punt'),
+    path('presencies/punt/<str:lon>/<str:lat>/', views.get_presencies_punt_lon_lat, name='get_presencies_punt_lon_lat'),
     
     #DADES OBERTES
     path('actualitzar-rutes/', views.actualitzar_rutes_manualment, name='actualitzar_rutes_manualment'),

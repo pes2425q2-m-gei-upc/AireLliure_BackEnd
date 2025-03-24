@@ -2686,3 +2686,42 @@ paths:
           description: Llista de missatges
         "404":
           description: No s'ha trobat cap presencia amb aquest id.
+  /presencies/punt/{pk}/:
+    get:
+      summary: Obtenir una presencia específica
+      operationId: get_presencias_punt
+      tags:
+        - Presencies
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Llista de presencies
+        "404":
+          description: No s'ha trobat cap presencia amb aquest id.
+  /presencies/punt/{lon}/{lat}/:
+    get:
+      summary: Obtenir una presencia específica
+      operationId: get_presencia
+      tags:
+        - Presencies
+      parameters:
+        - name: lon
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lat
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Llista de missatges
+        "404":
+          description: No s'ha trobat cap presencia amb aquest id.

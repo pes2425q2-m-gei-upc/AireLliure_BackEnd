@@ -1,5 +1,5 @@
 import requests
-import uuid
+from datetime import datetime
 from django.utils.timezone import now, timedelta
 from .models import JobExecution, Presencia, Contaminant, Ruta, Punt, EstacioQualitatAire, ActivitatCultural
 from django.db import transaction
@@ -14,19 +14,17 @@ def genera_ruta_id(register_id) -> int:
     return register_id % (2**31)
 
 def actualitzar_rutes():
+    
     job, created = JobExecution.objects.get_or_create(name="actualizar_rutas")
     if created or now() - job.last_run >= timedelta(weeks=1):
 
         response = requests.get(OPEN_DATA_BCN_URL)
         if response.status_code == 200:
-
             dades = response.json()
-            dades_punts = []
-            punts_guardats = []
+            dades_punts = {}
             dades_rutes = []
 
             for ruta_info in dades:
-
                 ruta_id = genera_ruta_id(ruta_info.get("register_id"))
                 ruta_nombre = ruta_info.get("name")
                 ruta_descripcio = ruta_info.get("body")
@@ -34,44 +32,51 @@ def actualitzar_rutes():
                 longitud = ruta_info.get("geo_epgs_4326_latlon").get("lon")
 
                 if latitud and longitud:
+                    
+                    latlon_key = (float(latitud), float(longitud))
+                    if latlon_key not in dades_punts:
 
-                    punt_info = {
-                        "latitud": float(latitud),
-                        "longitud": float(longitud),
-                        "altitud": 0.0,
-                        "index_qualitat_aire": 0.0
-                    }
-                    dades_punts.append(punt_info)
+                        dades_punts[latlon_key] = Punt(
+                            latitud=latlon_key[0],
+                            longitud=latlon_key[1],
+                            altitud=0.0,
+                            index_qualitat_aire=0.0
+                        )
 
-                if ruta_id and ruta_nombre and ruta_descripcio:
+                    if ruta_id and ruta_nombre and ruta_descripcio:
+                        dades_rutes.append((ruta_id, ruta_nombre, ruta_descripcio, 0.0, latlon_key))
 
-                    ruta_info = {
-                        "id": ruta_id,
-                        "nom": ruta_nombre,
-                        "descripcio": ruta_descripcio,
-                        "dist_km": 0.0
-                    }
-                    dades_rutes.append(ruta_info)
-            
-            for punt_info in dades_punts:
-                with transaction.atomic():
-                    punt_obj, created = Punt.objects.get_or_create(
-                        latitud=punt_info["latitud"],
-                        longitud=punt_info["longitud"],
-                        defaults=punt_info  # Usa los demás valores solo si se crea un nuevo punto
-                    )
-                punts_guardats.append({"id": punt_obj.id, **punt_info})
+            with transaction.atomic():
+                Punt.objects.bulk_create(
+                    list(dades_punts.values()),
+                    update_conflicts=True,
+                    unique_fields=["latitud", "longitud"],
+                    update_fields=["altitud"]
+                )
 
-            for ruta_info, punt_info in zip(dades_rutes, punts_guardats):
-                ruta_info["punt_inici"] = punt_info["id"]
+            with transaction.atomic():
+                punts_guardats = {(p.latitud, p.longitud): p for p in Punt.objects.filter(
+                    latitud__in=[k[0] for k in dades_punts.keys()],
+                    longitud__in=[k[1] for k in dades_punts.keys()]
+                )}
 
-            for ruta_info in dades_rutes:
-                ruta_serializer = RutaSerializer(data=ruta_info)
-                if ruta_serializer.is_valid():
-                    with transaction.atomic():
-                        if not Ruta.objects.filter(id=ruta_id).exists():
-                            ruta_serializer.save()
-            
+            rutas_a_crear = [
+                Ruta(
+                    id=ruta_id,
+                    nom=nombre,
+                    descripcio=descripcion,
+                    dist_km=dist_km,
+                    punt_inici_id=punts_guardats.get(punt).id
+                )
+                for ruta_id, nombre, descripcion, dist_km, punt in dades_rutes
+            ]
+
+            with transaction.atomic():
+                Ruta.objects.bulk_create(
+                    rutas_a_crear, 
+                    ignore_conflicts=True
+                )
+
             job.last_run = now()
             with transaction.atomic():
                 job.save()
@@ -82,83 +87,108 @@ def actualitzar_estacions_qualitat_aire():
 
         response = requests.get(DADES_OBERTES_DE_LA_GENERALITAT_URL)
         if response.status_code == 200:
-
             dades = response.json()
-            dades_estacions = []
-            estacions_guardades = []
-            dades_contaminants = []
-            contaminants_guardats = []
+            dades_punts = {}
+            dades_estacions = {}
+            dades_contaminants = {}
             dades_presencia = []
 
             for presencia_info in dades:
-                nom_estacio = presencia_info.get("nom_estacio")
-                altitud = presencia_info.get("altitud")
-                latitud = presencia_info.get("latitud")
-                longitud = presencia_info.get("longitud")
-                contaminant = presencia_info.get("contaminant")
                 data = presencia_info.get("data")
                 valor = presencia_info.get("magnitud")
+                nom_contaminant = presencia_info.get("contaminant")
+                latitud = presencia_info.get("latitud")
+                longitud = presencia_info.get("longitud")
+                altitud = presencia_info.get("altitud")
+                nom_estacio = presencia_info.get("nom_estacio")
 
-                if altitud and latitud and longitud and nom_estacio:
-                    estacio_info = {
-                        "nom": nom_estacio,
-                        "descripcio": "",
-                        "latitud": float(latitud),
-                        "longitud": float(longitud),
-                        "altitud": float(altitud),
-                        "index_qualitat_aire": 0.0
-                    }
-                    dades_estacions.append(estacio_info)
+                if nom_contaminant:
+                    
+                    if nom_contaminant not in dades_contaminants:
+                        dades_contaminants[nom_contaminant] = Contaminant(
+                            nom=nom_contaminant,
+                            informacio=""
+                        )
 
-                if contaminant:
-                    contaminant_info = {
-                        "nom": contaminant,
-                        "informacio": ""
-                    }
-                    dades_contaminants.append(contaminant_info)
+                    if latitud and longitud:
 
-                if data:
-                    presencia_info = {
-                        "data": data,
-                        "valor": valor
-                    }
-                    dades_presencia.append(presencia_info)
+                        latlon_key = (float(latitud), float(longitud))
+                        if latlon_key not in dades_punts:
 
-            for estacio_info in dades_estacions:
-                estacio_serializer = EstacioQualitatAireSerializer(data=estacio_info)
-                if estacio_serializer.is_valid():
-                    with transaction.atomic():
-                        if not EstacioQualitatAire.objects.filter(nom=nom_estacio).exists():
-                            estacio_serializer.save()
-                            print("estacio actualitzada: " + str(estacio_serializer.data["id"]))
-                    estacions_guardades.append(estacio_serializer.data)
+                            dades_punts[latlon_key] = Punt(
+                                latitud=latlon_key[0],
+                                longitud=latlon_key[1],
+                                altitud=altitud if altitud else 0.0,
+                                index_qualitat_aire=0.0
+                            )
 
-            for contaminant_info in dades_contaminants:
-                contaminant_serializer = ContaminantSerializer(data=contaminant_info)     
-                if contaminant_serializer.is_valid():
-                    with transaction.atomic():
-                        if not Contaminant.objects.filter(nom=contaminant).exists():
-                            contaminant_serializer.save()
-                            print("contaminant actualitzat: " + str(contaminant_serializer.data["id"]))
-                    contaminants_guardats.append(contaminant_serializer.data)
+                        if nom_estacio and nom_estacio not in dades_estacions:
+                            dades_estacions[latlon_key] = EstacioQualitatAire(
+                                nom_estacio=nom_estacio,
+                                descripcio="",
+                            )
 
-            for estacio_info, contaminant_info, presencia_info in zip(estacions_guardades, contaminants_guardats, dades_presencia):
-                print("estacio_info: " + estacio_info)
-                print("contaminant_info: " + contaminant_info)
-                print("presencia_info: " + presencia_info)
-                presencia_info["punt"] = estacio_info["id"]
-                presencia_info["contaminant"] = contaminant_info["id"]
+                        if data and valor:
+                            dades_presencia.append((datetime.fromisoformat(data).date(), valor, nom_contaminant, latlon_key))
+
+            with transaction.atomic():
+                Contaminant.objects.bulk_create(
+                    list(dades_contaminants.values()),
+                    ignore_conflicts=True
+                )
+
+            with transaction.atomic():
+                contaminants_guardats = {c.nom: c for c in Contaminant.objects.filter(
+                    nom__in=[k for k in dades_contaminants.keys()]
+                )}
+
+            with transaction.atomic():
+                Punt.objects.bulk_create(
+                    list(dades_punts.values()),
+                    update_conflicts=True,
+                    unique_fields=["latitud", "longitud"],
+                    update_fields=["altitud"]
+                )
+
+            with transaction.atomic():
+                punts_guardats = {(p.latitud, p.longitud): p for p in Punt.objects.filter(
+                    latitud__in=[k[0] for k in dades_punts.keys()],
+                    longitud__in=[k[1] for k in dades_punts.keys()]
+                )}
+
+            for latlon_key, estacio in dades_estacions.items():
+                punt = punts_guardats.get(latlon_key)
+
+                nom_estacio = estacio.nom_estacio
+                descripcio = estacio.descripcio
+                punt_id = punt.id
+                altitud = punt.altitud
                 
-                presencia_serializer = PresenciaSerializer(data=presencia_info)
-                if presencia_serializer.is_valid():
-                    with transaction.atomic():
-                        presencia_serializer.save()
-                        print("presencia actualitzat: " + str(presencia_serializer.data["id"]))
-            
+                with transaction.atomic():
+                    EstacioQualitatAire.objects.get_or_create(
+                        punt_ptr_id=punt_id,
+                        defaults={"nom_estacio": nom_estacio, "descripcio": descripcio, "latitud": latlon_key[0], "longitud": latlon_key[1], "altitud": altitud, "index_qualitat_aire": 0.0}
+                    )
+
+            presencies_a_crear = [
+                Presencia(
+                    data=data,
+                    valor=valor,
+                    contaminant_id=contaminants_guardats.get(nom_contaminant).id,
+                    punt_id=punts_guardats.get(latlon_key).id
+                )
+                for data, valor, nom_contaminant, latlon_key in dades_presencia
+            ]
+
+            with transaction.atomic():
+                Presencia.objects.bulk_create(
+                    presencies_a_crear,
+                    ignore_conflicts=True
+                )
+
             job.last_run = now()
             with transaction.atomic():
                 job.save()
-                print("job actualitzat: " + job.name)
 
 def actualitzar_activitats_culturals():
     job, created = JobExecution.objects.get_or_create(name=f"actualitzar_activitats_culturals")

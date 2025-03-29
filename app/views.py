@@ -691,6 +691,12 @@ def delete_xat_grupal(request, pk):
         xat_grupal.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_xats_usuari(request, pk):
+    xats_usuari = Xat.objects.filter(usuari1=pk) | Xat.objects.filter(usuari2=pk)
+    serializer = XatSerializer(xats_usuari, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
  
 # LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
 

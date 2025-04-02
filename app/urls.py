@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     # Aquí irán tus URLs cuando las necesites
     
@@ -9,29 +10,30 @@ urlpatterns = [
     
     # DIFICULTAT ESPORTIVA
     path('dificultats-esportiva/', views.get_dificultats_esportiva, name='get_dificultats_esportiva'),
-    path('dificultats-esportiva/<str:pk>/', views.get_dificultat_esportiva, name='get_dificultat_esportiva'),
     path('dificultats-esportiva/create/', views.create_dificultat_esportiva, name='create_dificultat_esportiva'),
+    path('dificultats-esportiva/<str:pk>/', views.get_dificultat_esportiva, name='get_dificultat_esportiva'),
     path('dificultats-esportiva/<str:pk>/update/', views.update_dificultat_esportiva, name='update_dificultat_esportiva'),
     path('dificultats-esportiva/<str:pk>/delete/', views.delete_dificultat_esportiva, name='delete_dificultat_esportiva'),
     
     #ACCESIBILITAT RESPIRATORIA
     path('accessibilitats-respiratoria/', views.get_accessibilitats_respiratoria, name='get_accessibilitats_respiratoria'),
-    path('accessibilitats-respiratoria/<str:pk>/', views.get_accessibilitat_respiratoria, name='get_accessibilitat_respiratoria'),
     path('accessibilitats-respiratoria/create/', views.create_accessibilitat_respiratoria, name='create_accessibilitat_respiratoria'),
+    path('accessibilitats-respiratoria/<str:pk>/', views.get_accessibilitat_respiratoria, name='get_accessibilitat_respiratoria'),
     path('accessibilitats-respiratoria/<str:pk>/update/', views.update_accessibilitat_respiratoria, name='update_accessibilitat_respiratoria'),
     path('accessibilitats-respiratoria/<str:pk>/delete/', views.delete_accessibilitat_respiratoria, name='delete_accessibilitat_respiratoria'),
     
     #USUARI
+    path('login/', views.login_usuari, name='login_usuari'),
     path('usuaris/', views.get_usuaris, name='get_usuaris'),
-    path('usuaris/<str:pk>/', views.get_usuari, name='get_usuari'),
     path('usuaris/create/', views.create_usuari, name='create_usuari'),
+    path('usuaris/<str:pk>/', views.get_usuari, name='get_usuari'),
     path('usuaris/<str:pk>/update/', views.update_usuari, name='update_usuari'),
     path('usuaris/<str:pk>/delete/', views.delete_usuari, name='delete_usuari'),
     
     #ADMIN
     path('admins/', views.get_admins, name='get_admins'),
-    path('admins/<str:pk>/', views.get_admin, name='get_admin'),
     path('admins/create/', views.create_admin, name='create_admin'),
+    path('admins/<str:pk>/', views.get_admin, name='get_admin'),
     path('admins/<str:pk>/update/', views.update_admin, name='update_admin'),
     path('admins/<str:pk>/delete/', views.delete_admin, name='delete_admin'),
     
@@ -91,6 +93,7 @@ urlpatterns = [
     path('xats/create/', views.create_xat, name='create_xat'),
     path('xats/<int:pk>/update/', views.update_xat, name='update_xat'),
     path('xats/<int:pk>/delete/', views.delete_xat, name='delete_xat'),
+    path('xats/usuari/<int:pk>/', views.get_xats_usuari, name='get_xats_usuari'),
     
     #XAT INDIVIDUAL
     path('xats-individual/', views.get_xats_individual, name='get_xats_individual'),
@@ -182,6 +185,12 @@ urlpatterns = [
     path('presencies/<int:pk>/', views.get_presencia, name='get_presencia'),
     path('presencies/create/', views.create_presencia, name='create_presencia'),
     path('presencies/<int:pk>/update/', views.update_presencia, name='update_presencia'),
-    path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia')
+    path('presencies/<int:pk>/delete/', views.delete_presencia, name='delete_presencia'),
+    path('presencies/punt/<int:pk>/', views.get_presencies_punt, name='get_presencies_punt'),
+    path('presencies/punt/<str:lon>/<str:lat>/', views.get_presencies_punt_lon_lat, name='get_presencies_punt_lon_lat'),
     
+    #DADES OBERTES
+    path('actualitzar-rutes/', views.actualitzar_rutes_manualment, name='actualitzar_rutes_manualment'),
+    path('actualitzar_estacions_qualitat_aire/', views.actualitzar_estacions_qualitat_aire_manualment, name='actualitzar_estacions_qualitat_aire_manualment'),
+    path('actualitzar_activitats_culturals/', views.actualitzar_activitats_culturals_manualment, name='actualitzar_activitats_culturals_manualment'),
 ]

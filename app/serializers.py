@@ -36,11 +36,6 @@ class AmistatSerializer(serializers.ModelSerializer):
         model = Amistat
         fields = '__all__'
 
-class RutaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ruta
-        fields = '__all__'
-
 class ValoracioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Valoracio
@@ -111,6 +106,12 @@ class PuntSerializer(serializers.ModelSerializer):
         model = Punt
         fields = '__all__'
 
+class RutaSerializer(serializers.ModelSerializer):
+    id = serializers.CharField(required=False)
+    class Meta:
+        model = Ruta
+        fields = '__all__'
+
 class EstacioQualitatAireSerializer(serializers.ModelSerializer):
     class Meta:
         model = EstacioQualitatAire
@@ -129,4 +130,9 @@ class ContaminantSerializer(serializers.ModelSerializer):
 class PresenciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Presencia
+        fields = '__all__'
+
+class JobExecutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobExecution
         fields = '__all__'

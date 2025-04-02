@@ -23,6 +23,7 @@ class Usuari(models.Model):
     estat = models.CharField(max_length=255)
     punts = models.IntegerField(default=0)
     deshabilitador = models.ForeignKey('Admin', on_delete=models.CASCADE, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.nom
@@ -63,6 +64,8 @@ class Ruta(models.Model):
     descripcio = models.TextField()
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()
+
+    punt_inici = models.ForeignKey('Punt', on_delete=models.CASCADE, related_name='rutes', null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -222,12 +225,12 @@ class Apuntat(models.Model):
 class Punt(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
-    altitud = models.FloatField()
-    index_qualitat_aire = models.FloatField()
+    altitud = models.FloatField(default=0)
+    index_qualitat_aire = models.FloatField(blank=True, null=True)
 
-    class Meta: 
+    class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['latitud', 'longitud', 'altitud'], name='punt_unic')
+            models.UniqueConstraint(fields=['latitud', 'longitud'], name='punt_unic')
         ]
     
     def __str__(self):
@@ -254,6 +257,11 @@ class Contaminant(models.Model):
 
     def __str__(self):
         return f"{self.nom} + {self.informacio}"
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['nom'], name='nom_contaminant_unic')
+        ]
 
 class Presencia(models.Model):
     punt = models.ForeignKey(Punt, on_delete=models.CASCADE)
@@ -269,3 +277,7 @@ class Presencia(models.Model):
             models.UniqueConstraint(fields=['punt', 'contaminant', 'data'], name='presencia_unic'),
             models.CheckConstraint(check=models.Q(valor__gte=0), name='valor_valid')
         ]
+
+class JobExecution(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    last_run = models.DateTimeField(default=timezone.now)

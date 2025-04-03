@@ -1248,9 +1248,14 @@ def get_presencies(request):
             queryset_filtrada = presencies.filter(contaminant__nom=nom)
             resultats.append(queryset_filtrada) # basicament el que fem es anar adjuntant la llista de contaminants que hi ha en el request, perquè filtren.
     resultat_final = None
-    if resultats is not None:
-        resultat_final = resultats  # si hi ha contaminants, agafem el resultat de la llista de contaminants filtrats.
-    else: 
+    if resultats:
+        resultat_final = resultats[0]
+        for q in resultats[1:]:
+            resultat_final = resultat_final.union(q)
+    else:
+        resultat_final = Presencia.objects.none()
+        
+    if resultat_final is None:
         resultat_final = presencies # si no hi ha contaminants, agafem el resultat de totes les presencies, vol dir cas inicial que no hi ha filtres.
     serializer = PresenciaSerializer(resultat_final, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -1258,6 +1263,7 @@ def get_presencies(request):
 @api_view(['GET'])
 def get_presencia(request,pk):
     presencia = get_object_or_404(Presencia, pk=pk)
+    
     serializer = PresenciaSerializer(presencia)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

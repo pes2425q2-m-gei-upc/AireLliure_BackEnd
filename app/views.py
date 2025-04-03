@@ -1373,7 +1373,7 @@ def obtenir_ranking_usuari_amics(request, pk):
             amics.append(amistat.accepta)
         else:
             amics.append(amistat.solicita)
-    rank = Usuari.objects.filter(pk__in=amics).order_by('-punts')
+    rank = Usuari.objects.filter(correu__in=[u.correu for u in amics]).order_by('-punts')
     serializer = UsuariSerializer(rank, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     

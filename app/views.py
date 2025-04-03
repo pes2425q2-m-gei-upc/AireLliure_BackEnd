@@ -10,6 +10,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
 from .utils import actualitzar_rutes, actualitzar_estacions_qualitat_aire, actualitzar_activitats_culturals
+from django.db.models import Q
 
 # LA PART DE CATEGORIA
 
@@ -698,6 +699,26 @@ def get_xats_usuari(request, pk):
     serializer = XatSerializer(xats_usuari, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['PATCH'])
+def afegir_usuari_xat(request, pk, pkuser):
+    xat = get_object_or_404(XatGrupal, pk=pk)
+    usuari = get_object_or_404(Usuari, pk=pkuser)
+    if not xat.membres.filter(pk=pkuser).exists():
+        xat.membres.add(usuari)
+        xat.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response({'error': 'Usuari ja en el xat'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def eliminar_usuari_xat(request,pk,pkuser):
+    xat = get_object_or_404(XatGrupal, pk=pk)
+    usuari = get_object_or_404(Usuari, pk=pkuser)
+    if xat.membres.filter(pk=pkuser).exists():
+        xat.membres.remove(usuari)
+        xat.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response({'error': 'Usuari no en el xat'}, status=status.HTTP_400_BAD_REQUEST)
+    
 # LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])
@@ -1252,3 +1273,27 @@ def actualitzar_estacions_qualitat_aire_manualment(request):
 def actualitzar_activitats_culturals_manualment(request):
     actualitzar_activitats_culturals()
     return Response(status=status.HTTP_200_OK)
+
+#------------------------------------------  RANKING ---------------------------------
+
+@api_view(['GET'])
+def obtenir_ranking_usuaris_all(request):
+    usuaris = Usuari.objects.all().order_by('-punts')
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def obtenir_ranking_usuari_amics(request, pk):
+    usuari = get_object_or_404(Usuari, pk=pk)
+    llistat_amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    amics = []
+    amics.append(usuari)
+    for amistat in llistat_amics:
+        if amistat.solicita == usuari:
+            amics.append(amistat.accepta)
+        else:
+            amics.append(amistat.solicita)
+    rank = Usuari.objects.filter(pk__in=amics).order_by('-punts')
+    serializer = UsuariSerializer(rank, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+    

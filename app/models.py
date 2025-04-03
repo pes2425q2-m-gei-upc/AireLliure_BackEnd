@@ -305,7 +305,7 @@ class IndexQualitatAire(models.Model):
         
         num_intervals = len(self.valors_intervals) - 1
         for i in range(num_intervals):
-             if self.valors_intervals[i] <= valor <= self.valors_intervals[i + 1]:
+            if self.valors_intervals[i] <= valor <= self.valors_intervals[i + 1]:
                 x1 = self.valors_intervals[i]
                 x2 = self.valors_intervals[i + 1]
                 y1 = i / num_intervals

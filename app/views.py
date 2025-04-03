@@ -200,7 +200,7 @@ def delete_usuari(request, pk):
 
 @api_view(['PATCH', 'PUT', 'POST'])
 def deshabilitar_usuari(request, correu_deshabilitador, correu_usuari):
-    deshabilitador = get_object_or_404(Usuari, correu=correu_deshabilitador)
+    deshabilitador = get_object_or_404(Admin, correu=correu_deshabilitador)
     usuari_a_deshabilitar = get_object_or_404(Usuari, correu=correu_usuari)
     usuari_a_deshabilitar.deshabilitador = deshabilitador
     usuari_a_deshabilitar.estat = "inactiu"

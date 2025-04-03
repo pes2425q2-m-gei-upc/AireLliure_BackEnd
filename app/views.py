@@ -442,6 +442,9 @@ def create_recompensa(request):
     if form.is_valid():
         recompensa = form.save()
         serializer = RecompensaSerializer(recompensa)
+        usuari = get_object_or_404(Usuari, pk=request.data.get('usuari'))
+        usuari.punts += recompensa.punts
+        usuari.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -200,8 +200,8 @@ def delete_usuari(request, pk):
 
 @api_view(['PATCH', 'PUT', 'POST'])
 def deshabilitar_usuari(request, pkdeshabilitador, pkusuari):
-    deshabilitador = get_object_or_404(Usuari, pk=pkdeshabilitador)
-    usuari_a_deshabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    deshabilitador = get_object_or_404(Usuari, correu=pkdeshabilitador)
+    usuari_a_deshabilitar = get_object_or_404(Usuari, correu=pkusuari)
     usuari_a_deshabilitar.deshabilitador = deshabilitador
     usuari_a_deshabilitar.estat = "inactiu"
     usuari_a_deshabilitar.save()
@@ -209,7 +209,7 @@ def deshabilitar_usuari(request, pkdeshabilitador, pkusuari):
 
 @api_view(['PATCH', 'PUT', 'POST'])
 def rehabilitar_usuari(request, pkusuari):
-    usuari_a_rehabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    usuari_a_rehabilitar = get_object_or_404(Usuari, correu=pkusuari)
     usuari_a_rehabilitar.deshabilitador = None
     usuari_a_rehabilitar.estat = "inactiu"
     usuari_a_rehabilitar.save()

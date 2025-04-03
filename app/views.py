@@ -1263,8 +1263,26 @@ def get_presencies(request):
 @api_view(['GET'])
 def get_presencia(request,pk):
     presencia = get_object_or_404(Presencia, pk=pk)
-    
-    serializer = PresenciaSerializer(presencia)
+    contaminants = ['H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+    resultats = []
+    for nom in contaminants:
+        if request.query_params.get(nom):
+            queryset_filtrada = presencia.contaminant.filter(nom=nom)
+            resultats.append(queryset_filtrada)
+    resultat_final = None
+    if resultats:
+        resultat_final = resultats[0]
+        for q in resultats[1:]:
+            resultat_final = resultat_final.union(q)
+    else:
+        resultat_final = Presencia.objects.none()
+        
+    if resultat_final is None:
+        resultat_final = presencia
+        
+    presencia_aux = presencia
+    presencia_aux.contaminant = resultat_final
+    serializer = PresenciaSerializer(presencia_aux)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])

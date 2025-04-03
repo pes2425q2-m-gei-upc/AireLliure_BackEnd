@@ -313,6 +313,17 @@ paths:
       operationId: loginUsuari
       tags:
         - Usuari
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                correu:
+                  type: string
+                password:
+                  type: string
       responses:
         "200":
           description: Login correcte

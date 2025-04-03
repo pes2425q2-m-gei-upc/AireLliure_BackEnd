@@ -12,7 +12,20 @@ from rest_framework.permissions import AllowAny
 from .utils import actualitzar_rutes, actualitzar_estacions_qualitat_aire, actualitzar_activitats_culturals
 from django.db.models import Q
 
-# LA PART DE CATEGORIA
+
+
+# ------- funcions auxiliars -----------------------------------------------------------------------------
+
+def actualitza_recompensa_usuari(usuari):
+    user = get_object_or_404(Usuari, pk=usuari)
+    recompenses = Recompensa.objects.filter(usuari=user)
+    punts = 0
+    for recompensa in recompenses:
+        punts += recompensa.punts
+    user.punts = punts
+    user.save()
+    
+# ---------------- LA PART DE CATEGORIA ------------------------------------------------------------------
 
 @api_view(['GET'])
 def get_categories(request):
@@ -454,6 +467,7 @@ def update_recompensa(request, pk):
     serializer = RecompensaSerializer(recompensa, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        actualitza_recompensa_usuari(serializer.data.get('usuari'))
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -461,6 +475,9 @@ def update_recompensa(request, pk):
 def delete_recompensa(request,pk):
     recompensa = get_object_or_404(Recompensa, pk=pk)
     if recompensa is not None:
+        usuari = get_object_or_404(Usuari, pk=recompensa.usuari.pk)
+        usuari.punts -= recompensa.punts
+        usuari.save()
         recompensa.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)

@@ -170,6 +170,8 @@ def login_usuari(request):
 
     try:
         usuari = Usuari.objects.get(correu=correu)
+        if usuari.deshabilitador is not None: # si el usuari esta deshabilitat, no pot fer login.
+            return Response({'error': 'Usuari deshabilitat'}, status=status.HTTP_401_UNAUTHORIZED)
         if usuari.password == password:  # Cal modificar per que es fagi amb un hash
             serializer = UsuariSerializer(usuari)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -194,6 +196,24 @@ def delete_usuari(request, pk):
         usuari.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PATCH', 'PUT', 'POST'])
+def deshabilitar_usuari(request, pkdeshabilitador, pkusuari):
+    deshabilitador = get_object_or_404(Usuari, pk=pkdeshabilitador)
+    usuari_a_deshabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    usuari_a_deshabilitar.deshabilitador = deshabilitador
+    usuari_a_deshabilitar.estat = "inactiu"
+    usuari_a_deshabilitar.save()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['PATCH', 'PUT', 'POST'])
+def rehabilitar_usuari(request, pkusuari):
+    usuari_a_rehabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    usuari_a_rehabilitar.deshabilitador = None
+    usuari_a_rehabilitar.estat = "inactiu"
+    usuari_a_rehabilitar.save()
+    return Response(status=status.HTTP_200_OK)
 
 # LA PART DE ADMIN ------------------------------------------------------------------------------------------------
 
@@ -249,9 +269,9 @@ def delete_admin(request, pk):
 
 @api_view(['GET'])
 def get_bloqueigs(request):
-   bloqueigs = Bloqueig.objects.all()
-   serializer = BloqueigSerializer(bloqueigs, many=True)
-   return Response(serializer.data, status=status.HTTP_200_OK)
+    bloqueigs = Bloqueig.objects.all()
+    serializer = BloqueigSerializer(bloqueigs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_bloqueig(request, pk):
@@ -266,6 +286,9 @@ def create_bloqueig(request):
         'bloqueja': request.data.get('bloqueja'),
         'bloquejat': request.data.get('bloquejat')
     }
+    possible_amistat = Amistat.objects.filter(Q(solicita=data.get('bloqueja')) & Q(accepta=data.get('bloquejat')) | Q(solicita=data.get('bloquejat')) & Q(accepta=data.get('bloqueja')))
+    if possible_amistat.exists():
+        possible_amistat.delete()
     form = BloqueigForm(data=data)
     if form.is_valid():
         bloqueig = form.save()

@@ -29,6 +29,8 @@ urlpatterns = [
     path('usuaris/<str:pk>/', views.get_usuari, name='get_usuari'),
     path('usuaris/<str:pk>/update/', views.update_usuari, name='update_usuari'),
     path('usuaris/<str:pk>/delete/', views.delete_usuari, name='delete_usuari'),
+    path('usuaris/<str:pk>/deshabilitar/<str:pkdeshabilitador>/', views.deshabilitar_usuari, name='deshabilitar_usuari'),
+    path('usuaris/<str:pk>/rehabilitar/', views.rehabilitar_usuari, name='rehabilitar_usuari'),
     
     #ADMIN
     path('admins/', views.get_admins, name='get_admins'),

@@ -1364,7 +1364,7 @@ def obtenir_ranking_usuaris_all(request):
 
 @api_view(['GET'])
 def obtenir_ranking_usuari_amics(request, pk):
-    usuari = get_object_or_404(Usuari, pk=pk)
+    usuari = get_object_or_404(Usuari, correu=pk)
     llistat_amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
     amics = []
     amics.append(usuari)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.postgres.fields import ArrayField
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, primary_key=True)
@@ -281,3 +282,35 @@ class Presencia(models.Model):
 class JobExecution(models.Model):
     name = models.CharField(max_length=100, unique=True)
     last_run = models.DateTimeField(default=timezone.now)
+
+class IndexQualitatAire(models.Model):
+    contaminant = models.ForeignKey(Contaminant, on_delete=models.CASCADE)
+    valors_intervals = ArrayField(models.FloatField(), null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['contaminant'], name='valoracio_contaminant_unic')
+        ]
+
+    def valors_intervals_normalitzats(self):
+        if not self.valors_intervals:
+            return []
+        
+        num_intervals = len(self.valors_intervals) - 1
+        return [i / num_intervals for i in range(1, num_intervals)]
+    
+    def normalitzar_valor(self, valor):
+        if not self.valors_intervals:
+            return 0
+        
+        num_intervals = len(self.valors_intervals) - 1
+        for i in range(num_intervals):
+            if self.valors_intervals[i] <= valor <= self.valors_intervals[i + 1]:
+                x1 = self.valors_intervals[i]
+                x2 = self.valors_intervals[i + 1]
+                y1 = i / num_intervals
+                y2 = (i + 1) / num_intervals
+                m = (y2 - y1) / (x2 - x1)
+                return m * (valor - x1) + y1
+        
+        return 0

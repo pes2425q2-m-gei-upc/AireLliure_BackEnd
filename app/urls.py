@@ -29,6 +29,8 @@ urlpatterns = [
     path('usuaris/<str:pk>/', views.get_usuari, name='get_usuari'),
     path('usuaris/<str:pk>/update/', views.update_usuari, name='update_usuari'),
     path('usuaris/<str:pk>/delete/', views.delete_usuari, name='delete_usuari'),
+    path('usuaris/<str:pk>/deshabilitar/<str:pkdeshabilitador>/', views.deshabilitar_usuari, name='deshabilitar_usuari'),
+    path('usuaris/<str:pk>/rehabilitar/', views.rehabilitar_usuari, name='rehabilitar_usuari'),
     
     #ADMIN
     path('admins/', views.get_admins, name='get_admins'),
@@ -108,6 +110,8 @@ urlpatterns = [
     path('xats-grupal/create/', views.create_xat_grupal, name='create_xat_grupal'),
     path('xats-grupal/<int:pk>/update/', views.update_xat_grupal, name='update_xat_grupal'),
     path('xats-grupal/<int:pk>/delete/', views.delete_xat_grupal, name='delete_xat_grupal'),
+    path('xats-grupal/<int:pk>/afegir-usuari/<int:pkuser>/', views.afegir_usuari_xat, name='afegir_usuari_xat'),
+    path('xats-grupal/<int:pk>/eliminar-usuari/<int:pkuser>/', views.eliminar_usuari_xat, name='eliminar_usuari_xat'),
     
     #INVITACIO
     path('invitacions/', views.get_invitacions, name='get_invitacions'),
@@ -193,4 +197,12 @@ urlpatterns = [
     path('actualitzar-rutes/', views.actualitzar_rutes_manualment, name='actualitzar_rutes_manualment'),
     path('actualitzar_estacions_qualitat_aire/', views.actualitzar_estacions_qualitat_aire_manualment, name='actualitzar_estacions_qualitat_aire_manualment'),
     path('actualitzar_activitats_culturals/', views.actualitzar_activitats_culturals_manualment, name='actualitzar_activitats_culturals_manualment'),
+    
+    #RANKING
+    path('ranking-usuaris-all/', views.obtenir_ranking_usuaris_all, name='obtenir_ranking_usuaris_all'),
+    path('ranking-usuari-amics/<int:pk>/', views.obtenir_ranking_usuari_amics, name='obtenir_ranking_usuari_amics'),
+    
+    #Normalitzacio
+    path('normalitzar-valor-contaminant-presencia/<int:pk>/', views.normalitzar_valor_contaminant, name='normalitzar_valor_contaminant'), #pk de la presencia
+    path('normalitzar-valor-contaminant-punt/<int:pk>/', views.normalitzar_valor_contaminant_punt, name='normalitzar_valor_contaminant_punt'), #pk del punt
 ]

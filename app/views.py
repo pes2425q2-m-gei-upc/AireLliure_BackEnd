@@ -10,8 +10,22 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import AllowAny
 from .utils import actualitzar_rutes, actualitzar_estacions_qualitat_aire, actualitzar_activitats_culturals
+from django.db.models import Q
 
-# LA PART DE CATEGORIA
+
+
+# ------- funcions auxiliars -----------------------------------------------------------------------------
+
+def actualitza_recompensa_usuari(usuari):
+    user = get_object_or_404(Usuari, pk=usuari)
+    recompenses = Recompensa.objects.filter(usuari=user)
+    punts = 0
+    for recompensa in recompenses:
+        punts += recompensa.punts
+    user.punts = punts
+    user.save()
+    
+# ---------------- LA PART DE CATEGORIA ------------------------------------------------------------------
 
 @api_view(['GET'])
 def get_categories(request):
@@ -156,6 +170,8 @@ def login_usuari(request):
 
     try:
         usuari = Usuari.objects.get(correu=correu)
+        if usuari.deshabilitador is not None: # si el usuari esta deshabilitat, no pot fer login.
+            return Response({'error': 'Usuari deshabilitat'}, status=status.HTTP_401_UNAUTHORIZED)
         if usuari.password == password:  # Cal modificar per que es fagi amb un hash
             serializer = UsuariSerializer(usuari)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -180,6 +196,24 @@ def delete_usuari(request, pk):
         usuari.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PATCH', 'PUT', 'POST'])
+def deshabilitar_usuari(request, pkdeshabilitador, pkusuari):
+    deshabilitador = get_object_or_404(Usuari, pk=pkdeshabilitador)
+    usuari_a_deshabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    usuari_a_deshabilitar.deshabilitador = deshabilitador
+    usuari_a_deshabilitar.estat = "inactiu"
+    usuari_a_deshabilitar.save()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['PATCH', 'PUT', 'POST'])
+def rehabilitar_usuari(request, pkusuari):
+    usuari_a_rehabilitar = get_object_or_404(Usuari, pk=pkusuari)
+    usuari_a_rehabilitar.deshabilitador = None
+    usuari_a_rehabilitar.estat = "inactiu"
+    usuari_a_rehabilitar.save()
+    return Response(status=status.HTTP_200_OK)
 
 # LA PART DE ADMIN ------------------------------------------------------------------------------------------------
 
@@ -235,9 +269,9 @@ def delete_admin(request, pk):
 
 @api_view(['GET'])
 def get_bloqueigs(request):
-   bloqueigs = Bloqueig.objects.all()
-   serializer = BloqueigSerializer(bloqueigs, many=True)
-   return Response(serializer.data, status=status.HTTP_200_OK)
+    bloqueigs = Bloqueig.objects.all()
+    serializer = BloqueigSerializer(bloqueigs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_bloqueig(request, pk):
@@ -252,6 +286,9 @@ def create_bloqueig(request):
         'bloqueja': request.data.get('bloqueja'),
         'bloquejat': request.data.get('bloquejat')
     }
+    possible_amistat = Amistat.objects.filter(Q(solicita=data.get('bloqueja')) & Q(accepta=data.get('bloquejat')) | Q(solicita=data.get('bloquejat')) & Q(accepta=data.get('bloqueja')))
+    if possible_amistat.exists():
+        possible_amistat.delete()
     form = BloqueigForm(data=data)
     if form.is_valid():
         bloqueig = form.save()
@@ -441,6 +478,9 @@ def create_recompensa(request):
     if form.is_valid():
         recompensa = form.save()
         serializer = RecompensaSerializer(recompensa)
+        usuari = get_object_or_404(Usuari, pk=request.data.get('usuari'))
+        usuari.punts += recompensa.punts
+        usuari.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -450,6 +490,7 @@ def update_recompensa(request, pk):
     serializer = RecompensaSerializer(recompensa, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        actualitza_recompensa_usuari(serializer.data.get('usuari'))
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -457,6 +498,9 @@ def update_recompensa(request, pk):
 def delete_recompensa(request,pk):
     recompensa = get_object_or_404(Recompensa, pk=pk)
     if recompensa is not None:
+        usuari = get_object_or_404(Usuari, pk=recompensa.usuari.pk)
+        usuari.punts -= recompensa.punts
+        usuari.save()
         recompensa.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
@@ -698,6 +742,26 @@ def get_xats_usuari(request, pk):
     serializer = XatSerializer(xats_usuari, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['PATCH'])
+def afegir_usuari_xat(request, pk, pkuser):
+    xat = get_object_or_404(XatGrupal, pk=pk)
+    usuari = get_object_or_404(Usuari, pk=pkuser)
+    if not xat.membres.filter(pk=pkuser).exists():
+        xat.membres.add(usuari)
+        xat.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response({'error': 'Usuari ja en el xat'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def eliminar_usuari_xat(request,pk,pkuser):
+    xat = get_object_or_404(XatGrupal, pk=pk)
+    usuari = get_object_or_404(Usuari, pk=pkuser)
+    if xat.membres.filter(pk=pkuser).exists():
+        xat.membres.remove(usuari)
+        xat.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response({'error': 'Usuari no en el xat'}, status=status.HTTP_400_BAD_REQUEST)
+    
 # LA PART DE INVITACIO ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])
@@ -1175,13 +1239,50 @@ def delete_contaminant(request, pk):
 @api_view(['GET'])
 def get_presencies(request):
     presencies = Presencia.objects.all()
-    serializer = PresenciaSerializer(presencies, many=True)
+    resultats = []
+    
+    contaminants = ['H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+    
+    for nom in contaminants:
+        if request.query_params.get(nom):
+            queryset_filtrada = presencies.filter(contaminant__nom=nom)
+            resultats.append(queryset_filtrada) # basicament el que fem es anar adjuntant la llista de contaminants que hi ha en el request, perquè filtren.
+    resultat_final = None
+    if resultats:
+        resultat_final = resultats[0]
+        for q in resultats[1:]:
+            resultat_final = resultat_final.union(q)
+    else:
+        resultat_final = Presencia.objects.none()
+        
+    if resultat_final is None:
+        resultat_final = presencies # si no hi ha contaminants, agafem el resultat de totes les presencies, vol dir cas inicial que no hi ha filtres.
+    serializer = PresenciaSerializer(resultat_final, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_presencia(request,pk):
     presencia = get_object_or_404(Presencia, pk=pk)
-    serializer = PresenciaSerializer(presencia)
+    contaminants = ['H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+    resultats = []
+    for nom in contaminants:
+        if request.query_params.get(nom):
+            queryset_filtrada = presencia.contaminant.filter(nom=nom)
+            resultats.append(queryset_filtrada)
+    resultat_final = None
+    if resultats:
+        resultat_final = resultats[0]
+        for q in resultats[1:]:
+            resultat_final = resultat_final.union(q)
+    else:
+        resultat_final = Presencia.objects.none()
+        
+    if resultat_final is None:
+        resultat_final = presencia
+        
+    presencia_aux = presencia
+    presencia_aux.contaminant = resultat_final
+    serializer = PresenciaSerializer(presencia_aux)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
@@ -1252,3 +1353,50 @@ def actualitzar_estacions_qualitat_aire_manualment(request):
 def actualitzar_activitats_culturals_manualment(request):
     actualitzar_activitats_culturals()
     return Response(status=status.HTTP_200_OK)
+
+#------------------------------------------  RANKING ---------------------------------
+
+@api_view(['GET'])
+def obtenir_ranking_usuaris_all(request):
+    usuaris = Usuari.objects.all().order_by('-punts')
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def obtenir_ranking_usuari_amics(request, pk):
+    usuari = get_object_or_404(Usuari, pk=pk)
+    llistat_amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    amics = []
+    amics.append(usuari)
+    for amistat in llistat_amics:
+        if amistat.solicita == usuari:
+            amics.append(amistat.accepta)
+        else:
+            amics.append(amistat.solicita)
+    rank = Usuari.objects.filter(pk__in=amics).order_by('-punts')
+    serializer = UsuariSerializer(rank, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+    
+#------------------------------------------  NORMALITZACIO ---------------------------------
+
+@api_view(['GET'])
+def normalitzar_valor_contaminant(request, pk):
+    presencia = get_object_or_404(Presencia, pk=pk)
+    contaminant = get_object_or_404(Contaminant, pk=presencia.contaminant.id)
+    index_qca = get_object_or_404(IndexQualitatAire, contaminant=contaminant)
+    valor_normalitzat = index_qca.normalitzar_valor(presencia.valor)
+    return Response({'contaminant': contaminant.nom, 'valor_normalitzat': valor_normalitzat}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def normalitzar_valor_contaminant_punt(request, pk):
+    punt = get_object_or_404(Punt, pk=pk)
+    presencies = Presencia.objects.filter(punt=punt)
+    llista_normalitzada = []
+    for presencia in presencies:
+        contaminant = get_object_or_404(Contaminant, pk=presencia.contaminant.id)
+        index_qca = get_object_or_404(IndexQualitatAire, contaminant=contaminant)
+        valor_normalitzat = index_qca.normalitzar_valor(presencia.valor)
+        llista_normalitzada.append({'contaminant': contaminant.nom, 'valor_normalitzat': valor_normalitzat})
+    return Response(llista_normalitzada, status=status.HTTP_200_OK)
+    
+    

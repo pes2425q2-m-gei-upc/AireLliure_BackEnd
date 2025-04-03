@@ -1340,3 +1340,26 @@ def obtenir_ranking_usuari_amics(request, pk):
     serializer = UsuariSerializer(rank, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
     
+#------------------------------------------  NORMALITZACIO ---------------------------------
+
+@api_view(['GET'])
+def normalitzar_valor_contaminant(request, pk):
+    presencia = get_object_or_404(Presencia, pk=pk)
+    contaminant = get_object_or_404(Contaminant, pk=presencia.contaminant.id)
+    index_qca = get_object_or_404(IndexQualitatAire, contaminant=contaminant)
+    valor_normalitzat = index_qca.normalitzar_valor(presencia.valor)
+    return Response({'contaminant': contaminant.nom, 'valor_normalitzat': valor_normalitzat}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def normalitzar_valor_contaminant_punt(request, pk):
+    punt = get_object_or_404(Punt, pk=pk)
+    presencies = Presencia.objects.filter(punt=punt)
+    llista_normalitzada = []
+    for presencia in presencies:
+        contaminant = get_object_or_404(Contaminant, pk=presencia.contaminant.id)
+        index_qca = get_object_or_404(IndexQualitatAire, contaminant=contaminant)
+        valor_normalitzat = index_qca.normalitzar_valor(presencia.valor)
+        llista_normalitzada.append({'contaminant': contaminant.nom, 'valor_normalitzat': valor_normalitzat})
+    return Response(llista_normalitzada, status=status.HTTP_200_OK)
+    
+    

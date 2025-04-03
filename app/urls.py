@@ -201,4 +201,8 @@ urlpatterns = [
     #RANKING
     path('ranking-usuaris-all/', views.obtenir_ranking_usuaris_all, name='obtenir_ranking_usuaris_all'),
     path('ranking-usuari-amics/<int:pk>/', views.obtenir_ranking_usuari_amics, name='obtenir_ranking_usuari_amics'),
+    
+    #Normalitzacio
+    path('normalitzar-valor-contaminant-presencia/<int:pk>/', views.normalitzar_valor_contaminant, name='normalitzar_valor_contaminant'), #pk de la presencia
+    path('normalitzar-valor-contaminant-punt/<int:pk>/', views.normalitzar_valor_contaminant_punt, name='normalitzar_valor_contaminant_punt'), #pk del punt
 ]

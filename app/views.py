@@ -1240,7 +1240,7 @@ def delete_contaminant(request, pk):
 def get_presencies(request):
     presencies = Presencia.objects.all()
     resultats = []
-    contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+    contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM2.5', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
     mapa_contaminants = {
         'NO2': 2,
         'O3': 3,
@@ -1259,16 +1259,17 @@ def get_presencies(request):
         if request.query_params.get(nom):
             valor  = mapa_contaminants[nom]
             resultats.append(valor) # basicament el que fem es anar adjuntant la llista de contaminants que hi ha en el request, perquè filtren.
+    
     resultat_final = presencies
     if resultats:
-        resultat_final.filter(contaminant_id__in=resultats) 
+        resultat_final = resultat_final.filter(contaminant_id__in=resultats) 
     serializer = PresenciaSerializer(resultat_final, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_presencia(request,pk):
     presencia = get_object_or_404(Presencia, pk=pk)
-    contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+    contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM2.5', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
     mapa_contaminants = {
         'NO2': 2,
         'O3': 3,
@@ -1291,7 +1292,7 @@ def get_presencia(request,pk):
             
     resultat_final = presencia
     if resultats:
-        resultat_final.filter(contaminant_id__in=resultats)
+        resultat_final= resultat_final.filter(contaminant_id__in=resultats)
  
     serializer = PresenciaSerializer(resultat_final)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -1334,7 +1335,7 @@ def delete_presencia(request, pk):
 def get_presencies_punt(request, pk):
     punt = get_object_or_404(Punt, pk=pk)
     if punt is not None:
-        contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+        contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM2.5', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
         mapa_contaminants = {
             'NO2': 2,
             'O3': 3,
@@ -1357,7 +1358,7 @@ def get_presencies_punt(request, pk):
                 resultats.append(valor)
         resultat_final = presencies
         if resultats:
-            resultat_final.filter(contaminant_id__in=resultats)
+            resultat_final = resultat_final.filter(contaminant_id__in=resultats)
         
         serializer = PresenciaSerializer(resultat_final, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

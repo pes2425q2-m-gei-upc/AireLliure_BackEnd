@@ -111,7 +111,7 @@ urlpatterns = [
     path('xats-grupal/<int:pk>/update/', views.update_xat_grupal, name='update_xat_grupal'),
     path('xats-grupal/<int:pk>/delete/', views.delete_xat_grupal, name='delete_xat_grupal'),
     path('xats-grupal/<int:pk>/afegir-usuari/<int:pkuser>/', views.afegir_usuari_xat, name='afegir_usuari_xat'),
-    path('xats-grupal/<int:pk>/eliminar-usuari/<int:pkuser>/', views.eliminar_usuari_xat, name='eliminar_usuari_xat'),
+    path('xats-grupal/<int:pk>/eliminar-usuari/<str:pkuser>/', views.eliminar_usuari_xat, name='eliminar_usuari_xat'),
     
     #INVITACIO
     path('invitacions/', views.get_invitacions, name='get_invitacions'),

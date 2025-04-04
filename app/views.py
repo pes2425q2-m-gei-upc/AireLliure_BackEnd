@@ -745,7 +745,7 @@ def get_xats_usuari(request, pk):
 @api_view(['PATCH'])
 def afegir_usuari_xat(request, pk, pkuser):
     xat = get_object_or_404(XatGrupal, pk=pk)
-    usuari = get_object_or_404(Usuari, pk=pkuser)
+    usuari = get_object_or_404(Usuari, correu=pkuser)
     if not xat.membres.filter(pk=pkuser).exists():
         xat.membres.add(usuari)
         xat.save()

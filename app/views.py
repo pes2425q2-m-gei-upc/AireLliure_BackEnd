@@ -742,7 +742,7 @@ def get_xats_usuari(request, pk):
     serializer = XatSerializer(xats_usuari, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'PUT', 'POST'])
 def afegir_usuari_xat(request, pk, pkuser):
     xat = get_object_or_404(XatGrupal, pk=pk)
     usuari = get_object_or_404(Usuari, correu=pkuser)

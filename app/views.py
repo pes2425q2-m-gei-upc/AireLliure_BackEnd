@@ -1334,8 +1334,32 @@ def delete_presencia(request, pk):
 def get_presencies_punt(request, pk):
     punt = get_object_or_404(Punt, pk=pk)
     if punt is not None:
+        contaminants = ['NO2','O3','PM10','H2S', 'NO', 'SO2', 'PM', 'NOX', 'CO', 'C6H6', 'PM1', 'Hg']
+        mapa_contaminants = {
+            'NO2': 2,
+            'O3': 3,
+            'PM10': 4,
+            'H2S': 41091,
+            'NO': 41092,
+            'SO2': 41093,
+            'PM2.5': 41096,
+            'NOX': 41097,
+            'CO': 41098,
+            'C6H6': 41100,
+            'PM1': 41101,
+            'Hg': 41102
+        }
         presencies = Presencia.objects.filter(punt=punt.id)
-        serializer = PresenciaSerializer(presencies, many=True)
+        resultats = []
+        for nom in contaminants:
+            if request.query_params.get(nom):
+                valor = mapa_contaminants[nom]
+                resultats.append(valor)
+        resultat_final = presencies
+        if resultats:
+            resultat_final.filter(contaminant_id__in=resultats)
+        
+        serializer = PresenciaSerializer(resultat_final, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_404_NOT_FOUND)
 

@@ -136,3 +136,12 @@ class JobExecutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobExecution
         fields = '__all__'
+        
+class XatGenericSerializer(serializers.BaseSerializer):
+    def to_representation(self, instance):
+        if isinstance(instance, XatIndividual):
+            return XatIndividualSerializer(instance).data
+        elif isinstance(instance, XatGrupal):
+            return XatGrupalSerializer(instance).data
+        else:
+            return XatSerializer(instance).data

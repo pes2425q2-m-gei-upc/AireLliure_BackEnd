@@ -95,7 +95,7 @@ urlpatterns = [
     path('xats/create/', views.create_xat, name='create_xat'),
     path('xats/<int:pk>/update/', views.update_xat, name='update_xat'),
     path('xats/<int:pk>/delete/', views.delete_xat, name='delete_xat'),
-    path('xats/usuari/<int:pk>/', views.get_xats_usuari, name='get_xats_usuari'),
+    path('xats/usuari/<str:pk>/', views.get_xats_usuari, name='get_xats_usuari'),
     
     #XAT INDIVIDUAL
     path('xats-individual/', views.get_xats_individual, name='get_xats_individual'),

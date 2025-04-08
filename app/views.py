@@ -738,8 +738,11 @@ def delete_xat_grupal(request, pk):
 
 @api_view(['GET'])
 def get_xats_usuari(request, pk):
-    xats_usuari = Xat.objects.filter(usuari1=pk) | Xat.objects.filter(usuari2=pk) | Xat.objects.filter(membres=pk)
-    serializer = XatSerializer(xats_usuari, many=True)
+    usuari = get_object_or_404(Usuari, correu=pk)
+    xats_individuals = XatIndividual.objects.filter(models.Q(usuari1=usuari) | models.Q(usuari2=usuari))
+    xats_grupals = XatGrupal.objects.filter(membres=usuari)
+    xats = list(xats_individuals) + list(xats_grupals)
+    serializer = XatGenericSerializer(xats, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['PATCH', 'PUT', 'POST'])

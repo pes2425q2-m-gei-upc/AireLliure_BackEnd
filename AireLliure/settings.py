@@ -14,6 +14,7 @@ from pathlib import Path
 import dj_database_url
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 load_dotenv()
 
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'app',
     'corsheaders',
+    'django_celery_beat',   # TODO: python manage.py migrate django_celery_beat
 ]
 
 MIDDLEWARE = [
@@ -54,8 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'app.middlewares.ActualitzarRutes',
-    'app.middlewares.ActualitzarEstacionsQualitatAire',
+    # 'app.middlewares.ActualitzarRutes',
+    # 'app.middlewares.ActualitzarEstacionsQualitatAire',
     # 'app.middlewares.ActualitzarActivitatsCulturals',
 ]
 
@@ -181,3 +183,26 @@ CORS_ALLOWED_ORIGINS = [
 
 # Elimina o comenta temporalmente CSRF_TRUSTED_ORIGINS para pruebas
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # TODO: Cambia a la URL de Redis de Render
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # TODO: Cambia a la URL de Redis de Render
+CELERY_TIMEZONE = 'UTC'
+CELERY_TASK_TIME_LIMIT = 600    # 10 minutos
+CELERY_TASK_ACKS_LATE = True
+
+CELERY_BEAT_SCHEDULE = {
+    'actualitzar_rutes': {
+        'task': 'app.tasks.tasca_actualitzar_rutes',
+        'schedule': crontab(minute=50, hour=4, day_of_the_week=0),  # Ejecutar todos los lunes a las 4:50 AM
+    },
+    'actualitzar_estacions_qualitat_aire': {
+        'task': 'app.tasks.tasca_actualitzar_estacions_qualitat_aire',
+        'schedule': crontab(minute=0, hour=5),  # Ejecutar todos los días a las 5:00 AM
+    },
+#   'actualitzar_activitats_culturals': {
+#       'task': 'app.tasks.tasca_actualitzar_activitats_culturals',
+#       'schedule': crontab(minute=10, hour=5),  # Ejecutar todos los días a las 5:10 AM
+#   },
+}

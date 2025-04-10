@@ -358,6 +358,29 @@ def delete_amistat(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+
+def get_amics_usuari(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    llistat_retorn = []
+    amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    for amic in amics:
+        if amic.solicita == usuari:
+            llistat_retorn.append({
+                'correu': amic.accepta.correu,
+                'nom': amic.accepta.nom,
+                'punts': amic.accepta.punts,
+                'about': amic.accepta.about
+            })
+        else:
+            llistat_retorn.append({
+                'correu': amic.solicita.correu,
+                'nom': amic.solicita.nom,
+                'punts': amic.solicita.punts,
+                'about': amic.solicita.about
+            })
+    return Response(llistat_retorn, status=status.HTTP_200_OK)
+
 # LA PART DE RUTA ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])

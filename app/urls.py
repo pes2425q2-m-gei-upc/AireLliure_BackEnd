@@ -52,6 +52,7 @@ urlpatterns = [
     path('amistats/create/', views.create_amistat, name='create_amistat'),
     path('amistats/<int:pk>/update/', views.update_amistat, name='update_amistat'),
     path('amistats/<int:pk>/delete/', views.delete_amistat, name='delete_amistat'),
+    path('amistats/usuari/<str:pk>/', views.get_amics_usuari, name='get_amics_usuari'),
     
     #RUTA
     

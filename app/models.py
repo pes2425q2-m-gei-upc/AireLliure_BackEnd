@@ -137,10 +137,6 @@ class AssignaAccesibilitatRespiratoria(models.Model):
 
 class Xat(models.Model):
     id = models.AutoField(primary_key=True)
-    nom = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.nom
 
 class XatIndividual(Xat):
     usuari1 = models.ForeignKey(Usuari, on_delete=models.CASCADE, related_name='xats_com_usuari1', null=True, blank=True)
@@ -149,12 +145,13 @@ class XatIndividual(Xat):
         return f"{self.usuari1} + {self.usuari2}"
 
 class XatGrupal(Xat):
+    nom = models.CharField(max_length=100)
     creador = models.ForeignKey(Usuari, on_delete=models.CASCADE, related_name='xats_creadors', null=True, blank=True)
     descripció = models.TextField()
     membres = models.ManyToManyField(Usuari, related_name='xats_membres')
 
     def __str__(self):
-        return f"{self.creador} + {self.descripció}"
+        return f"{self.nom} + {self.creador} + {self.descripció}"
     
 class Invitacio(models.Model):
 
@@ -226,7 +223,6 @@ class Apuntat(models.Model):
 class Punt(models.Model):
     latitud = models.FloatField()
     longitud = models.FloatField()
-    altitud = models.FloatField(default=0)
     index_qualitat_aire = models.FloatField(blank=True, null=True)
 
     class Meta:

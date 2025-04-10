@@ -613,6 +613,23 @@ def get_xat(request, pk):
     serializer = XatSerializer(xat)
     return Response({'xat': serializer.data, 'missatges': serializer_missatges.data}, status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_xats_usuari(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    xats_individuals = XatIndividual.objects.filter(models.Q(usuari1=usuari) | models.Q(usuari2=usuari))
+    data_xi = XatIndividualSerializer(xats_individuals, many=True)
+    for dxi in data_xi.data:
+        other_user = ""
+        if dxi["usuari1"] == usuari.pk:
+            other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
+        else:
+            other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
+        dxi["nom"] = other_user
+    xats_grupals = XatGrupal.objects.filter(membres=usuari)
+    data_xg = XatGrupalSerializer(xats_grupals, many=True)
+    data = data_xi.data + data_xg.data
+    return Response(data, status=status.HTTP_200_OK)
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def create_xat(request):
@@ -735,15 +752,6 @@ def delete_xat_grupal(request, pk):
         xat_grupal.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
-
-@api_view(['GET'])
-def get_xats_usuari(request, pk):
-    usuari = get_object_or_404(Usuari, correu=pk)
-    xats_individuals = XatIndividual.objects.filter(models.Q(usuari1=usuari) | models.Q(usuari2=usuari))
-    xats_grupals = XatGrupal.objects.filter(membres=usuari)
-    xats = list(xats_individuals) + list(xats_grupals)
-    serializer = XatGenericSerializer(xats, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['PATCH', 'PUT', 'POST'])
 def afegir_usuari_xat(request, pk, pkuser):

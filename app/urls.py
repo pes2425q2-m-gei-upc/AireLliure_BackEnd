@@ -54,6 +54,10 @@ urlpatterns = [
     path('amistats/<int:pk>/delete/', views.delete_amistat, name='delete_amistat'),
     path('amistats/usuari/<str:pk>/', views.get_amics_usuari, name='get_amics_usuari'),
     
+    #FLUX DE SOLICITUDS I ACCEPTACIONS DE AMISTATS
+    path('amistats/usuari/<str:pk>/rebudes/', views.get_solicituds_rebudes, name='get_solicituds_rebudes'),
+    path('amistats/usuari/<str:pk>/enviades/', views.get_solicituds_enviades, name='get_solicituds_enviades'),
+    
     #RUTA
     
     path('rutas/', views.get_rutas, name='get_rutas'),

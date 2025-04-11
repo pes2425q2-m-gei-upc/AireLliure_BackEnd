@@ -39,7 +39,6 @@ def actualitzar_rutes():
                         dades_punts[latlon_key] = Punt(
                             latitud=latlon_key[0],
                             longitud=latlon_key[1],
-                            altitud=0.0,
                             index_qualitat_aire=0.0
                         )
 
@@ -49,9 +48,8 @@ def actualitzar_rutes():
             with transaction.atomic():
                 Punt.objects.bulk_create(
                     list(dades_punts.values()),
-                    update_conflicts=True,
-                    unique_fields=["latitud", "longitud"],
-                    update_fields=["altitud"]
+                    ignore_conflicts=True,
+                    unique_fields=["latitud", "longitud"]
                 )
 
             with transaction.atomic():
@@ -99,7 +97,6 @@ def actualitzar_estacions_qualitat_aire():
                 nom_contaminant = presencia_info.get("contaminant")
                 latitud = presencia_info.get("latitud")
                 longitud = presencia_info.get("longitud")
-                altitud = presencia_info.get("altitud")
                 nom_estacio = presencia_info.get("nom_estacio")
 
                 if nom_contaminant:
@@ -118,7 +115,6 @@ def actualitzar_estacions_qualitat_aire():
                             dades_punts[latlon_key] = Punt(
                                 latitud=latlon_key[0],
                                 longitud=latlon_key[1],
-                                altitud=altitud if altitud else 0.0,
                                 index_qualitat_aire=0.0
                             )
 
@@ -145,9 +141,8 @@ def actualitzar_estacions_qualitat_aire():
             with transaction.atomic():
                 Punt.objects.bulk_create(
                     list(dades_punts.values()),
-                    update_conflicts=True,
-                    unique_fields=["latitud", "longitud"],
-                    update_fields=["altitud"]
+                    ignore_conflicts=True,
+                    unique_fields=["latitud", "longitud"]
                 )
 
             with transaction.atomic():
@@ -162,12 +157,11 @@ def actualitzar_estacions_qualitat_aire():
                 nom_estacio = estacio.nom_estacio
                 descripcio = estacio.descripcio
                 punt_id = punt.id
-                altitud = punt.altitud
                 
                 with transaction.atomic():
                     EstacioQualitatAire.objects.get_or_create(
                         punt_ptr_id=punt_id,
-                        defaults={"nom_estacio": nom_estacio, "descripcio": descripcio, "latitud": latlon_key[0], "longitud": latlon_key[1], "altitud": altitud, "index_qualitat_aire": 0.0}
+                        defaults={"nom_estacio": nom_estacio, "descripcio": descripcio, "latitud": latlon_key[0], "longitud": latlon_key[1], "index_qualitat_aire": 0.0}
                     )
 
             presencies_a_crear = [
@@ -204,17 +198,15 @@ def actualitzar_activitats_culturals():
                     descripcio = activitat_dades.get("descripcio")
                     data_inici = activitat_dades.get("data_inici")
                     data_fi = activitat_dades.get("data_fi")
-                    altitud = activitat_dades.get("altitud")
                     latitud = activitat_dades.get("latitud")
                     longitud = activitat_dades.get("longitud")
 
-                    if latitud and longitud and altitud and nom and descripcio and data_inici:
+                    if latitud and longitud and nom and descripcio and data_inici:
                         activitat_info = {
                             "nom_activitat": nom,
                             "descripcio": descripcio,
                             "latitud": float(latitud),
                             "longitud": float(longitud),
-                            "altitud": float(altitud),
                             "index_qualitat_aire": 0.0,
                             "data_inici": data_inici,
                             "data_fi": data_fi

@@ -51,6 +51,8 @@ class Amistat(models.Model):
     accepta = models.ForeignKey(Usuari, on_delete=models.CASCADE, related_name='acceptades', null=True, blank=True)
     data_inici = models.DateTimeField(auto_now_add=True)
     data_final = models.DateTimeField(null=True, blank=True)
+    pendent = models.BooleanField(default=True)
+    
 
     class Meta:
         constraints = [

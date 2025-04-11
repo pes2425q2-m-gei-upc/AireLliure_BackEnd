@@ -332,7 +332,8 @@ def get_amistat(request, pk):
 def create_amistat(request):
     data = {
         'solicita': request.data.get('solicita'),
-        'accepta': request.data.get('accepta')
+        'accepta': request.data.get('accepta'),
+        'pendent': request.data.get('pendent', True)
     }
     form = AmistatForm(data=data)
     if form.is_valid():
@@ -358,12 +359,12 @@ def delete_amistat(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['GET'])
 
+@api_view(['GET'])
 def get_amics_usuari(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
     llistat_retorn = []
-    amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    amics = Amistat.objects.filter((Q(solicita=usuari) | Q(accepta=usuari)) & Q(pendent=False))
     for amic in amics:
         if amic.solicita == usuari:
             llistat_retorn.append({
@@ -380,6 +381,24 @@ def get_amics_usuari(request, pk):
                 'about': amic.solicita.about
             })
     return Response(llistat_retorn, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_solicituds_rebudes(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    amics = Amistat.objects.filter(Q(accepta=usuari) & Q(pendent=True))
+    serializer = AmistatSerializer(amics, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_solicituds_enviades(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    amics = Amistat.objects.filter(Q(solicita=usuari) & Q(pendent=True))
+    serializer = AmistatSerializer(amics, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
 
 # LA PART DE RUTA ------------------------------------------------------------------------------------------------
 

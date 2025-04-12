@@ -130,3 +130,8 @@ class PresenciaForm(forms.ModelForm):
     class Meta:
         model = Presencia
         fields = '__all__'
+
+class IndexQualitatAireForm(forms.ModelForm):
+    class Meta:
+        model = IndexQualitatAire
+        fields = '__all__'

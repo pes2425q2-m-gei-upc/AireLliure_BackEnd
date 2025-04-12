@@ -210,4 +210,11 @@ urlpatterns = [
     #Normalitzacio
     path('normalitzar-valor-contaminant-presencia/<int:pk>/', views.normalitzar_valor_contaminant, name='normalitzar_valor_contaminant'), #pk de la presencia
     path('normalitzar-valor-contaminant-punt/<int:pk>/', views.normalitzar_valor_contaminant_punt, name='normalitzar_valor_contaminant_punt'), #pk del punt
+    
+    #INDEX QUALITAT DE L'AIRE TAULA
+    path('index-qualitat-aire-taula/', views.get_index_qualitat_aire_taula, name='get_index_qualitat_aire_taula'),
+    path('index-qualitat-aire-taula-contaminant/<int:pk>/', views.get_index_qualitat_aire_taula_contaminant, name='get_index_qualitat_aire_taula_contaminant'),
+    path('index-qualitat-aire-taula/create/', views.create_index_qualitat_aire_taula, name='create_index_qualitat_aire_taula'),
+    path('index-qualitat-aire-taula/<int:pk>/update/', views.update_index_qualitat_aire_taula, name='update_index_qualitat_aire_taula'),
+    path('index-qualitat-aire-taula/<int:pk>/delete/', views.delete_index_qualitat_aire_taula, name='delete_index_qualitat_aire_taula'),
 ]

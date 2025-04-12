@@ -132,6 +132,11 @@ class PresenciaSerializer(serializers.ModelSerializer):
         model = Presencia
         fields = '__all__'
 
+class IndexQualitatAireSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IndexQualitatAire
+        fields = '__all__'
+
 class JobExecutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobExecution

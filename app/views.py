@@ -1489,3 +1489,45 @@ def normalitzar_valor_contaminant_punt(request, pk):
     return Response(llista_normalitzada, status=status.HTTP_200_OK)
     
     
+#------------------------------------------  INDEX QUALITAT DE L'AIRE TAULA 
+# 
+# ---------------------------------
+
+@api_view(['GET'])
+def get_index_qualitat_aire_taula(request):
+    index_qca = IndexQualitatAire.objects.all()
+    serializer = IndexQualitatAireSerializer(index_qca, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_index_qualitat_aire_taula_contaminant(request, pk):
+    contaminant = get_object_or_404(Contaminant, pk=pk)
+    index_qca = IndexQualitatAire.objects.filter(contaminant=contaminant)
+    serializer = IndexQualitatAireSerializer(index_qca, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def create_index_qualitat_aire_taula(request):
+    data = {
+        'contaminant': request.data.get('contaminant'),
+        'valors_intervals': request.data.get('valors_intervals')
+    }
+    form = IndexQualitatAireForm(data=data)
+    if form.is_valid():
+        index_qca = form.save()
+        serializer = IndexQualitatAireSerializer(index_qca)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PATCH'])
+def update_index_qualitat_aire_taula(request, pk):
+    index_qca = get_object_or_404(IndexQualitatAire, contaminant=pk)
+    serializer = IndexQualitatAireSerializer(index_qca, data=request.data, partial=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_index_qualitat_aire_taula(request, pk):
+    index_qca = get_object_or_404(IndexQualitatAire, contaminant=pk)
+    index_qca.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+

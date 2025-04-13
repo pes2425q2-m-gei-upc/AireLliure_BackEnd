@@ -383,6 +383,49 @@ def get_amics_usuari(request, pk):
     return Response(llistat_retorn, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
+def get_usuaris_basics(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    
+    # Obtener correos de usuarios a excluir
+    amistats = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    bloqueigs = Bloqueig.objects.filter(Q(bloqueja=usuari) | Q(bloquejat=usuari))
+    solicituds_rebudes = Amistat.objects.filter(Q(accepta=usuari) & Q(pendent=True))
+    solicituds_enviades = Amistat.objects.filter(Q(solicita=usuari) & Q(pendent=True))
+    
+    # Extraer correos de los objetos
+    correos_excluir = set()
+    
+    # Amistades
+    for amistat in amistats:
+        if amistat.solicita == usuari:
+            correos_excluir.add(amistat.accepta.correu)
+        else:
+            correos_excluir.add(amistat.solicita.correu)
+    
+    # Bloqueos
+    for bloqueig in bloqueigs:
+        if bloqueig.bloqueja == usuari:
+            correos_excluir.add(bloqueig.bloquejat.correu)
+        else:
+            correos_excluir.add(bloqueig.bloqueja.correu)
+    
+    # Solicitudes recibidas
+    for solicitud in solicituds_rebudes:
+        correos_excluir.add(solicitud.solicita.correu)
+    
+    # Solicitudes enviadas
+    for solicitud in solicituds_enviades:
+        correos_excluir.add(solicitud.accepta.correu)
+    
+    # Excluir al propio usuario
+    correos_excluir.add(usuari.correu)
+    
+    # Obtener usuarios que no están en la lista de exclusión
+    usuaris = Usuari.objects.exclude(correu__in=correos_excluir)
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
 def get_solicituds_rebudes(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
     amics = Amistat.objects.filter(Q(accepta=usuari) & Q(pendent=True))

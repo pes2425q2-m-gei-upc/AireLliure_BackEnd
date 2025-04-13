@@ -57,7 +57,7 @@ urlpatterns = [
     #FLUX DE SOLICITUDS I ACCEPTACIONS DE AMISTATS
     path('amistats/usuari/<str:pk>/rebudes/', views.get_solicituds_rebudes, name='get_solicituds_rebudes'),
     path('amistats/usuari/<str:pk>/enviades/', views.get_solicituds_enviades, name='get_solicituds_enviades'),
-    
+    path('amistats/usuari/<str:pk>/basics/', views.get_usuaris_basics, name='get_usuaris_basics'),
     #RUTA
     
     path('rutas/', views.get_rutas, name='get_rutas'),

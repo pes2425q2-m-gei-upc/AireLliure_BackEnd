@@ -44,7 +44,8 @@ urlpatterns = [
     path('bloqueigs/<int:pk>/', views.get_bloqueig, name='get_bloqueig'),
     path('bloqueigs/create/', views.create_bloqueig, name='create_bloqueig'),
     path('bloqueigs/<int:pk>/update/', views.update_bloqueig, name='update_bloqueig'),
-    path('bloqueigs/<int:pk>/delete/', views.delete_bloqueig, name='delete_bloquei'),
+    path('bloqueigs/<int:pk>/delete/', views.delete_bloqueig, name='delete_bloqueig'),
+    path('bloqueigs/usuari/<str:pk>/', views.get_bloquigs_usuari, name='get_bloquigs_usuari'),
     
     #AMISTAT
     path('amistats/', views.get_amistats, name='get_amistats'),

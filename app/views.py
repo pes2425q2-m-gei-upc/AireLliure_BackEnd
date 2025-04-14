@@ -313,6 +313,13 @@ def delete_bloqueig(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+def get_bloquigs_usuari(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    bloqueigs = Bloqueig.objects.filter(bloqueja=usuari)
+    serializer = BloqueigSerializer(bloqueigs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 # LA PART DE AMISTAT ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])

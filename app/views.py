@@ -368,6 +368,7 @@ def get_amics_usuari(request, pk):
     for amic in amics:
         if amic.solicita == usuari:
             llistat_retorn.append({
+                'idAmistat': amic.id,
                 'correu': amic.accepta.correu,
                 'nom': amic.accepta.nom,
                 'punts': amic.accepta.punts,
@@ -375,6 +376,7 @@ def get_amics_usuari(request, pk):
             })
         else:
             llistat_retorn.append({
+                'idAmistat': amic.id,
                 'correu': amic.solicita.correu,
                 'nom': amic.solicita.nom,
                 'punts': amic.solicita.punts,

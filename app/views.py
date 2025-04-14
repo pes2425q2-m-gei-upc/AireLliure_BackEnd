@@ -432,6 +432,9 @@ def get_solicituds_rebudes(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
     amics = Amistat.objects.filter(Q(accepta=usuari) & Q(pendent=True))
     serializer = AmistatSerializer(amics, many=True)
+    for data_ser in serializer.data:
+        usuari = get_object_or_404(Usuari, correu=data_ser.get('solicita'))
+        data_ser['nom'] = usuari.nom
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -439,6 +442,9 @@ def get_solicituds_enviades(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
     amics = Amistat.objects.filter(Q(solicita=usuari) & Q(pendent=True))
     serializer = AmistatSerializer(amics, many=True)
+    for data_ser in serializer.data:
+        usuari = get_object_or_404(Usuari, correu=data_ser.get('accepta'))
+        data_ser['nom'] = usuari.nom
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

@@ -718,6 +718,9 @@ def get_xat(request, pk):
     xat = get_object_or_404(Xat, pk=pk)
     missatges_xat = Missatge.objects.filter(xat=xat)
     serializer_missatges = MissatgeSerializer(missatges_xat, many=True)
+    for data_ser in serializer_missatges.data:
+        usuari = get_object_or_404(Usuari, pk=data_ser.get('autor'))
+        data_ser['nom'] = usuari.nom
     serializer = XatSerializer(xat)
     return Response({'xat': serializer.data, 'missatges': serializer_missatges.data}, status=status.HTTP_200_OK)
 

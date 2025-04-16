@@ -265,8 +265,9 @@ class Contaminant(models.Model):
 class Presencia(models.Model):
     punt = models.ForeignKey(Punt, on_delete=models.CASCADE)
     contaminant = models.ForeignKey(Contaminant, on_delete=models.CASCADE)
-    data = models.DateField()
+    data = models.DateTimeField()
     valor = models.FloatField(null=True, blank=True)
+    valor_iqa = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.punt} + {self.contaminant} + {self.data} + {self.valor}"

@@ -1,7 +1,7 @@
 import requests
-from datetime import datetime
+from datetime import datetime, time
 from django.utils.timezone import now, timedelta
-from .models import JobExecution, Presencia, Contaminant, Ruta, Punt, EstacioQualitatAire, ActivitatCultural
+from .models import JobExecution, Presencia, Contaminant, Ruta, Punt, EstacioQualitatAire, ActivitatCultural, IndexQualitatAire
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from app.serializers import PresenciaSerializer, RutaSerializer, ContaminantSerializer, PuntSerializer, EstacioQualitatAireSerializer, ActivitatCulturalSerializer
@@ -12,6 +12,12 @@ SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
 
 def genera_ruta_id(register_id) -> int:
     return register_id % (2**31)
+
+def datetime_from_iso_date_and_hour(iso_date_str: str, hora: int) -> datetime:
+    fecha_base = datetime.fromisoformat(iso_date_str).date()
+    if hora == 24:
+        return datetime.combine(fecha_base + timedelta(days=1), time(0))
+    return datetime.combine(fecha_base, time(hora))
 
 def actualitzar_rutes():
     
@@ -93,7 +99,6 @@ def actualitzar_estacions_qualitat_aire():
 
             for presencia_info in dades:
                 data = presencia_info.get("data")
-                valor = presencia_info.get("magnitud")
                 nom_contaminant = presencia_info.get("contaminant")
                 latitud = presencia_info.get("latitud")
                 longitud = presencia_info.get("longitud")
@@ -124,8 +129,12 @@ def actualitzar_estacions_qualitat_aire():
                                 descripcio="",
                             )
 
-                        if data and valor:
-                            dades_presencia.append((datetime.fromisoformat(data).date(), valor, nom_contaminant, latlon_key))
+                        if data:
+                            dades_presencia.extend(
+                                (datetime_from_iso_date_and_hour(data, h), float(valor), nom_contaminant, latlon_key)
+                                for h in range(1,25)
+                                if (valor := presencia_info.get(f"h{h:02}")) is not None
+                            )                            
 
             with transaction.atomic():
                 Contaminant.objects.bulk_create(
@@ -137,6 +146,12 @@ def actualitzar_estacions_qualitat_aire():
                 contaminants_guardats = {c.nom: c for c in Contaminant.objects.filter(
                     nom__in=[k for k in dades_contaminants.keys()]
                 )}
+            
+            with transaction.atomic():
+                indexos_qualitat_aire_guardats = {
+                    index.contaminant.nom: index
+                    for index in IndexQualitatAire.objects.select_related("contaminant").all()
+                }
 
             with transaction.atomic():
                 Punt.objects.bulk_create(
@@ -168,6 +183,7 @@ def actualitzar_estacions_qualitat_aire():
                 Presencia(
                     data=data,
                     valor=valor,
+                    valor_iqa=indexos_qualitat_aire_guardats.get(nom_contaminant).normalitzar_valor(valor),
                     contaminant_id=contaminants_guardats.get(nom_contaminant).id,
                     punt_id=punts_guardats.get(latlon_key).id
                 )
@@ -179,6 +195,10 @@ def actualitzar_estacions_qualitat_aire():
                     presencies_a_crear,
                     ignore_conflicts=True
                 )
+
+            ahir = now().date() - timedelta(days=1)
+            with transaction.atomic():
+                Presencia.objects.filter(data__date__lt=ahir).delete()
 
             job.last_run = now()
             with transaction.atomic():

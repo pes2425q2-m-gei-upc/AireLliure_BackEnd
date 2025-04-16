@@ -233,7 +233,7 @@ class Punt(models.Model):
         ]
     
     def __str__(self):
-        return f"{self.latitud} + {self.longitud} + {self.altitud} + {self.index_qualitat_aire}"
+        return f"{self.latitud} + {self.longitud} + {self.index_qualitat_aire}"
 
 class EstacioQualitatAire(Punt):
     nom_estacio = models.CharField(max_length=255)

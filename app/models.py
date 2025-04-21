@@ -32,6 +32,7 @@ class Usuari(models.Model):
         "Admin", on_delete=models.CASCADE, null=True, blank=True
     )
     about = models.TextField(null=True, blank=True)
+    admin = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
         return self.nom

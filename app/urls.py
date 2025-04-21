@@ -61,6 +61,8 @@ urlpatterns = [
     # USUARI
     path("login/", views.login_usuari, name="login_usuari"),
     path("usuaris/", views.get_usuaris, name="get_usuaris"),
+    path('deshabilitats/', views.get_all_usuaris_deshabilitats, name='get_all_usuaris_deshabilitats'),
+    path('habilitats/', views.get_all_usuaris_habilitats, name='get_all_usuaris_habilitats'),
     path("usuaris/create/", views.create_usuari, name="create_usuari"),
     path("usuaris/<str:pk>/", views.get_usuari, name="get_usuari"),
     path("usuaris/<str:pk>/update/", views.update_usuari, name="update_usuari"),
@@ -75,8 +77,6 @@ urlpatterns = [
         views.rehabilitar_usuari,
         name="rehabilitar_usuari",
     ),
-    path('usuaris/deshabilitats/', views.get_all_usuaris_deshabilitats, name='get_all_usuaris_deshabilitats'),
-    path('usuaris/habilitats/', views.get_all_usuaris_habilitats, name='get_all_usuaris_habilitats'),
     
     # ADMIN
     path("admins/", views.get_admins, name="get_admins"),

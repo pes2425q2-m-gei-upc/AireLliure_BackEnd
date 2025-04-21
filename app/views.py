@@ -180,6 +180,7 @@ def create_usuari(request):
         "punts": request.data.get("punts", 0),
         "deshabilitador": request.data.get("deshabilitador", None),
         "about": request.data.get("about", None),
+        "administrador": request.data.get("administrador", False),
     }
     form = UsuariForm(data=data)
     if form.is_valid():
@@ -296,6 +297,7 @@ def create_admin(request):
         "punts": request.data.get("punts", 0),
         "deshabilitador": request.data.get("deshabilitador", None),
         "about": request.data.get("about", None),
+        "administrador": request.data.get("administrador", True),
     }
     form = AdminForm(data=data)
     if form.is_valid():

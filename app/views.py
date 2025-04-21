@@ -234,22 +234,17 @@ def delete_usuari(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["PATCH", "PUT", "POST"])
+@api_view(["PATCH"])
 def deshabilitar_usuari(request, correu_deshabilitador, correu_usuari):
-    deshabilitador = get_object_or_404(Usuari, correu=correu_deshabilitador)
-    if deshabilitador.administrador:
-        usuari_a_deshabilitar = get_object_or_404(Usuari, correu=correu_usuari)
-        usuari_a_deshabilitar.deshabilitador = deshabilitador
-        usuari_a_deshabilitar.estat = "inactiu"
-        usuari_a_deshabilitar.save()
-        return Response(status=status.HTTP_200_OK)
-    return Response(
-        {"error": "No tens permisos per deshabilitar usuaris, no ets administrador"},
-        status=status.HTTP_401_UNAUTHORIZED,
-    )
+    deshabilitador = get_object_or_404(Admin, correu=correu_deshabilitador)
+    usuari_a_deshabilitar = get_object_or_404(Usuari, correu=correu_usuari)
+    usuari_a_deshabilitar.deshabilitador = deshabilitador
+    usuari_a_deshabilitar.estat = "inactiu"
+    usuari_a_deshabilitar.save()
+    return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["PATCH", "PUT", "POST"])
+@api_view(["PATCH"])
 def rehabilitar_usuari(request, correu_usuari):
     usuari_a_rehabilitar = get_object_or_404(Usuari, correu=correu_usuari)
     usuari_a_rehabilitar.deshabilitador = None

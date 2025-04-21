@@ -31,6 +31,8 @@ urlpatterns = [
     path('usuaris/<str:pk>/delete/', views.delete_usuari, name='delete_usuari'),
     path('usuaris/<str:correu_deshabilitador>/deshabilitar/<str:correu_usuari>/', views.deshabilitar_usuari, name='deshabilitar_usuari'),
     path('usuaris/<str:correu_usuari>/rehabilitar/', views.rehabilitar_usuari, name='rehabilitar_usuari'),
+    path('usuaris/deshabilitats/', views.get_all_usuaris_deshabilitats, name='get_all_usuaris_deshabilitats'),
+    path('usuaris/habilitats/', views.get_all_usuaris_habilitats, name='get_all_usuaris_habilitats'),
     
     #ADMIN
     path('admins/', views.get_admins, name='get_admins'),

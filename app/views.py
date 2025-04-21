@@ -215,6 +215,18 @@ def rehabilitar_usuari(request, correu_usuari):
     usuari_a_rehabilitar.save()
     return Response(status=status.HTTP_200_OK)
 
+@api_view(['GET'])
+def get_all_usuaris_deshabilitats(request):
+    usuaris = Usuari.objects.filter(deshabilitar_usuari is not None)
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_all_usuaris_habilitats(request):
+    usuaris = Usuari.objects.filter(deshabilitar_usuari is None)
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 # LA PART DE ADMIN ------------------------------------------------------------------------------------------------
 
 @api_view(['GET'])

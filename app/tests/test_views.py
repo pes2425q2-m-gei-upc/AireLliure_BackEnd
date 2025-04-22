@@ -176,3 +176,4 @@ class TestViewsAdmin(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Admin.objects.count(), 1)
+    

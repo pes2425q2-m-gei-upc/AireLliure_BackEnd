@@ -13,11 +13,11 @@ MIDDLEWARE = [
 
 # Usar una base de datos en memoria para pruebas
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     }
 }
 
 # Desactivar la validación de contraseñas durante las pruebas
-AUTH_PASSWORD_VALIDATORS = [] 
+AUTH_PASSWORD_VALIDATORS = []

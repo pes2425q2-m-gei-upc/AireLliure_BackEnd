@@ -1097,3 +1097,48 @@ class TestEventDeCalendariPublic(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(EventDeCalendariPublic.objects.count(), 0)
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestPunt(TestCase):
+    def setUp(self):
+        self.punt = Punt.objects.create(
+            latitud=1.0, longitud=1.0, index_qualitat_aire=1.0
+        )
+
+    def test_create_punt(self):
+        url = reverse("create_punt")
+        response = self.client.post(
+            url,
+            {"latitud": 2.0, "longitud": 2.0, "index_qualitat_aire": 2.0},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Punt.objects.count(), 2)
+        self.assertEqual(Punt.objects.last().latitud, 2.0)
+        self.assertEqual(Punt.objects.last().longitud, 2.0)
+        self.assertEqual(Punt.objects.last().index_qualitat_aire, 2.0)
+
+    def test_get_punt(self):
+        url = reverse("get_punt", args=[self.punt.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["latitud"], 1.0)
+        self.assertEqual(response.data["longitud"], 1.0)
+        self.assertEqual(response.data["index_qualitat_aire"], 1.0)
+
+    def test_update_punt(self):
+        url = reverse("update_punt", args=[self.punt.pk])
+        response = self.client.patch(
+            url,
+            {"latitud": 3.0},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Punt.objects.get(pk=self.punt.pk).latitud, 3.0)
+
+    def test_delete_punt(self):
+        url = reverse("delete_punt", args=[self.punt.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Punt.objects.count(), 0)

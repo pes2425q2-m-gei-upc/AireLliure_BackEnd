@@ -171,3 +171,9 @@ class TestViewsAdmin(TestCase):
         self.assertEqual(
             Admin.objects.get(correu="admin@example.com").nom, "admin_updated"
         )
+
+    def eliminar_admin(self):
+        url = reverse("delete_admin", args=["admin@example.com"])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Admin.objects.count(), 1)

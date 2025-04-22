@@ -33,9 +33,9 @@ MIDDLEWARE = [
 
 # Usar una base de datos en memoria para pruebas
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     }
 }
 

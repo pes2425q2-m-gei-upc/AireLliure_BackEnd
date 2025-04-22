@@ -180,6 +180,7 @@ def create_usuari(request):
         "punts": request.data.get("punts", 0),
         "deshabilitador": request.data.get("deshabilitador", None),
         "about": request.data.get("about", None),
+        "administrador": request.data.get("administrador", False),
     }
     form = UsuariForm(data=data)
     if form.is_valid():
@@ -233,7 +234,7 @@ def delete_usuari(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(["PATCH", "PUT", "POST"])
+@api_view(["PATCH"])
 def deshabilitar_usuari(request, correu_deshabilitador, correu_usuari):
     deshabilitador = get_object_or_404(Admin, correu=correu_deshabilitador)
     usuari_a_deshabilitar = get_object_or_404(Usuari, correu=correu_usuari)
@@ -243,7 +244,7 @@ def deshabilitar_usuari(request, correu_deshabilitador, correu_usuari):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["PATCH", "PUT", "POST"])
+@api_view(["PATCH"])
 def rehabilitar_usuari(request, correu_usuari):
     usuari_a_rehabilitar = get_object_or_404(Usuari, correu=correu_usuari)
     usuari_a_rehabilitar.deshabilitador = None
@@ -251,6 +252,22 @@ def rehabilitar_usuari(request, correu_usuari):
     usuari_a_rehabilitar.save()
     return Response(status=status.HTTP_200_OK)
 
+
+@api_view(["GET"])
+def get_all_usuaris_deshabilitats(request):
+    usuaris = Usuari.objects.filter(deshabilitador__isnull=False)
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_all_usuaris_habilitats(request):
+    usuaris = Usuari.objects.filter(deshabilitador__isnull=True)
+    serializer = UsuariSerializer(usuaris, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# LA PART DE ADMIN ------------------------------------------------------------------------------------------------
 
 # LA PART DE ADMIN --------------------------------------------------------------------
 
@@ -280,6 +297,7 @@ def create_admin(request):
         "punts": request.data.get("punts", 0),
         "deshabilitador": request.data.get("deshabilitador", None),
         "about": request.data.get("about", None),
+        "administrador": request.data.get("administrador", True),
     }
     form = AdminForm(data=data)
     if form.is_valid():

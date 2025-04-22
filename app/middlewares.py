@@ -1,4 +1,5 @@
 from django.conf import settings
+
 from .utils import (
     actualitzar_activitats_culturals,
     actualitzar_estacions_qualitat_aire,

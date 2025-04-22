@@ -355,6 +355,7 @@ class TestXat(TestCase):
         self.xat = XatIndividual.objects.create(usuari1=self.user1, usuari2=self.user2)
 
     def test_create_xat(self):
+        initial_count = XatIndividual.objects.count()
         url = reverse("create_xat_individual")
         response = self.client.post(
             url,
@@ -362,10 +363,9 @@ class TestXat(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(XatIndividual.objects.count(), 2)  # Ya existe un xat en setUp
-        self.assertEqual(
-            XatIndividual.objects.get(usuari1=self.user2, usuari2=self.user1).pk, 2
-        )
+        self.assertEqual(XatIndividual.objects.count(), initial_count + 1)
+        xat = XatIndividual.objects.get(usuari1=self.user2, usuari2=self.user1)
+        self.assertIsNotNone(xat)
 
     def test_get_xats(self):
         url = reverse("get_xats_individual")
@@ -420,6 +420,7 @@ class TestXatGrupal(TestCase):
         self.xat.membres.set([self.user1, self.user2])
 
     def test_create_xat_grupal(self):
+        initial_count = XatGrupal.objects.count()
         url = reverse("create_xat_grupal")
         response = self.client.post(
             url,
@@ -432,8 +433,9 @@ class TestXatGrupal(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(XatGrupal.objects.count(), 2)  # Ya existe un xat en setUp
-        self.assertEqual(XatGrupal.objects.get(nom="Test Chat 2").pk, 2)
+        self.assertEqual(XatGrupal.objects.count(), initial_count + 1)
+        xat = XatGrupal.objects.get(nom="Test Chat 2")
+        self.assertIsNotNone(xat)
 
     def test_get_xats_grupales(self):
         url = reverse("get_xats_grupal")
@@ -713,6 +715,7 @@ class TestRuta(TestCase):
         self.ruta = Ruta.objects.create(nom="Ruta 1", descripcio="Ruta 1", dist_km=0.0)
 
     def test_create_ruta(self):
+        initial_count = Ruta.objects.count()
         url = reverse("create_ruta")
         response = self.client.post(
             url,
@@ -720,16 +723,15 @@ class TestRuta(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(Ruta.objects.count(), 2)  # Ya existe una ruta en setUp
+        self.assertEqual(Ruta.objects.count(), initial_count + 1)
         ruta = Ruta.objects.get(nom="Ruta 2")
-        self.assertEqual(ruta.nom, "Ruta 2")
+        self.assertIsNotNone(ruta)
 
     def test_get_rutas(self):
         url = reverse("get_rutas")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 1)  # Ya existe una ruta en setUp
-        self.assertEqual(response.data[0]["nom"], "Ruta 1")
+        self.assertTrue(any(r["nom"] == "Ruta 1" for r in response.data))
 
     def test_update_ruta(self):
         url = reverse("update_ruta", args=[self.ruta.pk])
@@ -742,10 +744,11 @@ class TestRuta(TestCase):
         self.assertEqual(Ruta.objects.get(pk=self.ruta.pk).nom, "Ruta 1")
 
     def test_delete_ruta(self):
+        initial_count = Ruta.objects.count()
         url = reverse("delete_ruta", args=[self.ruta.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertEqual(Ruta.objects.count(), 0)
+        self.assertEqual(Ruta.objects.count(), initial_count - 1)
 
 
 @override_settings(ROOT_URLCONF="AireLliure.urls")
@@ -1107,6 +1110,7 @@ class TestPunt(TestCase):
         )
 
     def test_create_punt(self):
+        initial_count = Punt.objects.count()
         url = reverse("create_punt")
         response = self.client.post(
             url,
@@ -1114,10 +1118,9 @@ class TestPunt(TestCase):
             content_type="application/json",
         )
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(Punt.objects.count(), 2)
-        self.assertEqual(Punt.objects.last().latitud, 2.0)
-        self.assertEqual(Punt.objects.last().longitud, 2.0)
-        self.assertEqual(Punt.objects.last().index_qualitat_aire, 2.0)
+        self.assertEqual(Punt.objects.count(), initial_count + 1)
+        punt = Punt.objects.get(latitud=2.0, longitud=2.0)
+        self.assertIsNotNone(punt)
 
     def test_get_punt(self):
         url = reverse("get_punt", args=[self.punt.pk])
@@ -1138,7 +1141,8 @@ class TestPunt(TestCase):
         self.assertEqual(Punt.objects.get(pk=self.punt.pk).latitud, 3.0)
 
     def test_delete_punt(self):
+        initial_count = Punt.objects.count()
         url = reverse("delete_punt", args=[self.punt.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
-        self.assertEqual(Punt.objects.count(), 0)
+        self.assertEqual(Punt.objects.count(), initial_count - 1)

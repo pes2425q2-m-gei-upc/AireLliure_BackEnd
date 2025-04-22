@@ -1,3 +1,4 @@
+from django.conf import settings
 from .utils import (
     actualitzar_activitats_culturals,
     actualitzar_estacions_qualitat_aire,
@@ -19,7 +20,9 @@ class ActualitzarEstacionsQualitatAire:
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_estacions_qualitat_aire()
+        # No ejecutar durante las pruebas
+        if not settings.TESTING:
+            actualitzar_estacions_qualitat_aire()
         return self.get_response(request)
 
 

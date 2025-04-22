@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from .utils import (
     actualitzar_activitats_culturals,
     actualitzar_estacions_qualitat_aire,
@@ -10,7 +12,8 @@ class ActualitzarRutes:
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_rutes()
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_rutes()
         return self.get_response(request)
 
 
@@ -19,7 +22,8 @@ class ActualitzarEstacionsQualitatAire:
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_estacions_qualitat_aire()
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_estacions_qualitat_aire()
         return self.get_response(request)
 
 
@@ -28,5 +32,6 @@ class ActualitzarActivitatsCulturals:
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_activitats_culturals()
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_activitats_culturals()
         return self.get_response(request)

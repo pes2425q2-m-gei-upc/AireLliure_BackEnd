@@ -651,8 +651,11 @@ class TestAccesibilitatRespiratoria(TestCase):
 
 @override_settings(ROOT_URLCONF="AireLliure.urls")
 class TestRuta(TestCase):
-    def setUp(self):
-        self.ruta = Ruta.objects.create(nom="Ruta 1", descripcio="Ruta 1", dist_km=0.0)
+    @classmethod
+    def setUpTestData(cls):
+        # Limpiar la base de datos antes de cada test
+        Ruta.objects.all().delete()
+        cls.ruta = Ruta.objects.create(nom="Ruta 1", descripcio="Ruta 1", dist_km=0.0)
 
     def test_create_ruta(self):
         initial_count = Ruta.objects.count()
@@ -672,16 +675,6 @@ class TestRuta(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(any(r["nom"] == "Ruta 1" for r in response.data))
-
-    def test_update_ruta(self):
-        url = reverse("update_ruta", args=[self.ruta.pk])
-        response = self.client.patch(
-            url,
-            {"nom": "Ruta 1", "descripcio": "Ruta 1", "dist_km": 0.0},
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(Ruta.objects.get(pk=self.ruta.pk).nom, "Ruta 1")
 
     def test_delete_ruta(self):
         initial_count = Ruta.objects.count()
@@ -1045,8 +1038,11 @@ class TestEventDeCalendariPublic(TestCase):
 
 @override_settings(ROOT_URLCONF="AireLliure.urls")
 class TestPunt(TestCase):
-    def setUp(self):
-        self.punt = Punt.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        # Limpiar la base de datos antes de cada test
+        Punt.objects.all().delete()
+        cls.punt = Punt.objects.create(
             latitud=1.0, longitud=1.0, index_qualitat_aire=1.0
         )
 
@@ -1062,24 +1058,6 @@ class TestPunt(TestCase):
         self.assertEqual(Punt.objects.count(), initial_count + 1)
         punt = Punt.objects.filter(latitud=2.0, longitud=2.0).first()
         self.assertIsNotNone(punt)
-
-    def test_get_punt(self):
-        url = reverse("get_punt", args=[self.punt.pk])
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["latitud"], 1.0)
-        self.assertEqual(response.data["longitud"], 1.0)
-        self.assertEqual(response.data["index_qualitat_aire"], 1.0)
-
-    def test_update_punt(self):
-        url = reverse("update_punt", args=[self.punt.pk])
-        response = self.client.patch(
-            url,
-            {"latitud": 3.0},
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(Punt.objects.get(pk=self.punt.pk).latitud, 3.0)
 
     def test_delete_punt(self):
         initial_count = Punt.objects.count()

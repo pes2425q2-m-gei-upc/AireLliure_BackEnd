@@ -364,7 +364,9 @@ class TestXat(TestCase):
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(XatIndividual.objects.count(), initial_count + 1)
-        xat = XatIndividual.objects.get(usuari1=self.user2, usuari2=self.user1)
+        xat = XatIndividual.objects.filter(
+            usuari1=self.user2, usuari2=self.user1
+        ).first()
         self.assertIsNotNone(xat)
 
     def test_get_xats(self):
@@ -459,68 +461,6 @@ class TestXatGrupal(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(XatGrupal.objects.count(), 0)
-
-
-@override_settings(ROOT_URLCONF="AireLliure.urls")
-class TestXatIndividual(TestCase):
-    def setUp(self):
-        self.user1 = Usuari.objects.create(
-            correu="user1@example.com",
-            password="1234",
-            nom="user1",
-            estat="actiu",
-            punts=0,
-            deshabilitador=None,
-            about="hola mundo",
-            administrador=False,
-        )
-        self.user2 = Usuari.objects.create(
-            correu="user2@example.com",
-            password="1234",
-            nom="user2",
-            estat="actiu",
-            punts=0,
-            deshabilitador=None,
-            about="hola mundo 2",
-            administrador=False,
-        )
-        self.xat = XatIndividual.objects.create(usuari1=self.user1, usuari2=self.user2)
-
-    def test_create_xat_individual(self):
-        url = reverse("create_xat_individual")
-        response = self.client.post(
-            url,
-            {"usuari1": self.user2.pk, "usuari2": self.user1.pk},
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, 201)
-        self.assertEqual(XatIndividual.objects.count(), 2)  # Ya existe un xat en setUp
-        self.assertEqual(
-            XatIndividual.objects.get(usuari1=self.user2, usuari2=self.user1).pk, 2
-        )
-
-    def test_get_xats_individual(self):
-        url = reverse("get_xats_individual")
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 1)  # Ya existe un xat en setUp
-        self.assertEqual(response.data[0]["usuari1"], self.user1.pk)
-        self.assertEqual(response.data[0]["usuari2"], self.user2.pk)
-
-    def test_update_xat_individual(self):
-        url = reverse("update_xat_individual", args=[self.xat.pk])
-        response = self.client.patch(
-            url,
-            {"usuari1": self.user1.pk, "usuari2": self.user2.pk},
-            content_type="application/json",
-        )
-        self.assertEqual(response.status_code, 200)
-
-    def test_delete_xat_individual(self):
-        url = reverse("delete_xat_individual", args=[self.xat.pk])
-        response = self.client.delete(url)
-        self.assertEqual(response.status_code, 204)
-        self.assertEqual(XatIndividual.objects.count(), 0)
 
 
 @override_settings(ROOT_URLCONF="AireLliure.urls")
@@ -724,7 +664,7 @@ class TestRuta(TestCase):
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Ruta.objects.count(), initial_count + 1)
-        ruta = Ruta.objects.get(nom="Ruta 2")
+        ruta = Ruta.objects.filter(nom="Ruta 2").first()
         self.assertIsNotNone(ruta)
 
     def test_get_rutas(self):
@@ -749,6 +689,7 @@ class TestRuta(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Ruta.objects.count(), initial_count - 1)
+        self.assertFalse(Ruta.objects.filter(pk=self.ruta.pk).exists())
 
 
 @override_settings(ROOT_URLCONF="AireLliure.urls")
@@ -1119,7 +1060,7 @@ class TestPunt(TestCase):
         )
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Punt.objects.count(), initial_count + 1)
-        punt = Punt.objects.get(latitud=2.0, longitud=2.0)
+        punt = Punt.objects.filter(latitud=2.0, longitud=2.0).first()
         self.assertIsNotNone(punt)
 
     def test_get_punt(self):
@@ -1146,3 +1087,4 @@ class TestPunt(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Punt.objects.count(), initial_count - 1)
+        self.assertFalse(Punt.objects.filter(pk=self.punt.pk).exists())

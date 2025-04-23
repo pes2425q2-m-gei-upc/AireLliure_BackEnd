@@ -719,9 +719,7 @@ class TestRecompensa(TestCase):
         self.assertEqual(
             Recompensa.objects.count(), 2
         )  # Ya existe una recompensa en setUp
-        recompensa = Recompensa.objects.filter(
-            usuari=self.usuari, ruta=self.ruta
-        ).first()
+        recompensa = Recompensa.objects.order_by("-id").first()
         self.assertEqual(recompensa.punts, 10)
 
     def test_get_recompensas(self):
@@ -1059,6 +1057,24 @@ class TestPunt(TestCase):
         punt = Punt.objects.filter(latitud=2.0, longitud=2.0).first()
         self.assertIsNotNone(punt)
 
+    def test_get_punt(self):
+        url = reverse("get_punt", args=[self.punt.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["latitud"], 1.0)
+        self.assertEqual(response.data["longitud"], 1.0)
+        self.assertEqual(response.data["index_qualitat_aire"], 1.0)
+
+    def test_update_punt(self):
+        url = reverse("update_punt", args=[self.punt.pk])
+        response = self.client.patch(
+            url,
+            {"latitud": 3.0},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Punt.objects.get(pk=self.punt.pk).latitud, 3.0)
+
     def test_delete_punt(self):
         initial_count = Punt.objects.count()
         url = reverse("delete_punt", args=[self.punt.pk])
@@ -1066,3 +1082,132 @@ class TestPunt(TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(Punt.objects.count(), initial_count - 1)
         self.assertFalse(Punt.objects.filter(pk=self.punt.pk).exists())
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestPresencia(TestCase):
+    def setUp(self):
+        self.usuari = Usuari.objects.create(
+            correu="user1@example.com",
+            password="1234",
+            nom="user1",
+            estat="actiu",
+            punts=0,
+            deshabilitador=None,
+            about="hola mundo",
+            administrador=False,
+        )
+        self.punt = Punt.objects.create(
+            latitud=1.0, longitud=1.0, index_qualitat_aire=1.0
+        )
+        self.contaminant = Contaminant.objects.create(
+            nom="Contaminant 1", informacio="Información del contaminante 1"
+        )
+        self.presencia = Presencia.objects.create(
+            punt=self.punt,
+            contaminant=self.contaminant,
+            data=timezone.now(),
+            valor=10.0,
+            valor_iqa=5.0,
+        )
+
+    def test_create_presencia(self):
+        url = reverse("create_presencia")
+        response = self.client.post(
+            url,
+            {
+                "punt": self.punt.pk,
+                "contaminant": self.contaminant.pk,
+                "data": timezone.now(),
+                "valor": 15.0,
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Presencia.objects.count(), 2)
+        presencia = Presencia.objects.order_by("-id").first()
+        self.assertEqual(presencia.valor, 15.0)
+
+    def test_get_presencia(self):
+        url = reverse("get_presencia", args=[self.presencia.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["punt"], self.punt.pk)
+        self.assertEqual(response.data["contaminant"], self.contaminant.pk)
+        self.assertEqual(float(response.data["valor"]), 10.0)
+
+    def test_update_presencia(self):
+        url = reverse("update_presencia", args=[self.presencia.pk])
+        response = self.client.patch(
+            url,
+            {"valor": 20.0},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Presencia.objects.get(pk=self.presencia.pk).valor, 20.0)
+
+    def test_delete_presencia(self):
+        initial_count = Presencia.objects.count()
+        url = reverse("delete_presencia", args=[self.presencia.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Presencia.objects.count(), initial_count - 1)
+        self.assertFalse(Presencia.objects.filter(pk=self.presencia.pk).exists())
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestContaminant(TestCase):
+    def setUp(self):
+        self.contaminant = Contaminant.objects.create(
+            nom="Contaminant 1", informacio="Información del contaminante 1"
+        )
+
+    def test_create_contaminant(self):
+        url = reverse("create_contaminant")
+        response = self.client.post(
+            url,
+            {"nom": "Contaminant 2", "informacio": "Información del contaminante 2"},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(Contaminant.objects.count(), 2)
+        contaminant = Contaminant.objects.get(nom="Contaminant 2")
+        self.assertEqual(contaminant.informacio, "Información del contaminante 2")
+
+    def test_get_contaminant(self):
+        url = reverse("get_contaminant", args=[self.contaminant.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["nom"], "Contaminant 1")
+        self.assertEqual(response.data["informacio"], "Información del contaminante 1")
+
+    def test_update_contaminant(self):
+        url = reverse("update_contaminant", args=[self.contaminant.pk])
+        response = self.client.patch(
+            url,
+            {"informacio": "Información actualizada"},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            Contaminant.objects.get(pk=self.contaminant.pk).informacio,
+            "Información actualizada",
+        )
+
+    def test_delete_contaminant(self):
+        initial_count = Contaminant.objects.count()
+        url = reverse("delete_contaminant", args=[self.contaminant.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Contaminant.objects.count(), initial_count - 1)
+        self.assertFalse(Contaminant.objects.filter(pk=self.contaminant.pk).exists())
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestEstacioQualitatAire(TestCase):
+    def setUp(self):
+        self.estacio = EstacioQualitatAire.objects.create(
+            nom="Estacio 1",
+            descripcio="Estacio 1",
+            data_hora=timezone.now(),
+        )

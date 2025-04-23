@@ -2,32 +2,16 @@ name: Run Tests
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [main, dev]
   pull_request:
-    branches: [ main, dev ]
+    branches: [main, dev]
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: aire_lliure_db_user
-          POSTGRES_PASSWORD: 0bdWMTSCRAEkzHb3xS8H0k4QZHBSops1
-          POSTGRES_DB: aire_lliure_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     env:
-      DATABASE_URL: postgresql://aire_lliure_db_user:0bdWMTSCRAEkzHb3xS8H0k4QZHBSops1@localhost:5432/aire_lliure_db
-      DJANGO_SETTINGS_MODULE: AireLliure.settings
+      DJANGO_SETTINGS_MODULE: AireLliure.test_settings
       PYTHON_VERSION: 3.12
 
     steps:

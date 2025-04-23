@@ -238,6 +238,26 @@ paths:
         "201":
           description: Usuari creat correctament
 
+  /habilitats/:
+    get:
+      summary: Obtenir totes les habilitats
+      operationId: getHabilitats
+      tags:
+        - Usuari
+      responses:
+        "200":
+          description: Habilitats obtingudes correctament
+
+  /deshabilitats/:
+    get:
+      summary: Obtenir totes les deshabilitats
+      operationId: getDeshabilitats
+      tags:
+        - Usuari
+      responses:
+        "200":
+          description: Deshabilitats obtingudes correctament
+
   /usuaris/{id}/:
     get:
       summary: Obtenir un usuari per ID
@@ -607,6 +627,24 @@ paths:
         "404":
           description: No s'ha trobat cap bloqueig amb aquest id.
 
+  /bloqueigs/usuari/{id}/:
+    get:
+      summary: Obtenir tots els bloqueigs d'un usuari
+      operationId: getBloqueigsUsuari
+      tags:
+        - Bloqueig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bloqueigs obtinguts correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
   /amistats/:
     get:
       summary: Obtenir totes les amistats
@@ -714,6 +752,78 @@ paths:
           description: Amistat eliminada correctament
         "404":
           description: No s'ha trobat cap amistat amb aquest id.
+
+  /amistats/usuari/{id}/basics/:
+    get:
+      summary: Obtenir totes els usuaris que no son d'amistat ni estan pendents d'acceptar una sol·licitud d'amistat
+      operationId: getAmistatsUsuari
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Amistats obtingudes correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
+  /amistats/usuari/{id}/:
+    get:
+      summary: Obtenir totes les amistats d'un usuari
+      operationId: getAmistatsUsuari_id
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Amistats obtingudes correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
+  /amistats/usuari/{id}/rebudes/:
+    get:
+      summary: Obtenir totes les amistats rebudes d'un usuari
+      operationId: getAmistatsRebudesUsuari
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Amistats rebudes obtingudes correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
+  /amistats/usuari/{id}/enviades/:
+    get:
+      summary: Obtenir totes les amistats enviades d'un usuari
+      operationId: getAmistatsEnviadesUsuari
+      tags:
+        - Amistat
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Amistats enviades obtingudes correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
 
   /rutas/:
     get:

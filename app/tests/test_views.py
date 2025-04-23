@@ -1207,7 +1207,177 @@ class TestContaminant(TestCase):
 class TestEstacioQualitatAire(TestCase):
     def setUp(self):
         self.estacio = EstacioQualitatAire.objects.create(
-            nom="Estacio 1",
+            nom_estacio="Estacio 1",
             descripcio="Estacio 1",
-            data_hora=timezone.now(),
+            latitud=1.0,
+            longitud=1.0,
+            index_qualitat_aire=1.0,
         )
+
+    def test_create_estacio_qualitat_aire(self):
+        url = reverse("create_estacio_qualitat_aire")
+        response = self.client.post(
+            url,
+            {
+                "nom_estacio": "Estacio 2",
+                "descripcio": "Descripción de la estación 2",
+                "latitud": 2.0,
+                "longitud": 2.0,
+                "index_qualitat_aire": 2.0,
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(EstacioQualitatAire.objects.count(), 2)
+        estacio = EstacioQualitatAire.objects.order_by("-id").first()
+        self.assertEqual(estacio.descripcio, "Descripción de la estación 2")
+
+    def test_get_estacio_qualitat_aire(self):
+        url = reverse("get_estacio_qualitat_aire", args=[self.estacio.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["nom_estacio"], "Estacio 1")
+        self.assertEqual(response.data["descripcio"], "Estacio 1")
+
+    def test_update_estacio_qualitat_aire(self):
+        url = reverse("update_estacio_qualitat_aire", args=[self.estacio.pk])
+        response = self.client.patch(
+            url,
+            {"descripcio": "Descripción actualizada"},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            EstacioQualitatAire.objects.get(pk=self.estacio.pk).descripcio,
+            "Descripción actualizada",
+        )
+
+    def test_delete_estacio_qualitat_aire(self):
+        initial_count = EstacioQualitatAire.objects.count()
+        url = reverse("delete_estacio_qualitat_aire", args=[self.estacio.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(EstacioQualitatAire.objects.count(), initial_count - 1)
+        self.assertFalse(
+            EstacioQualitatAire.objects.filter(pk=self.estacio.pk).exists()
+        )
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestActivitatCultural(TestCase):
+    def setUp(self):
+        self.activitat = ActivitatCultural.objects.create(
+            nom_activitat="Activitat 1",
+            descripcio="Descripcio de l'activitat 1",
+            data_inici=timezone.now().date(),
+            data_fi=timezone.now().date() + timezone.timedelta(days=1),
+            latitud=1.0,
+            longitud=1.0,
+            index_qualitat_aire=1.0,
+        )
+
+    def test_create_activitat_cultural(self):
+        url = reverse("create_activitat_cultural")
+        data = {
+            "nom_activitat": "Activitat 2",
+            "descripcio": "Descripcio de l'activitat 2",
+            "data_inici": "2025-04-24",
+            "data_fi": "2025-04-25",
+            "latitud": 2.0,
+            "longitud": 2.0,
+            "index_qualitat_aire": 2.0,
+        }
+        response = self.client.post(
+            url,
+            json.dumps(data),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_activitat_cultural(self):
+        url = reverse("get_activitat_cultural", args=[self.activitat.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["nom_activitat"], "Activitat 1")
+        self.assertEqual(response.data["descripcio"], "Descripcio de l'activitat 1")
+
+    def test_update_activitat_cultural(self):
+        url = reverse("update_activitat_cultural", args=[self.activitat.pk])
+        response = self.client.patch(
+            url,
+            {"descripcio": "Descripcio actualitzat"},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            ActivitatCultural.objects.get(pk=self.activitat.pk).descripcio,
+            "Descripcio actualitzat",
+        )
+
+    def test_delete_activitat_cultural(self):
+        initial_count = ActivitatCultural.objects.count()
+        url = reverse("delete_activitat_cultural", args=[self.activitat.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(ActivitatCultural.objects.count(), initial_count - 1)
+        self.assertFalse(
+            ActivitatCultural.objects.filter(pk=self.activitat.pk).exists()
+        )
+
+
+@override_settings(ROOT_URLCONF="AireLliure.urls")
+class TestApuntat(TestCase):
+    def setUp(self):
+        self.usuari = Usuari.objects.create(
+            correu="usuari1@example.com",
+            password="password1",
+            nom="Usuari 1",
+            estat="actiu",
+            punts=0,
+            deshabilitador=None,
+            about="hola mundo",
+            administrador=False,
+        )
+        self.event = EventDeCalendariPublic.objects.create(
+            nom="Event 1",
+            descripció="Descripció de l'event 1",
+            data_inici=timezone.now(),
+            data_fi=timezone.now() + timezone.timedelta(hours=1),
+            limit=10,
+        )
+        self.apuntat = Apuntat.objects.create(usuari=self.usuari, event=self.event)
+
+    def test_create_apuntat(self):
+        url = reverse("create_apuntat")
+        data = {"usuari": self.usuari.pk, "event": self.event.pk}
+        response = self.client.post(
+            url,
+            json.dumps(data),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_apuntat(self):
+        url = reverse("get_apuntat", args=[self.apuntat.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["usuari"], self.usuari.pk)
+        self.assertEqual(response.data["event"], self.event.pk)
+
+    def test_update_apuntat(self):
+        url = reverse("update_apuntat", args=[self.apuntat.pk])
+        response = self.client.patch(
+            url,
+            {"event": self.event.pk},
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Apuntat.objects.get(pk=self.apuntat.pk).event, self.event)
+
+    def test_delete_apuntat(self):
+        initial_count = Apuntat.objects.count()
+        url = reverse("delete_apuntat", args=[self.apuntat.pk])
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(Apuntat.objects.count(), initial_count - 1)
+        self.assertFalse(Apuntat.objects.filter(pk=self.apuntat.pk).exists())

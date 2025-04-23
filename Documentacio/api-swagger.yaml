@@ -307,6 +307,51 @@ paths:
         "204":
           description: Usuari eliminat correctament
 
+  /usuaris/{correu_deshabilitador}/deshabilitar/{correu_usuari}/:
+    patch:
+      summary: Deshabilitar un usuari
+      operationId: deshabilitarUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: correu_deshabilitador
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: correu_usuari
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuari deshabilitat correctament
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
+  /usuaris/{correu_usuari}/rehabilitar/:
+    patch:
+      summary: Rehabilitar un usuari
+      operationId: rehabilitarUsuari
+      tags:
+        - Usuari
+      parameters:
+        - name: correu_usuari
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuari rehabilitat correctament
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
   /login/:
     post:
       summary: Iniciar sessió
@@ -327,6 +372,34 @@ paths:
       responses:
         "200":
           description: Login correcte
+
+  /ranking-usuaris-all/:
+    get:
+      summary: Obtenir el ranking de tots els usuaris
+      operationId: getRankingUsuarisAll
+      tags:
+        - Ranking
+      responses:
+        "200":
+          description: Ranking obtingut correctament
+
+  /ranking-usuari-amics/{correu_usuari}/:
+    get:
+      summary: Obtenir el ranking de tots els amics d'un usuari
+      operationId: getRankingUsuariAmics
+      tags:
+        - Ranking
+      parameters:
+        - name: correu_usuari
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ranking obtingut correctament
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
 
   /admins/:
     get:
@@ -1268,6 +1341,24 @@ paths:
         "404":
           description: No s'ha trobat cap xat amb aquest id.
 
+  /xats/usuari/{correu_usuari}/:
+    get:
+      summary: Obtenir tots els xats d'un usuari
+      operationId: getXatsUsuari
+      tags:
+        - Xats
+      parameters:
+        - name: correu_usuari
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Llista de xats
+        "404":
+          description: No s'ha trobat cap usuari amb aquest id.
+
   /xats-individual/:
     get:
       summary: Obtenir tots els xats individuals
@@ -1483,6 +1574,56 @@ paths:
           description: Xat grupal eliminat correctament
         "404":
           description: No s'ha trobat cap xat grupal amb aquest id.
+
+  /xats-grupal/{pk}/afegir-usuari/{pkuser}/:
+    patch:
+      summary: Afegir un usuari a un xat grupal
+      operationId: afegirUsuariXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: pkuser
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuari afegit correctament
+        "404":
+          description: No s'ha trobat cap xat grupal amb aquest id.
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /xats-grupal/{pk}/eliminar-usuari/{pkuser}/:
+    patch:
+      summary: Eliminar un usuari d'un xat grupal
+      operationId: eliminarUsuariXatGrupal
+      tags:
+        - Xat Grupal
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: pkuser
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuari eliminat correctament
+        "404":
+          description: No s'ha trobat cap xat grupal amb aquest id.
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
 
   /invitacions/:
     get:
@@ -2717,7 +2858,7 @@ paths:
   /presencies/punt/{lon}/{lat}/:
     get:
       summary: Obtenir una presencia específica
-      operationId: get_presencia
+      operationId: get_presencia_per_cordenades
       tags:
         - Presencies
       parameters:
@@ -2736,3 +2877,105 @@ paths:
           description: Llista de missatges
         "404":
           description: No s'ha trobat cap presencia amb aquest id.
+
+  /index-qualitat-aire-taula/:
+    get:
+      summary: Obtenir l'índex de qualitat d'aire
+      operationId: get_index_qualitat_aire_taula
+      tags:
+        - Index de Qualitat d'Aire
+      responses:
+        "200":
+          description: Llista de missatges
+
+  /index-qualitat-aire-taula-contaminant/{pk}/:
+    get:
+      summary: Obtenir l'índex de qualitat d'aire
+      operationId: get_index_qualitat_aire_taula_contaminant
+      tags:
+        - Index de Qualitat d'Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Llista de missatges
+        "404":
+          description: No s'ha trobat cap contaminant amb aquest id.
+
+  /index-qualitat-aire-taula/create/:
+    post:
+      summary: Crear un contaminant
+      operationId: create_index_qualitat_aire_taula
+      tags:
+        - Index de Qualitat d'Aire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contaminant:
+                  type: string
+                valor:
+                  type: integer
+      responses:
+        "200":
+          description: Llista de missatges
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /index-qualitat-aire-taula/{pk}/update/:
+    patch:
+      summary: Actualitzar un contaminant
+      operationId: update_index_qualitat_aire_taula
+      tags:
+        - Index de Qualitat d'Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contaminant:
+                  type: string
+                valor:
+                  type: integer
+      responses:
+        "200":
+          description: Llista de missatges
+        "404":
+          description: No s'ha trobat cap contaminant amb aquest id.
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.
+
+  /index-qualitat-aire-taula/{pk}/delete/:
+    delete:
+      summary: Eliminar un contaminant
+      operationId: delete_index_qualitat_aire_taula
+      tags:
+        - Index de Qualitat d'Aire
+      parameters:
+        - name: pk
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Llista de missatges
+        "404":
+          description: No s'ha trobat cap contaminant amb aquest id.
+        "400":
+          description: Bad Request. Algun valor s'ha introduit malament.

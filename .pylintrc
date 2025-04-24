@@ -1,0 +1,19 @@
+[MASTER]
+init-hook='import sys; sys.path.append(".")'
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+disable=
+    missing-module-docstring,
+    missing-class-docstring,
+    too-few-public-methods
+
+[DESIGN]
+# Maximum number of methods in a class
+max-args=5
+
+[TYPECHECK]
+ignored-modules=djangorestframework
+
+[REPORTS]
+output-format=colorized

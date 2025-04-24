@@ -11,7 +11,7 @@ from app.forms import AssignaAccesibilitatRespiratoriaForm
 from app.models import *  # noqa: F403, F405
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestViewsUsuari(TestCase):
 
     def setUp(self):
@@ -105,7 +105,7 @@ class TestViewsUsuari(TestCase):
         self.assertEqual(Usuari.objects.count(), 1)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestViewsAdmin(TestCase):
     def setUp(self):
         Admin.objects.create(
@@ -185,7 +185,7 @@ class TestViewsAdmin(TestCase):
         self.assertEqual(Admin.objects.count(), 1)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestViewAmistats(TestCase):
     def setUp(self):
         self.user1 = Usuari.objects.create(
@@ -266,7 +266,7 @@ class TestViewAmistats(TestCase):
         self.assertEqual(Amistat.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestBloqueig(TestCase):
     def setUp(self):
         self.user1 = Usuari.objects.create(
@@ -332,7 +332,7 @@ class TestBloqueig(TestCase):
         self.assertEqual(Bloqueig.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestXat(TestCase):
     def setUp(self):
         self.user1 = Usuari.objects.create(
@@ -396,7 +396,7 @@ class TestXat(TestCase):
         self.assertEqual(XatIndividual.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestXatGrupal(TestCase):
     def setUp(self):
         self.user1 = Usuari.objects.create(
@@ -466,7 +466,7 @@ class TestXatGrupal(TestCase):
         self.assertEqual(XatGrupal.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestInvitacio(TestCase):
     def setUp(self):
         self.user1 = Usuari.objects.create(
@@ -553,7 +553,7 @@ class TestInvitacio(TestCase):
         self.assertEqual(Invitacio.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestDificultatEsportiva(TestCase):
     def setUp(self):
         self.dificultat = DificultatEsportiva.objects.create(
@@ -600,7 +600,7 @@ class TestDificultatEsportiva(TestCase):
         self.assertEqual(DificultatEsportiva.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestAccesibilitatRespiratoria(TestCase):
     def setUp(self):
         self.accesibilitat = AccesibilitatRespiratoria.objects.create(
@@ -652,7 +652,7 @@ class TestAccesibilitatRespiratoria(TestCase):
         self.assertEqual(AccesibilitatRespiratoria.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestRuta(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -688,7 +688,7 @@ class TestRuta(TestCase):
         self.assertFalse(Ruta.objects.filter(pk=self.ruta.pk).exists())
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestRecompensa(TestCase):
     def setUp(self):
         self.ruta = Ruta.objects.create(nom="Ruta 1", descripcio="Ruta 1", dist_km=0.0)
@@ -748,7 +748,7 @@ class TestRecompensa(TestCase):
         self.assertEqual(Recompensa.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestAssignaAccesibilitatRespiratoria(TestCase):
     def setUp(self):
         self.admin = Admin.objects.create(
@@ -805,7 +805,7 @@ class TestAssignaAccesibilitatRespiratoria(TestCase):
         self.assertEqual(AssignaAccesibilitatRespiratoria.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestAssignaDificultatEsportiva(TestCase):
     def setUp(self):
         self.admin = Admin.objects.create(
@@ -874,7 +874,7 @@ class TestAssignaDificultatEsportiva(TestCase):
         self.assertEqual(AssignaDificultatEsportiva.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestEventDeCalendari(TestCase):
     def setUp(self):
         self.event = EventDeCalendari.objects.create(
@@ -929,7 +929,7 @@ class TestEventDeCalendari(TestCase):
         self.assertEqual(EventDeCalendari.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestEventDeCalendariPrivat(TestCase):
     def setUp(self):
         self.event = EventDeCalendariPrivat.objects.create(
@@ -982,7 +982,7 @@ class TestEventDeCalendariPrivat(TestCase):
         self.assertEqual(EventDeCalendariPrivat.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestEventDeCalendariPublic(TestCase):
     def setUp(self):
         self.event = EventDeCalendariPublic.objects.create(
@@ -1037,7 +1037,7 @@ class TestEventDeCalendariPublic(TestCase):
         self.assertEqual(EventDeCalendariPublic.objects.count(), 0)
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestPunt(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -1087,7 +1087,7 @@ class TestPunt(TestCase):
         self.assertFalse(Punt.objects.filter(pk=self.punt.pk).exists())
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestPresencia(TestCase):
     def setUp(self):
         self.usuari = Usuari.objects.create(
@@ -1158,7 +1158,7 @@ class TestPresencia(TestCase):
         self.assertFalse(Presencia.objects.filter(pk=self.presencia.pk).exists())
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestContaminant(TestCase):
     def setUp(self):
         self.contaminant = Contaminant.objects.create(
@@ -1206,7 +1206,7 @@ class TestContaminant(TestCase):
         self.assertFalse(Contaminant.objects.filter(pk=self.contaminant.pk).exists())
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestEstacioQualitatAire(TestCase):
     def setUp(self):
         self.estacio = EstacioQualitatAire.objects.create(
@@ -1266,7 +1266,7 @@ class TestEstacioQualitatAire(TestCase):
         )
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestActivitatCultural(TestCase):
     def setUp(self):
         self.activitat = ActivitatCultural.objects.create(
@@ -1328,7 +1328,7 @@ class TestActivitatCultural(TestCase):
         )
 
 
-@override_settings(ROOT_URLCONF="AireLliure.urls")
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestApuntat(TestCase):
     def setUp(self):
         self.usuari = Usuari.objects.create(

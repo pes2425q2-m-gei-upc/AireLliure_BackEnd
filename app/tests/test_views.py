@@ -1,3 +1,5 @@
+# pylint disable=non-ascii-name, unused-import, wildcard-import, too-many-lines
+
 import json
 
 from django.test import TestCase, override_settings

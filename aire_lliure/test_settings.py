@@ -57,4 +57,4 @@ TEMPLATES = [
 SECRET_KEY = "django-insecure-test-key-for-testing-purposes-only"
 
 # Configuración de URLs
-ROOT_URLCONF = "AireLliure.urls"
+ROOT_URLCONF = "aire_lliure.urls"

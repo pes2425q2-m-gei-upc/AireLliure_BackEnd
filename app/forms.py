@@ -2,8 +2,35 @@
 
 from django import forms
 
-from .models import *
-
+from .models import (
+    Categoria, 
+    DificultatEsportiva, 
+    AccesibilitatRespiratoria, 
+    Usuari, 
+    Admin, 
+    Bloqueig, 
+    Amistat, 
+    Ruta, 
+    Valoracio, 
+    Recompensa, 
+    AssignaDificultatEsportiva, 
+    AssignaAccesibilitatRespiratoria,
+    Xat,
+    XatIndividual,
+    XatGrupal,
+    Invitacio,
+    Missatge,
+    EventDeCalendari,
+    EventDeCalendariPrivat,
+    EventDeCalendariPublic,
+    Apuntat,
+    Punt,
+    EstacioQualitatAire,
+    ActivitatCultural,
+    Contaminant,
+    Presencia,
+    IndexQualitatAire
+)
 
 class CategoriaForm(forms.ModelForm):
     class Meta:

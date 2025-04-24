@@ -1,3 +1,5 @@
+# pylint disable=non-ascii-name
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone

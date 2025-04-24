@@ -1,8 +1,38 @@
 # flake8: noqa: F403, F405
+# pylint disable=abstract-method
 
 from rest_framework import serializers
 
-from .models import *
+from .models import (
+    Categoria,
+    DificultatEsportiva,
+    AccesibilitatRespiratoria,
+    Usuari,
+    Admin,
+    Bloqueig,
+    Amistat,
+    Ruta,
+    Valoracio,
+    Recompensa,
+    AssignaDificultatEsportiva,
+    AssignaAccesibilitatRespiratoria,
+    Xat,
+    XatIndividual,
+    XatGrupal,
+    Invitacio,
+    Missatge,
+    EventDeCalendari,
+    EventDeCalendariPrivat,
+    EventDeCalendariPublic,
+    Apuntat,
+    Punt,
+    EstacioQualitatAire,
+    ActivitatCultural,
+    Contaminant,
+    Presencia,
+    IndexQualitatAire,
+    JobExecution
+)
 
 
 class CategoriaSerializer(serializers.ModelSerializer):
@@ -179,7 +209,6 @@ class XatGenericSerializer(serializers.BaseSerializer):
     def to_representation(self, instance):
         if isinstance(instance, XatIndividual):
             return XatIndividualSerializer(instance).data
-        elif isinstance(instance, XatGrupal):
+        if isinstance(instance, XatGrupal):
             return XatGrupalSerializer(instance).data
-        else:
-            return XatSerializer(instance).data
+        return XatSerializer(instance).data

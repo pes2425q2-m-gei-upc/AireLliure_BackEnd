@@ -15,6 +15,6 @@ exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 88
-known_first_party = ["AireLliure", "app"]
+known_first_party = ["aire_lliure", "app"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 skip = ["migrations"]

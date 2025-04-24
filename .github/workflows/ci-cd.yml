@@ -14,7 +14,7 @@ jobs:
       lint_status: ${{ steps.lint.outcome }}
     
     env:
-      DJANGO_SETTINGS_MODULE: AireLliure.settings
+      DJANGO_SETTINGS_MODULE: aire_lliure.settings
       PYTHON_VERSION: 3.12
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: Run Linting
         id: lint
         run: |
-          pylint --rcfile=.pylintrc --load-plugins pylint_django AireLliure app
+          pylint --rcfile=.pylintrc --load-plugins pylint_django aire_lliure app
     
   test:
     name: Run Tests
@@ -46,7 +46,7 @@ jobs:
       test_status: ${{ steps.test.outcome }}
 
     env:
-      DJANGO_SETTINGS_MODULE: AireLliure.test_settings
+      DJANGO_SETTINGS_MODULE: aire_lliure.test_settings
       PYTHON_VERSION: 3.12
 
     steps:

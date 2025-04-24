@@ -1,5 +1,5 @@
 # flake8: noqa: F403, F405
-# pylint disable=abstract-method
+# pylint: disable=abstract-method
 
 from rest_framework import serializers
 

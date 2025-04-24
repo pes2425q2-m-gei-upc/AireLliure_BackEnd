@@ -1,4 +1,4 @@
-# pylint disable=too-many-locals, too-many-nested-blocks, too-many-statements
+# pylint: disable=too-many-locals, too-many-nested-blocks, too-many-statements
 
 from datetime import datetime, time
 

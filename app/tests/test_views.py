@@ -1,4 +1,4 @@
-# pylint disable=non-ascii-name, unused-import, wildcard-import, too-many-lines
+# pylint: disable=non-ascii-name, unused-import, wildcard-import, too-many-lines
 
 import json
 

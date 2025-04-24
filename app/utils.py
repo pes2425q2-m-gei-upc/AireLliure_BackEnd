@@ -16,7 +16,7 @@ from .models import (
     JobExecution,
     Presencia,
     Punt,
-    Ruta
+    Ruta,
 )
 
 OPEN_DATA_BCN_URL = (

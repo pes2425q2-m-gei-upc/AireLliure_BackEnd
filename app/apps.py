@@ -3,7 +3,7 @@
 from django.apps import AppConfig
 
 
-# REVISAR: 
+# REVISAR:
 # class AireLliureConfig(AppConfig):
 class AppConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"

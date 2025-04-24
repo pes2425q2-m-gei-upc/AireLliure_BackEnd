@@ -36,7 +36,7 @@ jobs:
       - name: Run Linting
         id: lint
         run: |
-          pylint --rcfile=.pylintrc --load-plugins pylint_django .
+          pylint --rcfile=.pylintrc --load-plugins pylint_django AireLliure app
     
   test:
     name: Run Tests

@@ -1,3 +1,5 @@
+# anticuat
+
 from datetime import datetime, time
 
 import requests
@@ -226,9 +228,14 @@ def actualitzar_estacions_qualitat_aire():
                 Presencia(
                     data=data,
                     valor=valor,
-                    valor_iqa=indexos_qualitat_aire_guardats.get(
-                        nom_contaminant
-                    ).normalitzar_valor(valor),
+                    valor_iqa=(
+                        indexos_qualitat_aire_guardats.get(
+                            nom_contaminant
+                        ).normalitzar_valor(valor)
+                        if indexos_qualitat_aire_guardats.get(nom_contaminant)
+                        is not None
+                        else 0.0
+                    ),
                     contaminant_id=contaminants_guardats.get(nom_contaminant).id,
                     punt_id=punts_guardats.get(latlon_key).id,
                 )

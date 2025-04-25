@@ -1,3 +1,5 @@
+# pylint: disable=too-many-locals, too-many-nested-blocks, too-many-statements
+
 from datetime import datetime, time
 
 import requests
@@ -45,7 +47,7 @@ def actualitzar_rutes():
     job, created = JobExecution.objects.get_or_create(name="actualizar_rutas")
     if created or now() - job.last_run >= timedelta(weeks=1):
 
-        response = requests.get(OPEN_DATA_BCN_URL)
+        response = requests.get(OPEN_DATA_BCN_URL, timeout=60)
         if response.status_code == 200:
             dades = response.json()
             dades_punts = {}
@@ -85,8 +87,8 @@ def actualitzar_rutes():
                 punts_guardats = {
                     (p.latitud, p.longitud): p
                     for p in Punt.objects.filter(
-                        latitud__in=[k[0] for k in dades_punts.keys()],
-                        longitud__in=[k[1] for k in dades_punts.keys()],
+                        latitud__in=[k[0] for k in dades_punts],
+                        longitud__in=[k[1] for k in dades_punts],
                     )
                 }
 
@@ -115,7 +117,7 @@ def actualitzar_estacions_qualitat_aire():
     )
     if created or now() - job.last_run >= timedelta(days=1):
 
-        response = requests.get(DADES_OBERTES_DE_LA_GENERALITAT_URL)
+        response = requests.get(DADES_OBERTES_DE_LA_GENERALITAT_URL, timeout=60)
         if response.status_code == 200:
             dades = response.json()
             dades_punts = {}
@@ -175,7 +177,7 @@ def actualitzar_estacions_qualitat_aire():
                 contaminants_guardats = {
                     c.nom: c
                     for c in Contaminant.objects.filter(
-                        nom__in=[k for k in dades_contaminants.keys()]
+                        nom__in=list(dades_contaminants.keys())
                     )
                 }
 
@@ -198,8 +200,8 @@ def actualitzar_estacions_qualitat_aire():
                 punts_guardats = {
                     (p.latitud, p.longitud): p
                     for p in Punt.objects.filter(
-                        latitud__in=[k[0] for k in dades_punts.keys()],
-                        longitud__in=[k[1] for k in dades_punts.keys()],
+                        latitud__in=[k[0] for k in dades_punts],
+                        longitud__in=[k[1] for k in dades_punts],
                     )
                 }
 
@@ -258,7 +260,7 @@ def actualitzar_activitats_culturals():
     )
     if created or now() - job.last_run >= timedelta(days=1):
 
-        response = requests.get(SERVEI_ACTIVITATS_CULTURALS_URL)
+        response = requests.get(SERVEI_ACTIVITATS_CULTURALS_URL, timeout=60)
         if response.status_code == 200:
 
             dades = response.json()

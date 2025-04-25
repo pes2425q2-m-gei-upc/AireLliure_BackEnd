@@ -1,5 +1,5 @@
 """
-WSGI config for AireLliure project.
+WSGI config for aire_lliure project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "AireLliure.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "aire_lliure.settings")
 
 application = get_wsgi_application()

@@ -1,4 +1,5 @@
 # flake8: noqa: F403, F405
+# pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -267,7 +268,7 @@ def get_all_usuaris_habilitats(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# LA PART DE ADMIN ------------------------------------------------------------------------------------------------
+# LA PART DE ADMIN --------------------------------------------------------------------
 
 # LA PART DE ADMIN --------------------------------------------------------------------
 

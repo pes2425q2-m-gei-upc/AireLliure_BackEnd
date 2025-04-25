@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, staging]
   pull_request:
-    branches: [main, dev]
+    branches: [main, staging]
 
 jobs:
   lint:
@@ -93,8 +93,20 @@ jobs:
         env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  deploy:
-    name: Deploy to Render
+  deploy_staging:
+    name: Deploy to Render (Staging)
+    runs-on: ubuntu-latest
+    needs: [lint, test, sonarcloud]
+    if: |
+      success() && github.ref_name == 'staging'
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -X POST "${{ secrets.DEPLOY_HOOK_STAGING }}"
+
+  deploy_main:
+    name: Deploy to Render (Main)
     runs-on: ubuntu-latest
     needs: [lint, test, sonarcloud]
     if: |

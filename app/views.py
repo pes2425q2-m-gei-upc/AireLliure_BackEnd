@@ -601,6 +601,19 @@ def delete_ruta(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(["GET"])
+def get_all_info_ruta(request, pk):
+    ruta = get_object_or_404(Ruta, pk=pk)
+    valoracions_ruta = Valoracio.objects.filter(ruta=ruta)
+    serializer_ruta = RutaSerializer(ruta)
+    serializer_valoracions = ValoracioSerializer(valoracions_ruta, many=True)
+    for valoracio in serializer_valoracions.data:
+        usuari = get_object_or_404(Usuari, pk=valoracio.get("usuari"))
+        valoracio["nom_usuari"] = usuari.nom
+    return Response({"ruta": serializer_ruta.data, "valoracions": serializer_valoracions.data}, status=status.HTTP_200_OK)
+        
+
+
 # LA PART DE VALORACIO ----------------------------------------------------------------
 
 

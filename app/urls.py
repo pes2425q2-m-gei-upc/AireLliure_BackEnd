@@ -131,6 +131,7 @@ urlpatterns = [
     path("rutas/create/", views.create_ruta, name="create_ruta"),
     path("rutas/<int:pk>/update/", views.update_ruta, name="update_ruta"),
     path("rutas/<int:pk>/delete/", views.delete_ruta, name="delete_ruta"),
+    path("rutas/<int:pk>/info/", views.get_all_info_ruta, name="get_all_info_ruta"),
     # VALORACIO
     path("valoracions/", views.get_valoracions, name="get_valoracions"),
     path("valoracions/<int:pk>/", views.get_valoracio, name="get_valoracio"),

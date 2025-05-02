@@ -173,6 +173,8 @@ def get_usuari(request, pk):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def create_usuari(request):
+    print("Datos recibidos:", request.data)
+    print("Archivos recibidos:", request.FILES)
     data = {
         "correu": request.data.get("correu"),
         "password": request.data.get("password"),
@@ -184,16 +186,22 @@ def create_usuari(request):
         "administrador": request.data.get("administrador", False),
     }
 
-    # Si hay archivos en la petición, los añadimos al form
     files = {}
     if "imatge" in request.FILES:
         files["imatge"] = request.FILES["imatge"]
 
+    print("Datos para el formulario:", data)
+    print("Archivos para el formulario:", files)
+
     form = UsuariForm(data=data, files=files)
     if form.is_valid():
+        print("El formulario es válido. Guardando usuario...")
         usuari = form.save()
+        print("Usuario guardado:", usuari)
         serializer = UsuariSerializer(usuari)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print("Errores del formulario:", form.errors)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

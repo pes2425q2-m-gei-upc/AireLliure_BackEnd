@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "app",
     "corsheaders",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -190,14 +191,47 @@ CORS_ALLOWED_ORIGINS = [
 # Elimina o comenta temporalmente CSRF_TRUSTED_ORIGINS para pruebas
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
 
-INSTALLED_APPS += ["storages"]
-
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-AWS_ACCESS_KEY_ID = "AKIAWH7XBNFR4ZZOZUXY"
-AWS_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "airelliure"
-AWS_S3_REGION_NAME = "eu-north-1"
+AWS_ACCESS_KEY_ID = 'AKIAWH7XBNFR4ZZOZUXY'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'airelliure'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 AWS_QUERYSTRING_AUTH = False
+AWS_S3_URL_PROTOCOL = 'https:'
 
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/"
+MEDIA_ROOT = ""
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": AWS_S3_REGION_NAME,
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "file_overwrite": False,
+            "querystring_auth": False,
+            "use_ssl": True,
+        }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
+}
+
+# Static and media file configuration
+STATIC_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_URL = f'{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/'
+#MEDIA_URL ='/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#MEDIA_ROOT = None
+
+assert DEFAULT_FILE_STORAGE == "storages.backends.s3boto3.S3Boto3Storage", "NO s'està usant el settings correcte"
+
+

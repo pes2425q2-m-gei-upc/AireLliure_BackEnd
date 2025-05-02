@@ -183,7 +183,13 @@ def create_usuari(request):
         "about": request.data.get("about", None),
         "administrador": request.data.get("administrador", False),
     }
-    form = UsuariForm(data=data)
+
+    # Si hay archivos en la petición, los añadimos al form
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = UsuariForm(data=data, files=files)
     if form.is_valid():
         usuari = form.save()
         serializer = UsuariSerializer(usuari)

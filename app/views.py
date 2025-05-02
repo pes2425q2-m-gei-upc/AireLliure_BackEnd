@@ -203,7 +203,9 @@ def create_usuari(request):
         if hasattr(usuari, "imatge") and usuari.imatge:
             print("Storage usado:", type(usuari.imatge.storage))
             print("Ruta del archivo:", usuari.imatge.name)
-            print("Existe en storage:", usuari.imatge.storage.exists(usuari.imatge.name))
+            print(
+                "Existe en storage:", usuari.imatge.storage.exists(usuari.imatge.name)
+            )
         else:
             print("El usuario no tiene imagen asociada.")
         # --- FIN BLOQUE DE DEPURACIÓN ---
@@ -213,6 +215,7 @@ def create_usuari(request):
     else:
         print("Errores del formulario:", form.errors)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["POST"])
 @permission_classes([AllowAny])

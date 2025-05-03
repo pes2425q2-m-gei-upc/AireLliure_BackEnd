@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       lint_status: ${{ steps.lint.outcome }}
-    
+
     env:
       DJANGO_SETTINGS_MODULE: aire_lliure.settings
       PYTHON_VERSION: 3.12
@@ -37,7 +37,7 @@ jobs:
         id: lint
         run: |
           pylint --rcfile=.pylintrc --load-plugins pylint_django aire_lliure app
-    
+
   test:
     name: Run Tests
     runs-on: ubuntu-latest
@@ -47,6 +47,7 @@ jobs:
 
     env:
       DJANGO_SETTINGS_MODULE: aire_lliure.test_settings
+      DISABLE_SIGNALS: "true"
       PYTHON_VERSION: 3.12
 
     steps:
@@ -91,7 +92,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   deploy_staging:
     name: Deploy to Render (Staging)

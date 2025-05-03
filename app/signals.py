@@ -1,3 +1,4 @@
+import os
 import sys
 
 from asgiref.sync import async_to_sync
@@ -28,7 +29,7 @@ from .models import (
 
 def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
     # Si estamos corriendo tests, no hacer nada
-    if "test" in sys.argv or "pytest" in sys.argv:
+    if os.environ.get("DISABLE_SIGNALS", "").lower() == "true":
         return
 
     evento = (

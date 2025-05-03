@@ -31,11 +31,7 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
 
     # Serializar los datos del modelo
     datos_modelo = serializers.serialize("json", [instance])
-    datos_dict = (
-        serializers.deserialize("json", datos_modelo)
-        .__next__()
-        .object.__dict__  # pylint: disable=unnecessary-dunder-call
-    )
+    datos_dict = next(serializers.deserialize("json", datos_modelo)).object.__dict__
 
     # Eliminar campos internos de Django que no necesitamos
     campos_a_eliminar = ["_state", "password"]

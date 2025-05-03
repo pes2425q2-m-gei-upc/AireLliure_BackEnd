@@ -15,6 +15,55 @@ from app.models import *  # noqa: F403, F405
 
 
 @override_settings(ROOT_URLCONF="aire_lliure.urls")
+class TestUsuariModel(TestCase):
+    def setUp(self):
+        self.usuari = Usuari.objects.create(
+            correu="test@example.com",
+            password="testpass",
+            nom="Test User",
+            estat="actiu",
+        )
+
+    def test_crear_usuari(self):
+        self.assertEqual(self.usuari.correu, "test@example.com")
+        self.assertEqual(self.usuari.nom, "Test User")
+        self.assertEqual(self.usuari.estat, "actiu")
+
+
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
+class TestAdminModel(TestCase):
+    def setUp(self):
+        self.admin = Admin.objects.create(
+            correu="admin@example.com",
+            password="adminpass",
+            nom="Admin User",
+            estat="actiu",
+            administrador=True,
+        )
+
+    def test_crear_admin(self):
+        self.assertEqual(self.admin.correu, "admin@example.com")
+        self.assertEqual(self.admin.nom, "Admin User")
+        self.assertEqual(self.admin.estat, "actiu")
+        self.assertTrue(self.admin.administrador)
+
+
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
+class TestRutaModel(TestCase):
+    def setUp(self):
+        self.ruta = Ruta.objects.create(
+            nom="Test Route",
+            descripcio="Test Description",
+            dist_km=10.0,
+        )
+
+    def test_crear_ruta(self):
+        self.assertEqual(self.ruta.nom, "Test Route")
+        self.assertEqual(self.ruta.descripcio, "Test Description")
+        self.assertEqual(self.ruta.dist_km, 10.0)
+
+
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestModels(TestCase):
     def setUp(self):
         # Crear usuari de prova
@@ -59,7 +108,7 @@ class TestModels(TestCase):
             nombre="Buena", descripcio="Buena calidad del aire"
         )
 
-        # Crear ruta de prova
+        # Crear ruta de prueba
         self.ruta = Ruta.objects.create(
             nom="Ruta de prueba", descripcio="Descripció de prueba", dist_km=5.0
         )

@@ -1,20 +1,59 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.urls import reverse
 from django.utils import timezone
+from rest_framework import status
+from rest_framework.test import APIClient
 
-from app.models import *  # noqa: F403, F405
+from app.models import (
+    AccesibilitatRespiratoria,
+    ActivitatCultural,
+    Admin,
+    Amistat,
+    Apuntat,
+    AssignaAccesibilitatRespiratoria,
+    AssignaDificultatEsportiva,
+    Contaminant,
+    DificultatEsportiva,
+    EventDeCalendariPublic,
+    Missatge,
+    Presencia,
+    Punt,
+    Ruta,
+    Usuari,
+    Valoracio,
+    XatGrupal,
+    XatIndividual,
+)
 
 
+@override_settings(ROOT_URLCONF="aire_lliure.urls")
 class TestJocsProva(TestCase):
     def setUp(self):
-        # Crear usuaris base per tots els jocs de prova
+        self.client = APIClient()
+
+        # Crear usuari de prova
+        self.usuari = Usuari.objects.create(
+            correu="test@example.com",
+            password="testpass",
+            nom="Test User",
+            estat="actiu",
+        )
+
+        # Crear admin de prova
         self.admin = Admin.objects.create(
             correu="admin@example.com",
-            password="admin123",
-            nom="Admin Principal",
+            password="adminpass",
+            nom="Admin User",
             estat="actiu",
             administrador=True,
         )
 
+        # Crear ruta de prova
+        self.ruta = Ruta.objects.create(
+            nom="Ruta de prueba", descripcio="Descripcion de prueba", dist_km=5.0
+        )
+
+        # Crear usuaris base per tots els jocs de prova
         self.usuari1 = Usuari.objects.create(
             correu="usuari1@example.com",
             password="pass123",
@@ -54,7 +93,7 @@ class TestJocsProva(TestCase):
         )
 
         # Verificacions
-        self.assertEqual(Ruta.objects.count(), 2)
+        self.assertEqual(Ruta.objects.count(), 3)  # 2 rutes noves + 1 del setUp
         self.assertEqual(Valoracio.objects.count(), 3)
 
         # Verificar valoracions de ruta1
@@ -276,8 +315,8 @@ class TestJocsProva(TestCase):
 
         # Verificacions
         self.assertEqual(
-            Usuari.objects.filter(estat="actiu", administrador=False).count(), 4
-        )  # Només comptem usuaris actius i no admins
+            Usuari.objects.filter(estat="actiu", administrador=False).count(), 5
+        )  # 4 usuaris nous + 1 del setUp
         self.assertEqual(Amistat.objects.count(), 3)
 
         # Verificar punts dels usuaris
@@ -294,7 +333,7 @@ class TestJocsProva(TestCase):
         self.assertTrue(amistats_usuari1.filter(accepta=usuari4).exists())
 
     def test_joc_prova_dificultats_i_accesibilitat(self):
-        """Joc de prova per provar dificultats i accesibilitat"""
+        """Joc de prova per provardifficulties i accesibilitat"""
         # Creardifficulties
         dificultat1 = DificultatEsportiva.objects.create(
             nombre="Fàcil", descripcio="Ruta fàcil per a principiants"
@@ -342,7 +381,7 @@ class TestJocsProva(TestCase):
         # Verificacions
         self.assertEqual(DificultatEsportiva.objects.count(), 2)
         self.assertEqual(AccesibilitatRespiratoria.objects.count(), 2)
-        self.assertEqual(Ruta.objects.count(), 2)
+        self.assertEqual(Ruta.objects.count(), 3)  # 2 rutes noves + 1 del setUp
         self.assertEqual(AssignaDificultatEsportiva.objects.count(), 2)
         self.assertEqual(AssignaAccesibilitatRespiratoria.objects.count(), 2)
 

@@ -4,7 +4,31 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from app.models import *  # noqa: F403, F405
+from app.models import (
+    AccesibilitatRespiratoria,
+    ActivitatCultural,
+    Admin,
+    Amistat,
+    Apuntat,
+    AssignaAccesibilitatRespiratoria,
+    AssignaDificultatEsportiva,
+    Bloqueig,
+    Contaminant,
+    DificultatEsportiva,
+    EstacioQualitatAire,
+    EventDeCalendariPrivat,
+    EventDeCalendariPublic,
+    Invitacio,
+    Missatge,
+    Presencia,
+    Punt,
+    Recompensa,
+    Ruta,
+    Usuari,
+    Valoracio,
+    XatGrupal,
+    XatIndividual,
+)
 
 
 @override_settings(ROOT_URLCONF="aire_lliure.urls")
@@ -12,10 +36,10 @@ class TestIntegracion(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-        # Crear usuaris de prova per després fer les proves
+        # Crear usuari de prova
         self.usuari = Usuari.objects.create(
             correu="test@example.com",
-            password="testpassword",
+            password="testpass",
             nom="Test User",
             estat="actiu",
         )
@@ -29,10 +53,15 @@ class TestIntegracion(TestCase):
 
         self.admin = Admin.objects.create(
             correu="admin@example.com",
-            password="adminpassword",
+            password="adminpass",
             nom="Admin User",
             estat="actiu",
             administrador=True,
+        )
+
+        # Crear ruta de prova
+        self.ruta = Ruta.objects.create(
+            nom="Ruta de prueba", descripcio="Descripcion de prueba", dist_km=5.0
         )
 
     def test_flujo_completo_amistad_y_chat(self):
@@ -56,13 +85,14 @@ class TestIntegracion(TestCase):
         # 1. Crear ruta
         url = reverse("create_ruta")
         data = {
-            "nom": "Ruta de prova",
-            "descripcio": "Descripció de prova",
+            "nom": "Ruta de prueba valoracion",
+            "descripcio": "Descripcion de prueba",
             "dist_km": 5.0,
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        ruta = Ruta.objects.get(nom="Ruta de prova")
+        ruta_id = response.data["id"]  # Obtenemos el ID de la ruta creada
+        ruta = Ruta.objects.get(id=ruta_id)
 
         # 2. Crear valoració
         url = reverse("create_valoracio")
@@ -84,7 +114,7 @@ class TestIntegracion(TestCase):
         # 1. Crear event públic
         url = reverse("create_event_de_calendari_public")
         data = {
-            "nom": "Event de prova",
+            "nom": "Event de prueba",
             "descripció": "Descripció de l'event",
             "data_inici": timezone.now(),
             "data_fi": timezone.now(),
@@ -93,7 +123,7 @@ class TestIntegracion(TestCase):
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        evento = EventDeCalendariPublic.objects.get(nom="Event de prova")
+        evento = EventDeCalendariPublic.objects.get(nom="Event de prueba")
 
         # 2. Apuntar-se a l'event
         url = reverse("create_apuntat")
@@ -124,7 +154,9 @@ class TestIntegracion(TestCase):
     def test_flujo_completo_recompensa_y_puntos(self):
         # 1. Crear ruta
         ruta = Ruta.objects.create(
-            nom="Ruta de prova", descripcio="Descripció de prova", dist_km=5.0
+            nom="Ruta de prueba recompensa",
+            descripcio="Descripcion de prueba",
+            dist_km=5.0,
         )
 
         # 2. Crear recompensa
@@ -158,7 +190,9 @@ class TestIntegracion(TestCase):
 
         # 2. Crear ruta
         ruta = Ruta.objects.create(
-            nom="Ruta de prova", descripcio="Descripció de prova", dist_km=5.0
+            nom="Ruta de prueba dificultad",
+            descripcio="Descripcion de prueba",
+            dist_km=5.0,
         )
 
         # 3. Assignar dificultat
@@ -181,14 +215,14 @@ class TestIntegracion(TestCase):
         # 1. Crear xat grupal
         url = reverse("create_xat_grupal")
         data = {
-            "nom": "Xat de prova",
+            "nom": "Xat de prueba",
             "creador": self.usuari.correu,
             "descripció": "Descripció del xat",
             "membres": [self.usuari.correu],
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        xat = XatGrupal.objects.get(nom="Xat de prova")
+        xat = XatGrupal.objects.get(nom="Xat de prueba")
 
         # 2. Crear invitació
         url = reverse("create_invitacio")
@@ -347,7 +381,7 @@ class TestIntegracion(TestCase):
         # 1. Crear event públic
         url = reverse("create_event_de_calendari_public")
         data = {
-            "nom": "Event de prova",
+            "nom": "Event de prueba",
             "descripció": "Descripció de l'event",
             "data_inici": timezone.now(),
             "data_fi": timezone.now(),
@@ -356,7 +390,7 @@ class TestIntegracion(TestCase):
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        evento = EventDeCalendariPublic.objects.get(nom="Event de prova")
+        evento = EventDeCalendariPublic.objects.get(nom="Event de prueba")
 
         # 2. Actualitzar event
         url = reverse("update_event_de_calendari_public", args=[evento.id])
@@ -377,7 +411,9 @@ class TestIntegracion(TestCase):
     def test_flujo_completo_ruta_y_valoraciones(self):
         # 1. Crear ruta
         ruta = Ruta.objects.create(
-            nom="Ruta de prova", descripcio="Descripció de prova", dist_km=5.0
+            nom="Ruta de prueba valoraciones",
+            descripcio="Descripcion de prueba",
+            dist_km=5.0,
         )
 
         # 2. Crear valoració
@@ -404,7 +440,7 @@ class TestIntegracion(TestCase):
     def test_flujo_completo_chat_grupal_y_mensajes(self):
         # 1. Crear xat grupal
         xat = XatGrupal.objects.create(
-            nom="Xat de prova", creador=self.usuari, descripció="Descripció del xat"
+            nom="Xat de prueba", creador=self.usuari, descripció="Descripció del xat"
         )
         xat.membres.add(self.usuari, self.usuari2)
 
@@ -487,7 +523,7 @@ class TestIntegracion(TestCase):
         # 1. Crear event públic amb usuari normal
         url = reverse("create_event_de_calendari_public")
         data = {
-            "nom": "Event de prova",
+            "nom": "Event de prueba",
             "descripció": "Descripció de l'event",
             "data_inici": timezone.now(),
             "data_fi": timezone.now(),
@@ -498,13 +534,15 @@ class TestIntegracion(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # 2. Verificar que s'ha creat l'event
-        evento = EventDeCalendariPublic.objects.get(nom="Event de prova")
+        evento = EventDeCalendariPublic.objects.get(nom="Event de prueba")
         self.assertIsNotNone(evento)
 
     def test_error_crear_valoracio_amb_puntuacio_invalida(self):
         # 1. Crear ruta
         ruta = Ruta.objects.create(
-            nom="Ruta de prova", descripcio="Descripció de prova", dist_km=5.0
+            nom="Ruta de prueba puntuacion invalida",
+            descripcio="Descripcion de prueba",
+            dist_km=5.0,
         )
 
         # 2. Intentar crear valoració amb puntuació invàlida
@@ -553,7 +591,7 @@ class TestIntegracion(TestCase):
         # 1. Intentar crear xat grupal sense membres
         url = reverse("create_xat_grupal")
         data = {
-            "nom": "Xat de prova",
+            "nom": "Xat de prueba",
             "creador": self.usuari.correu,
             "descripció": "Descripció del xat",
             "membres": [],  # Llista buida de membres
@@ -563,4 +601,4 @@ class TestIntegracion(TestCase):
 
         # 2. Verificar que no s'ha creat el xat
         with self.assertRaises(XatGrupal.DoesNotExist):
-            XatGrupal.objects.get(nom="Xat de prova")
+            XatGrupal.objects.get(nom="Xat de prueba")

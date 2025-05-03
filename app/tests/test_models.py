@@ -1,5 +1,10 @@
 # pylint: disable=non-ascii-name, unused-import, unused-wildcard-import
 # pylint: disable=wildcard-import, too-many-lines
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-public-methods
+# pylint: disable=non-ascii-name
+# pylint: disable=unused-import
+# pylint: disable=duplicate-code
 
 import json
 

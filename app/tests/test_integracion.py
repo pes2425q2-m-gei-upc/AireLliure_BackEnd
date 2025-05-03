@@ -1,3 +1,9 @@
+# pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-public-methods
+# pylint: disable=non-ascii-name
+# pylint: disable=unused-import
+# pylint: disable=duplicate-code
+
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -11,14 +17,11 @@ from app.models import (
     Amistat,
     Apuntat,
     AssignaAccesibilitatRespiratoria,
-    AssignaDificultatEsportiva,
-    Bloqueig,
     Contaminant,
     DificultatEsportiva,
     EstacioQualitatAire,
     EventDeCalendariPrivat,
     EventDeCalendariPublic,
-    Invitacio,
     Missatge,
     Presencia,
     Punt,

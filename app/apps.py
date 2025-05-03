@@ -11,4 +11,4 @@ class AireLliureAppConfig(AppConfig):
 
     def ready(self):
         print("SEÑALES CARGADAS")
-        import app.signals
+        import app.signals  # pylint: disable=import-outside-toplevel, unused-import

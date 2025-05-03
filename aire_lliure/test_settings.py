@@ -61,3 +61,5 @@ SECRET_KEY = "django-insecure-test-key-for-testing-purposes-only"
 ROOT_URLCONF = "aire_lliure.urls"
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+DISABLE_SIGNALS = True

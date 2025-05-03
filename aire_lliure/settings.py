@@ -256,3 +256,6 @@ CHANNEL_LAYERS = {
 def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
     print(f"SEÑAL DISPARADA: {sender.__name__} - {instance.id} - created={created}")
     # ... resto del código ...
+
+
+DISABLE_SIGNALS = False

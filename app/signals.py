@@ -44,20 +44,12 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
     for campo in campos_a_eliminar:
         datos_dict.pop(campo, None)
 
-    # Determinar el identificador primario del objeto
-    if hasattr(instance, "id"):
-        obj_id = instance.id
-    elif hasattr(instance, "pk"):
-        obj_id = instance.pk
-    elif hasattr(instance, "correu"):
-        obj_id = instance.correu
-    else:
-        # Busca el primer campo que sea primary_key
-        obj_id = None
-        for field in instance._meta.fields:
-            if field.primary_key:
-                obj_id = getattr(instance, field.name)
-                break
+    # Determinar el identificador primario del objeto (sea cual sea el campo)
+    obj_id = None
+    for field in instance._meta.fields:
+        if field.primary_key:
+            obj_id = getattr(instance, field.name)
+            break
 
     print(f"SEÑAL DISPARADA: {sender.__name__} - {obj_id} - created={created}")
 

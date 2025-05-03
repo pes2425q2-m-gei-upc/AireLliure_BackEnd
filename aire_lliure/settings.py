@@ -245,9 +245,9 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("usable-tuna-18198.upstash.io", 6379)],
-            "password": "AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA",
-            "ssl": True,
+            "hosts": [
+                "rediss://default:AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA@usable-tuna-18198.upstash.io:6379"
+            ],
         },
     },
 }

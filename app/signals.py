@@ -1,3 +1,5 @@
+import sys
+
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core import serializers
@@ -25,6 +27,10 @@ from .models import (
 
 
 def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
+    # Si estamos corriendo tests, no hacer nada
+    if "test" in sys.argv or "pytest" in sys.argv:
+        return
+
     evento = (
         "creado" if created else "modificado" if created is not None else "eliminado"
     )

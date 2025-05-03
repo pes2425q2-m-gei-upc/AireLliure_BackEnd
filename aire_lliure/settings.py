@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import urllib.parse as urlparse
 from pathlib import Path
 
 import dj_database_url
@@ -234,10 +235,22 @@ assert (
 ), "NO s'està usant el settings correcte"
 
 
-ASGI_APPLICATION = "aire_lliure.asgi.application"
 default_app_config = "app.apps.AppConfig"
 
-CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+ASGI_APPLICATION = "aire_lliure.asgi.application"
+
+redis_url = urlparse.urlparse(os.environ.get("REDIS_URL"))
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("usable-tuna-18198.upstash.io", 6379)],
+            "password": "AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA",
+            "ssl": True,
+        },
+    },
+}
 
 
 def notificar_cambio_modelo(sender, instance, created=None, **kwargs):

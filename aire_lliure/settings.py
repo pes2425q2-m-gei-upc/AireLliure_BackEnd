@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import urllib.parse as urlparse
 from pathlib import Path
 
 import dj_database_url
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     "app",
     "corsheaders",
     "storages",
+    "channels",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -230,3 +233,26 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 assert (
     DEFAULT_FILE_STORAGE == "storages.backends.s3boto3.S3Boto3Storage"
 ), "NO s'està usant el settings correcte"
+
+
+default_app_config = "app.apps.AppConfig"
+
+ASGI_APPLICATION = "aire_lliure.asgi.application"
+
+redis_url = urlparse.urlparse(os.environ.get("REDIS_URL"))
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("usable-tuna-18198.upstash.io", 6379)],
+            "password": "AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA",
+            "ssl": True,
+        },
+    },
+}
+
+
+def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
+    print(f"SEÑAL DISPARADA: {sender.__name__} - {instance.id} - created={created}")
+    # ... resto del código ...

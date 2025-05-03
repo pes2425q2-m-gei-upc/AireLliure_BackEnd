@@ -8,7 +8,9 @@ from django.dispatch import receiver
 
 from .models import (
     ActivitatCultural,
+    Amistat,
     Apuntat,
+    Bloqueig,
     Contaminant,
     EstacioQualitatAire,
     EventDeCalendari,
@@ -92,6 +94,8 @@ modelos = [
     ActivitatCultural,
     Contaminant,
     Presencia,
+    Bloqueig,
+    Amistat,
 ]
 
 for modelo in modelos:

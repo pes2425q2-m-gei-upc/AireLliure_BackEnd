@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from asgiref.sync import async_to_sync
@@ -46,12 +47,30 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
     for campo in campos_a_eliminar:
         datos_dict.pop(campo, None)
 
+    # Convierte todos los valores datetime en datos_dict a string ISO
+    for k, v in datos_dict.items():
+        if isinstance(v, datetime.datetime):
+            datos_dict[k] = v.isoformat()
+        elif isinstance(v, datetime.date):
+            datos_dict[k] = v.isoformat()
+
     # Determinar el identificador primario del objeto (sea cual sea el campo)
     obj_id = None
     for field in instance._meta.fields:
         if field.primary_key:
             obj_id = getattr(instance, field.name)
             break
+
+    # Convierte timestamp si es datetime
+    timestamp = (
+        instance._meta.get_field("data").value_from_object(instance)
+        if hasattr(instance, "data")
+        else None
+    )
+    if isinstance(timestamp, datetime.datetime):
+        timestamp = timestamp.isoformat()
+    elif isinstance(timestamp, datetime.date):
+        timestamp = timestamp.isoformat()
 
     print(f"SEÑAL DISPARADA: {sender.__name__} - {obj_id} - created={created}")
 
@@ -64,11 +83,7 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
                 "modelo": sender.__name__,
                 "id": obj_id,
                 "datos": datos_dict,
-                "timestamp": (
-                    instance._meta.get_field("data").value_from_object(instance)
-                    if hasattr(instance, "data")
-                    else None
-                ),
+                "timestamp": timestamp,
             },
         },
     )

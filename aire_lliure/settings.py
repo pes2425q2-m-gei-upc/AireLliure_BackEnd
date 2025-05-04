@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import urllib.parse as urlparse
 from pathlib import Path
 
 import dj_database_url
@@ -47,6 +48,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "app",
     "corsheaders",
+    "storages",
+    "channels",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -189,3 +193,69 @@ CORS_ALLOWED_ORIGINS = [
 
 # Elimina o comenta temporalmente CSRF_TRUSTED_ORIGINS para pruebas
 # CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = "AKIAWH7XBNFR4ZZOZUXY"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "airelliure"
+AWS_S3_REGION_NAME = "eu-north-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_URL_PROTOCOL = "https:"
+
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/"
+MEDIA_ROOT = ""
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "region_name": AWS_S3_REGION_NAME,
+            "custom_domain": AWS_S3_CUSTOM_DOMAIN,
+            "file_overwrite": False,
+            "querystring_auth": False,
+            "use_ssl": True,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+STATIC_URL = f"{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+MEDIA_URL = f"{AWS_S3_URL_PROTOCOL}://{AWS_S3_CUSTOM_DOMAIN}/"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+assert (
+    DEFAULT_FILE_STORAGE == "storages.backends.s3boto3.S3Boto3Storage"
+), "NO s'està usant el settings correcte"
+
+
+default_app_config = "app.apps.AppConfig"
+
+ASGI_APPLICATION = "aire_lliure.asgi.application"
+
+redis_url = urlparse.urlparse(os.environ.get("REDIS_URL"))
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                "rediss://default:AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA@usable-tuna-18198.upstash.io:6379"
+            ],
+        },
+    },
+}
+
+
+def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
+    print(f"SEÑAL DISPARADA: {sender.__name__} - {instance.id} - created={created}")
+    # ... resto del código ...
+
+
+DISABLE_SIGNALS = False

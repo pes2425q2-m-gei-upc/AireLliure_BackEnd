@@ -26,6 +26,9 @@ class AccesibilitatRespiratoria(Categoria):
 
 class Usuari(models.Model):
     correu = models.EmailField(primary_key=True)
+    imatge = models.ImageField(
+        upload_to="images/", max_length=255, null=True, blank=True
+    )
     password = models.CharField(max_length=255)
     nom = models.CharField(max_length=255)
     estat = models.CharField(max_length=255)
@@ -97,6 +100,9 @@ class Amistat(models.Model):
 
 class Ruta(models.Model):
     id = models.AutoField(primary_key=True)
+    imatge = models.ImageField(
+        upload_to="images/", max_length=255, null=True, blank=True
+    )
     descripcio = models.TextField()
     nom = models.CharField(max_length=255)
     dist_km = models.FloatField()

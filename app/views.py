@@ -173,6 +173,8 @@ def get_usuari(request, pk):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def create_usuari(request):
+    print("Datos recibidos:", request.data)
+    print("Archivos recibidos:", request.FILES)
     data = {
         "correu": request.data.get("correu"),
         "password": request.data.get("password"),
@@ -183,11 +185,35 @@ def create_usuari(request):
         "about": request.data.get("about", None),
         "administrador": request.data.get("administrador", False),
     }
-    form = UsuariForm(data=data)
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    print("Datos para el formulario:", data)
+    print("Archivos para el formulario:", files)
+
+    form = UsuariForm(data=data, files=files)
     if form.is_valid():
+        print("El formulario es válido. Guardando usuario...")
         usuari = form.save()
+        print("Usuario guardado:", usuari)
+
+        # --- BLOQUE DE DEPURACIÓN ---
+        if hasattr(usuari, "imatge") and usuari.imatge:
+            print("Storage usado:", type(usuari.imatge.storage))
+            print("Ruta del archivo:", usuari.imatge.name)
+            print(
+                "Existe en storage:", usuari.imatge.storage.exists(usuari.imatge.name)
+            )
+        else:
+            print("El usuario no tiene imagen asociada.")
+        # --- FIN BLOQUE DE DEPURACIÓN ---
+
         serializer = UsuariSerializer(usuari)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        print("Errores del formulario:", form.errors)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -219,11 +245,28 @@ def login_usuari(request):
 @api_view(["PATCH"])
 def update_usuari(request, pk):
     usuari = get_object_or_404(Usuari, pk=pk)
-    serializer = UsuariSerializer(usuari, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
+
+    data = {
+        "correu": usuari.correu,  # Mantenemos el correo original
+        "password": usuari.password,  # Mantenemos la contraseña original
+        "nom": request.data.get("nom", usuari.nom),
+        "estat": request.data.get("estat", usuari.estat),
+        "punts": request.data.get("punts", usuari.punts),
+        "deshabilitador": request.data.get("deshabilitador", usuari.deshabilitador),
+        "about": request.data.get("about", usuari.about),
+        "administrador": request.data.get("administrador", usuari.administrador),
+    }
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = UsuariForm(data=data, files=files, instance=usuari)
+    if form.is_valid():
+        usuari = form.save()
+        serializer = UsuariSerializer(usuari)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])
@@ -270,8 +313,6 @@ def get_all_usuaris_habilitats(request):
 
 # LA PART DE ADMIN --------------------------------------------------------------------
 
-# LA PART DE ADMIN --------------------------------------------------------------------
-
 
 @api_view(["GET"])
 def get_admins(request):
@@ -300,7 +341,12 @@ def create_admin(request):
         "about": request.data.get("about", None),
         "administrador": request.data.get("administrador", True),
     }
-    form = AdminForm(data=data)
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = AdminForm(data=data, files=files)
     if form.is_valid():
         admin = form.save()
         serializer = AdminSerializer(admin)
@@ -311,11 +357,28 @@ def create_admin(request):
 @api_view(["PATCH"])
 def update_admin(request, pk):
     admin = get_object_or_404(Admin, pk=pk)
-    serializer = AdminSerializer(admin, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
+
+    data = {
+        "correu": admin.correu,  # Mantenemos el correo original
+        "password": admin.password,  # Mantenemos la contraseña original
+        "nom": request.data.get("nom", admin.nom),
+        "estat": request.data.get("estat", admin.estat),
+        "punts": request.data.get("punts", admin.punts),
+        "deshabilitador": request.data.get("deshabilitador", admin.deshabilitador),
+        "about": request.data.get("about", admin.about),
+        "administrador": request.data.get("administrador", admin.administrador),
+    }
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = AdminForm(data=data, files=files, instance=admin)
+    if form.is_valid():
+        admin = form.save()
+        serializer = AdminSerializer(admin)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])
@@ -426,7 +489,7 @@ def create_amistat(request):
         }
         form2 = XatIndividualForm(data=data2)
         if form2.is_valid():
-            xat = form2.save()
+            form2.save()
             serializer = AmistatSerializer(amistat)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(form2.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -574,7 +637,12 @@ def create_ruta(request):
         "nom": request.data.get("nom"),
         "dist_km": request.data.get("dist_km"),
     }
-    form = RutaForm(data=data)
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = RutaForm(data=data, files=files)
     if form.is_valid():
         ruta = form.save()
         serializer = RutaSerializer(ruta)
@@ -585,11 +653,23 @@ def create_ruta(request):
 @api_view(["PATCH"])
 def update_ruta(request, pk):
     ruta = get_object_or_404(Ruta, pk=pk)
-    serializer = RutaSerializer(ruta, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
+
+    data = {
+        "nom": request.data.get("nom", ruta.nom),
+        "descripcio": request.data.get("descripcio", ruta.descripcio),
+        "dist_km": request.data.get("dist_km", ruta.dist_km),
+    }
+
+    files = {}
+    if "imatge" in request.FILES:
+        files["imatge"] = request.FILES["imatge"]
+
+    form = RutaForm(data=data, files=files, instance=ruta)
+    if form.is_valid():
+        ruta = form.save()
+        serializer = RutaSerializer(ruta)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["DELETE"])
@@ -599,6 +679,21 @@ def delete_ruta(request, pk):
         ruta.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET"])
+def get_all_info_ruta(request, pk):
+    ruta = get_object_or_404(Ruta, pk=pk)
+    valoracions_ruta = Valoracio.objects.filter(ruta=ruta)
+    serializer_ruta = RutaSerializer(ruta)
+    serializer_valoracions = ValoracioSerializer(valoracions_ruta, many=True)
+    for valoracio in serializer_valoracions.data:
+        usuari = get_object_or_404(Usuari, pk=valoracio.get("usuari"))
+        valoracio["nom_usuari"] = usuari.nom
+    return Response(
+        {"ruta": serializer_ruta.data, "valoracions": serializer_valoracions.data},
+        status=status.HTTP_200_OK,
+    )
 
 
 # LA PART DE VALORACIO ----------------------------------------------------------------

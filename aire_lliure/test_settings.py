@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "app",
+    "channels",
 ]
 
 # Configuración de templates
@@ -58,3 +59,7 @@ SECRET_KEY = "django-insecure-test-key-for-testing-purposes-only"
 
 # Configuración de URLs
 ROOT_URLCONF = "aire_lliure.urls"
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+DISABLE_SIGNALS = True

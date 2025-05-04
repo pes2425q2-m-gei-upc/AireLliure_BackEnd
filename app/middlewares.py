@@ -1,25 +1,37 @@
-from .utils import actualitzar_rutes, actualitzar_estacions_qualitat_aire, actualitzar_activitats_culturals
+from django.conf import settings
+
+from .utils import (
+    actualitzar_activitats_culturals,
+    actualitzar_estacions_qualitat_aire,
+    actualitzar_rutes,
+)
+
 
 class ActualitzarRutes:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_rutes()  # Se ejecuta en cada request si es necesario
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_rutes()
         return self.get_response(request)
+
 
 class ActualitzarEstacionsQualitatAire:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_estacions_qualitat_aire()  # Se ejecuta en cada request si es necesario
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_estacions_qualitat_aire()
         return self.get_response(request)
+
 
 class ActualitzarActivitatsCulturals:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        actualitzar_activitats_culturals()  # Se ejecuta en cada request si es necesario
+        if not getattr(settings, "DISABLE_AUTO_UPDATE", False):
+            actualitzar_activitats_culturals()
         return self.get_response(request)

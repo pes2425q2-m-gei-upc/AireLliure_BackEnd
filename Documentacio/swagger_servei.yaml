@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Aire Lliure API
+  version: 1.0.0
+  description: |
+    Benvinguts **E-MoveBCN**. A través d’aquesta petició, se us proporciona accés
+    al servei d’informació sobre les estacions de qualitat de l’aire.
+
+    Gràcies per utilitzar el nostre servei. Si teniu cap dubte o voleu tractar qualsevol qüestió,
+    no dubteu a posar-vos en contacte amb nosaltres.
+
+    ---
+    **Equip Aire Lliure**:
+
+      • Pol Carnicer  
+      • Aleix Montero  
+      • Àlex Romero  
+      • Sergi Alonso  
+      • Carles Aguilera
+    ---
+    📌 **Descripció del servei**:
+      Aquesta API retorna la informació de qualitat de l'aire per a cada punt amb sensor registrat.
+      Inclou la latitud, longitud i l’índex de qualitat de l’aire corresponent.
+
+servers:
+  - url: https://airelliure-backend.onrender.com
+
+paths:
+  /estacions-qualitat-aire:
+    get:
+      summary: Llistar estacions de qualitat de l'aire
+      description: Retorna una llista d’estacions amb informació de qualitat de l’aire.
+      responses:
+        "200":
+          description: Llista d'estacions retornada correctament
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    nom:
+                      type: string
+                      example: Estació Barcelona Eixample
+                    latitud:
+                      type: number
+                      format: float
+                      example: 41.389
+                    longitud:
+                      type: number
+                      format: float
+                      example: 2.158
+                    qualitat_aire:
+                      type: string
+                      example: Bona
+        "500":
+          description: Error intern del servidor

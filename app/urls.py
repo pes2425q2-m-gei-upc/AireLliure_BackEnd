@@ -453,19 +453,19 @@ urlpatterns = [
     ),
     # DADES OBERTES
     path(
-        "actualitzar-rutes/",
-        views.actualitzar_rutes_manualment,
-        name="actualitzar_rutes_manualment",
+        "actualitzar/rutes",
+        views.actualitzar_rutes,
+        name="actualitzar_rutes",
     ),
     path(
-        "actualitzar_estacions_qualitat_aire/",
-        views.actualitzar_estacions_qualitat_aire_manualment,
-        name="actualitzar_estacions_qualitat_aire_manualment",
+        "actualitzar/estacions_qualitat_aire",
+        views.actualitzar_estacions_qualitat_aire,
+        name="actualitzar_estacions_qualitat_aire",
     ),
     path(
-        "actualitzar_activitats_culturals/",
-        views.actualitzar_activitats_culturals_manualment,
-        name="actualitzar_activitats_culturals_manualment",
+        "actualitzar/activitats_culturals",
+        views.actualitzar_activitats_culturals,
+        name="actualitzar_activitats_culturals",
     ),
     # RANKING
     path(

@@ -1,0 +1,15 @@
+name: Actualitzar BD
+
+on:
+    schedule:
+      - cron: "55 5 * * 1"  # Cada dia a les 6:00 UTC
+    workflow_dispatch: 
+
+jobs:
+    update-data:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Crida a l'endpoint de trigger
+              run: |
+                curl -X POST https://airelliure-backend.onrender.com/actualitzar/rutes \
+                     -H "Authorization: Bearer ${{ secrets.UPDATE_TOKEN }}"

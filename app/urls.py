@@ -454,17 +454,17 @@ urlpatterns = [
     # DADES OBERTES
     path(
         "actualitzar/rutes",
-        views.actualitzar_rutes,
+        views.actualitzar_rutes_bd,
         name="actualitzar_rutes",
     ),
     path(
         "actualitzar/estacions_qualitat_aire",
-        views.actualitzar_estacions_qualitat_aire,
+        views.actualitzar_estacions_qualitat_aire_bd,
         name="actualitzar_estacions_qualitat_aire",
     ),
     path(
         "actualitzar/activitats_culturals",
-        views.actualitzar_activitats_culturals,
+        views.actualitzar_activitats_culturals_bd,
         name="actualitzar_activitats_culturals",
     ),
     # RANKING

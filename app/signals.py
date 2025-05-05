@@ -5,9 +5,8 @@ import logging
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.core import serializers
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from django.db import transaction
 
 from .models import (
     ActivitatCultural,

@@ -21,7 +21,6 @@ from .models import (
     EventDeCalendariPublic,
     IndexQualitatAire,
     Invitacio,
-    JobExecution,
     Missatge,
     Presencia,
     Punt,
@@ -196,12 +195,6 @@ class PresenciaSerializer(serializers.ModelSerializer):
 class IndexQualitatAireSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndexQualitatAire
-        fields = "__all__"
-
-
-class JobExecutionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = JobExecution
         fields = "__all__"
 
 

@@ -1,8 +1,6 @@
 name: Actualitzar BD
 
 on:
-    push:
-      branches: [dev-dades-obertes-sense-middlewares]
     schedule:
       - cron: "55 5 * * 1"  # Cada lunes a les 5:55 UTC
     workflow_dispatch: 

@@ -1,6 +1,6 @@
 import datetime
-import os
 import logging
+import os
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
@@ -9,15 +9,22 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 from .models import (
+    AccesibilitatRespiratoria,
     ActivitatCultural,
+    Admin,
     Amistat,
     Apuntat,
+    AssignaAccesibilitatRespiratoria,
+    AssignaDificultatEsportiva,
     Bloqueig,
     Contaminant,
+    DificultatEsportiva,
     EstacioQualitatAire,
     EventDeCalendari,
     EventDeCalendariPrivat,
     EventDeCalendariPublic,
+    IndexQualitatAire,
+    Invitacio,
     Missatge,
     Punt,
     Recompensa,
@@ -26,24 +33,16 @@ from .models import (
     Xat,
     XatGrupal,
     XatIndividual,
-    Invitacio,
-    JobExecution,
-    IndexQualitatAire,
-    DificultatEsportiva,
-    AccesibilitatRespiratoria,
-    AssignaDificultatEsportiva,
-    AssignaAccesibilitatRespiratoria,
-    Admin,
 )
 
 
 def _get_event_type(created, instance):
-    """Determina el tipo de evento basado en el parámetro created y el estado de la instancia."""
+    """Determina el tipo de evento basado en el parámetro created y el estado de la instancia."""  # noqa: B950
     if created is None:
         return "eliminado"
     if created:
         return "creado"
-    return "patch" if hasattr(instance, '_changed_fields') else "modificado"
+    return "patch" if hasattr(instance, "_changed_fields") else "modificado"
 
 
 def _process_datetime_values(datos_dict):
@@ -96,7 +95,7 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
             sender.__name__,
             obj_id,
             evento,
-            timestamp
+            timestamp,
         )
 
         # Enviar notificación a través del canal WebSocket
@@ -111,7 +110,7 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
                     "datos": datos_dict,
                     "timestamp": timestamp,
                     "operacion": evento.upper(),
-                    "campos_modificados": getattr(instance, '_changed_fields', None),
+                    "campos_modificados": getattr(instance, "_changed_fields", None),
                 },
             },
         )
@@ -145,7 +144,6 @@ modelos = [
     EstacioQualitatAire,
     ActivitatCultural,
     Contaminant,
-    JobExecution,
     IndexQualitatAire,
     DificultatEsportiva,
     AccesibilitatRespiratoria,

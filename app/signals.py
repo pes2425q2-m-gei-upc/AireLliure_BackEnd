@@ -92,7 +92,7 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
                 },
             },
         )
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"Redis no disponible o canal lleno, mensaje ignorado: {e}")
 
 

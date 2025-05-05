@@ -94,7 +94,6 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
         )
     except Exception as e:
         print(f"Redis no disponible o canal lleno, mensaje ignorado: {e}")
-        pass
 
 
 # Registrar señales para todos los modelos

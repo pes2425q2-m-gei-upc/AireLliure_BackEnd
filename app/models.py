@@ -389,11 +389,6 @@ class Presencia(models.Model):
         ]
 
 
-class JobExecution(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    last_run = models.DateTimeField(default=timezone.now)
-
-
 class IndexQualitatAire(models.Model):
     contaminant = models.ForeignKey(Contaminant, on_delete=models.CASCADE)
     valors_intervals = ArrayField(models.FloatField(), null=True, blank=True)

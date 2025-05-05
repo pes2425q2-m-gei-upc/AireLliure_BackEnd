@@ -37,7 +37,7 @@ from .models import (
 
 
 def _get_event_type(created, instance):
-    """Determina el tipo de evento basado en el parámetro created y el estado de la instancia."""  # noqa: B950
+    """Determina el tipo de evento basado en el parámetro created y el estado de la instancia."""  # noqa: B950 # pylint: disable=C0301
     if created is None:
         return "eliminado"
     if created:

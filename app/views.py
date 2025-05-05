@@ -1,6 +1,8 @@
 # flake8: noqa: F403, F405
 # pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
 
+import os
+
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
@@ -1854,19 +1856,40 @@ def get_presencies_punt_lon_lat(request, lon, lat):
 
 
 @api_view(["GET"])
-def actualitzar_rutes_manualment(request):
+def actualitzar_rutes_bd(request):
+
+    expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
+    auth_header = request.headers.get("Authorization", "")
+
+    if auth_header != expected_token:
+        return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
     actualitzar_rutes()
     return Response(status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
-def actualitzar_estacions_qualitat_aire_manualment(request):
+def actualitzar_estacions_qualitat_aire_bd(request):
+
+    expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
+    auth_header = request.headers.get("Authorization", "")
+
+    if auth_header != expected_token:
+        return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
     actualitzar_estacions_qualitat_aire()
     return Response(status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
-def actualitzar_activitats_culturals_manualment(request):
+def actualitzar_activitats_culturals_bd(request):
+
+    expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
+    auth_header = request.headers.get("Authorization", "")
+
+    if auth_header != expected_token:
+        return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
     actualitzar_activitats_culturals()
     return Response(status=status.HTTP_200_OK)
 

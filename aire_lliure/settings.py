@@ -248,6 +248,8 @@ CHANNEL_LAYERS = {
             "hosts": [
                 "rediss://default:AUcWAAIjcDE5MmVlMDc2MWUyOTU0NDAyOGZiMWRiNjU1MGUwZjMxZHAxMA@usable-tuna-18198.upstash.io:6379"
             ],
+            "capacity": 1000,
+            "expiry": 60,
         },
     },
 }

@@ -18,10 +18,8 @@ from .models import (
     EventDeCalendariPrivat,
     EventDeCalendariPublic,
     Missatge,
-    Presencia,
     Punt,
     Recompensa,
-    Ruta,
     Usuari,
     Valoracio,
     Xat,
@@ -94,7 +92,6 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
 modelos = [
     # Modelos de la app
     Usuari,
-    Ruta,
     Valoracio,
     Recompensa,
     Xat,
@@ -108,7 +105,6 @@ modelos = [
     EstacioQualitatAire,
     ActivitatCultural,
     Contaminant,
-    Presencia,
     Bloqueig,
     Amistat,
 ]

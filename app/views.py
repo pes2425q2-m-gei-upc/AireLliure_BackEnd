@@ -1856,7 +1856,7 @@ def get_presencies_punt_lon_lat(request, lon, lat):
 
 
 @api_view(["GET"])
-def actualitzar_rutes(request):
+def actualitzar_rutes_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
     auth_header = request.headers.get("Authorization", "")
@@ -1869,7 +1869,7 @@ def actualitzar_rutes(request):
 
 
 @api_view(["GET"])
-def actualitzar_estacions_qualitat_aire(request):
+def actualitzar_estacions_qualitat_aire_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
     auth_header = request.headers.get("Authorization", "")
@@ -1882,7 +1882,7 @@ def actualitzar_estacions_qualitat_aire(request):
 
 
 @api_view(["GET"])
-def actualitzar_activitats_culturals(request):
+def actualitzar_activitats_culturals_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
     auth_header = request.headers.get("Authorization", "")

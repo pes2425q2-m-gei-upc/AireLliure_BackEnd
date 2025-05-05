@@ -37,23 +37,30 @@ from .models import (
 )
 
 
+def _get_event_type(created, instance):
+    """Determina el tipo de evento basado en el parámetro created y el estado de la instancia."""
+    if created is None:
+        return "eliminado"
+    if created:
+        return "creado"
+    return "patch" if hasattr(instance, '_changed_fields') else "modificado"
+
+
+def _process_datetime_values(datos_dict):
+    """Procesa los valores datetime en el diccionario."""
+    for k, v in datos_dict.items():
+        if isinstance(v, (datetime.datetime, datetime.date)):
+            datos_dict[k] = v.isoformat()
+
+
 def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
+    """Notifica cambios en los modelos a través de WebSocket."""
     try:
         # Si estamos corriendo tests, no hacer nada
         if os.environ.get("DISABLE_SIGNALS", "").lower() == "true":
             return
 
-        # Determinar el tipo de operación
-        if created is None:  # Es una operación de eliminación
-            evento = "eliminado"
-        elif created:  # Es una operación de creación
-            evento = "creado"
-        else:  # Es una operación de actualización
-            # Verificar si es un PATCH (actualización parcial)
-            if hasattr(instance, '_changed_fields'):
-                evento = "patch"
-            else:
-                evento = "modificado"
+        evento = _get_event_type(created, instance)
 
         # Serializar los datos del modelo
         datos_modelo = serializers.serialize("json", [instance])
@@ -64,12 +71,8 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
         for campo in campos_a_eliminar:
             datos_dict.pop(campo, None)
 
-        # Convierte todos los valores datetime en datos_dict a string ISO
-        for k, v in datos_dict.items():
-            if isinstance(v, datetime.datetime):
-                datos_dict[k] = v.isoformat()
-            elif isinstance(v, datetime.date):
-                datos_dict[k] = v.isoformat()
+        # Procesar valores datetime
+        _process_datetime_values(datos_dict)
 
         # Determinar el identificador primario del objeto
         obj_id = None
@@ -84,15 +87,16 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
             if hasattr(instance, "data")
             else datetime.datetime.now()
         )
-        if isinstance(timestamp, datetime.datetime):
-            timestamp = timestamp.isoformat()
-        elif isinstance(timestamp, datetime.date):
+        if isinstance(timestamp, (datetime.datetime, datetime.date)):
             timestamp = timestamp.isoformat()
 
         # Logging detallado
         logging.info(
-            f"SEÑAL DISPARADA: {sender.__name__} - {obj_id} - {evento} - "
-            f"Timestamp: {timestamp}"
+            "SEÑAL DISPARADA: %s - %s - %s - Timestamp: %s",
+            sender.__name__,
+            obj_id,
+            evento,
+            timestamp
         )
 
         # Enviar notificación a través del canal WebSocket
@@ -112,8 +116,8 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
             },
         )
 
-    except Exception as e:
-        logging.error(f"Error en notificar_cambio_modelo: {str(e)}")
+    except (serializers.base.DeserializationError, AttributeError, ValueError) as e:
+        logging.error("Error en notificar_cambio_modelo: %s", str(e))
         # No propagamos la excepción para no interrumpir el flujo normal
 
 

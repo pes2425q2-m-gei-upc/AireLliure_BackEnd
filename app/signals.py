@@ -34,10 +34,6 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
     if os.environ.get("DISABLE_SIGNALS", "").lower() == "true":
         return
 
-    # Ignorar señales de creación, actualización o eliminación de Ruta y Presencia
-    if sender.__name__ in ["Ruta", "Presencia"]:
-        return
-
     evento = (
         "creado" if created else "modificado" if created is not None else "eliminado"
     )
@@ -78,22 +74,19 @@ def notificar_cambio_modelo(sender, instance, created=None, **kwargs):
 
     print(f"SEÑAL DISPARADA: {sender.__name__} - {obj_id} - created={created}")
 
-    try:
-        async_to_sync(get_channel_layer().group_send)(
-            "model_updates",
-            {
-                "type": "send_model_update",
-                "data": {
-                    "tipo": evento,
-                    "modelo": sender.__name__,
-                    "id": obj_id,
-                    "datos": datos_dict,
-                    "timestamp": timestamp,
-                },
+    async_to_sync(get_channel_layer().group_send)(
+        "model_updates",
+        {
+            "type": "send_model_update",
+            "data": {
+                "tipo": evento,
+                "modelo": sender.__name__,
+                "id": obj_id,
+                "datos": datos_dict,
+                "timestamp": timestamp,
             },
-        )
-    except Exception as e:  # pylint: disable=broad-exception-caught
-        print(f"Redis no disponible o canal lleno, mensaje ignorado: {e}")
+        },
+    )
 
 
 # Registrar señales para todos los modelos

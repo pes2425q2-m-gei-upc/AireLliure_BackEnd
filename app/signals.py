@@ -116,3 +116,4 @@ modelos = [
 for modelo in modelos:
     receiver(post_save, sender=modelo)(notificar_cambio_modelo)
     receiver(post_delete, sender=modelo)(notificar_cambio_modelo)
+    

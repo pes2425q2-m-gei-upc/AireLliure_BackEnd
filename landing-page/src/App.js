@@ -2,6 +2,31 @@ import logo from './airelliure.jpg';
 import './App.css';
 
 function App() {
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    const templateParams = {
+      from_email: document.getElementById('input-email').value,
+      message: 'Gracias por registrarte en nuestra aplicación. Ahora puedes disfrutar de los beneficios de la aplicación.',
+    }
+
+    emailjs
+    .send(
+      'service_vvgyp7v',
+      'template_3ftdh0j',
+      templateParams,
+      'a6ar94PP1cnz6o7Yo'
+    )
+    .then((response) => {
+      console.log('Email enviado correctamente', response);
+    })
+    .catch((error) => {
+      console.log('Error al enviar el email', error);
+    })
+  }
+
+
+
   return (
     <div className="App">
       <div className="title-container">
@@ -16,10 +41,10 @@ function App() {
         <img src={logo} alt="logo" />
       </div>
       <div className="form-container">
-        <label className="form-label"> Descarrega la nostra aplicació a Android introduint el teu correu a continuació. </label>
+          <label className="form-label"> Descarrega la nostra aplicació a Android introduint el teu correu a continuació. </label>
         <br />
-        <input className="input-email" type="text" placeholder="example@mail.com" />
-        <button>Registrarse</button>
+        <input id="input-email" className="input-email" type="text" placeholder="example@mail.com" />
+        <button onClick={handleSubmit}>Registrarse</button>
       </div>
     </div>
   );

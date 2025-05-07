@@ -1,8 +1,8 @@
-/* Fondo y diseño general */
+/* Fuente general */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f7f7f7; /* Fondo claro */
-  color: #333; /* Color de texto oscuro para un buen contraste */
+  font-family: 'Poppins', sans-serif; /* Usamos una fuente más moderna y atractiva */
+  background-color: #f7f7f7;
+  color: #333;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,53 +12,74 @@ body {
 /* Contenedor principal */
 .App {
   display: flex;
-  flex-direction: column; /* Cambiado a columna */
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   min-height: 100vh;
   padding: 60px 20px;
   background-color: #f7f7f7;
-  position: relative;
-  text-align: center; /* Centrado de todo */
+  text-align: center;
 }
 
 /* Título principal "Aire Lliure" */
 .title {
-  font-size: 4em;
-  font-weight: 700;
-  color: #4CAF50; /* Color más atractivo para el título */
-  margin-bottom: -100px;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 4.5em;
+  font-weight: 800; /* Hacemos el título más grueso */
+  color: #4CAF50; /* Color llamativo para el título */
+  text-transform: uppercase; /* En mayúsculas para mayor impacto */
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.1); /* Sombra de texto para hacerlo más dinámico */
+  letter-spacing: 5px; /* Mayor separación entre letras */
 }
 
 /* Subtítulo (eslogan) */
 .subtitle {
-  font-size: 1.3em;
+  font-size: 1.4em;
+  font-weight: 600; /* Un peso más grueso */
   color: #333;
   margin: 0 auto 30px;
   line-height: 1.6;
-  width: 80%; /* Alineación centrada */
+  width: 80%;
   text-align: center;
+  text-transform: capitalize; /* Capitalizamos la primera letra */
+  letter-spacing: 2px; /* Añadimos un poco de espacio entre letras */
+}
+
+/* Contenedor de imagen */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* Imagen principal */
+img {
+  border-radius: 50%;
+  max-width: 40%;
+  height: auto;
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo del formulario (input de correo) */
 .input-email {
   padding: 15px 25px;
-  font-size: 1.1em;
+  font-size: 1.2em;
+  font-weight: 500; /* Un poco más grueso */
   border-radius: 50px;
   border: 1px solid #ccc;
   margin-right: 10px;
   width: 300px;
   margin-bottom: 20px;
   transition: border-color 0.3s ease;
-  margin-top: 30px;
   text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para el campo de entrada */
 }
 
 /* Efecto de focus en el campo de correo */
 .input-email:focus {
-  border-color: #4CAF50; /* Cambiar el color al foco */
+  border-color: #4CAF50;
   outline: none;
+  box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5); /* Sombra verde cuando está enfocado */
 }
 
 /* Botones */
@@ -68,29 +89,20 @@ button {
   border: none;
   padding: 15px 40px;
   font-size: 1.2em;
+  font-weight: 600; /* Botón con texto más grueso */
   cursor: pointer;
   border-radius: 50px;
   transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 20px;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
+  text-transform: uppercase; /* Botón con texto en mayúsculas */
 }
 
 /* Efecto de hover en los botones */
 button:hover {
-  background-color: #5C8DA5;
+  background-color: rgb(70, 70, 220);
   transform: scale(1.05);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Imagen principal */
-img {
-  border-radius: 50%;
-  max-width: 40%;
-  height: auto;
-  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.1);
-  margin-top: 30px; /* Separar un poco de los elementos */
 }
 
 /* Contenedor del formulario y todo lo relacionado con el registro */
@@ -98,38 +110,23 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   width: 100%;
-  margin-top: -400px;
-  margin-right: -800px;
-
 }
 
 /* Media Queries para pantallas más pequeñas */
 @media (max-width: 768px) {
-  .App {
-    flex-direction: column;
-    text-align: center;
-    padding: 40px;
-  }
-
   .title {
-    font-size: 2.5em;
+    font-size: 3em;
   }
 
   .subtitle {
-    font-size: 1.1em;
+    font-size: 1.2em;
     text-align: center;
-    margin-right: 0;
-    width: 80%;
   }
 
   .input-email {
     width: 80%;
     margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: -1200px;
-    margin-right: 0;
   }
 
   button {
@@ -142,3 +139,24 @@ img {
     margin-top: 20px;
   }
 }
+
+/* Estilo para las etiquetas (form-label) */
+.form-label {
+  font-size: 1.2em; /* Aumentamos el tamaño de la fuente */
+  font-weight: 600; /* Hacemos el texto más grueso */
+  color: #333; /* Un color oscuro para un buen contraste */
+  text-transform: uppercase; /* Ponemos el texto en mayúsculas para hacerlo más impactante */
+  margin-bottom: 10px; /* Añadimos un pequeño margen debajo de la etiqueta */
+  letter-spacing: 1px; /* Añadimos espacio entre las letras para hacerlo más legible */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Sombra sutil para resaltar el texto */
+  display: block; /* Aseguramos que ocupe toda la línea */
+  text-align: left; /* Alineamos el texto a la izquierda */
+}
+
+/* Efecto hover para las etiquetas */
+.form-label:hover {
+  color: #4CAF50; /* Cambiamos el color al pasar el mouse sobre la etiqueta */
+  transform: scale(1.05); /* Un pequeño efecto de escalado al pasar el mouse */
+  transition: color 0.3s ease, transform 0.3s ease; /* Añadimos una transición suave */
+}
+

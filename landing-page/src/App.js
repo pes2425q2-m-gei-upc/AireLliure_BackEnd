@@ -43,7 +43,7 @@ function App() {
       <div className="form-container">
           <label className="form-label"> Descarrega la nostra aplicació a Android introduint el teu correu a continuació. </label>
         <br />
-        <input id="input-email" className="input-email" type="text" placeholder="example@mail.com" />
+        <input id="input-email" className="input-email" type="text" placeholder="example@gmail.com" />
         <button onClick={handleSubmit}>Registrarse</button>
       </div>
     </div>

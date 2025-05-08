@@ -6,8 +6,6 @@ import requests
 from django.db import transaction
 from django.utils.timezone import now, timedelta
 
-from app.serializers import ActivitatCulturalSerializer
-
 from .models import (
     ActivitatCultural,
     Contaminant,
@@ -27,9 +25,7 @@ DADES_OBERTES_DE_LA_GENERALITAT_URL = (
     "https://analisi.transparenciacatalunya.cat/resource/tasf-thgu.json"
     # "?$select=nom_estacio,altitud,latitud,longitud,contaminant,data,magnitud"
 )
-SERVEI_ACTIVITATS_CULTURALS_URL = (
-    "http://nattech.fib.upc.edu:40340/" "service/events-all"
-)
+SERVEI_ACTIVITATS_CULTURALS_URL = "http://nattech.fib.upc.edu:40340/service/events-all"
 
 
 def genera_ruta_id(register_id) -> int:

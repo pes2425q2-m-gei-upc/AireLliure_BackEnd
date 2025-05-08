@@ -241,38 +241,61 @@ def actualitzar_activitats_culturals():
 
     response = requests.get(SERVEI_ACTIVITATS_CULTURALS_URL, timeout=60)
     if response.status_code == 200:
-
         dades = response.json()
-        with transaction.atomic():
-            for activitat_dades in dades:
-                nom = activitat_dades.get("name")
-                descripcio = activitat_dades.get("description")
-                data_inici = activitat_dades.get("start date")
-                data_fi = activitat_dades.get("end date")
-                latitud = activitat_dades.get("addressid").get("latitude")
-                longitud = activitat_dades.get("addressid").get("longitude")
+        dades_punts = {}
+        punts_guardats = {}
+        dades_activitats = []
 
-                if latitud and longitud and nom and descripcio and data_inici:
-                    activitat_info = {
-                        "nom_activitat": nom,
-                        "descripcio": descripcio,
-                        "latitud": float(latitud),
-                        "longitud": float(longitud),
-                        "index_qualitat_aire": 0.0,
-                        "data_inici": data_inici.date(),
-                        "data_fi": data_fi.date(),
-                    }
-                    activitat_serializer = ActivitatCulturalSerializer(
-                        data=activitat_info
+        for activitat_dades in dades:
+            nom = activitat_dades.get("name")
+            descripcio = activitat_dades.get("description")
+            data_inici = activitat_dades.get("start date")
+            data_fi = activitat_dades.get("end date")
+            latitud = activitat_dades.get("addressid").get("latitude")
+            longitud = activitat_dades.get("addressid").get("longitude")
+
+            if latitud and longitud:
+
+                latlon_key = (float(latitud), float(longitud))
+                if latlon_key not in dades_punts:
+
+                    dades_punts[latlon_key] = Punt(
+                        latitud=latlon_key[0],
+                        longitud=latlon_key[1],
+                        index_qualitat_aire=0.0,
                     )
-                    if (
-                        activitat_serializer.is_valid()
-                        and not ActivitatCultural.objects.filter(
-                            nom_activitat=nom
-                        ).exists()
-                    ):
-                        activitat_serializer.save()
 
-                avui = now().date()
+                if nom and descripcio and data_inici:
+                    dades_activitats.append(
+                        (nom, descripcio, data_inici, data_fi, latlon_key)
+                    )
+
+            with transaction.atomic():
+                punts_guardats = {
+                    (p.latitud, p.longitud): p
+                    for p in Punt.objects.filter(
+                        latitud__in=[k[0] for k in dades_punts],
+                        longitud__in=[k[1] for k in dades_punts],
+                    )
+                }
+
+            for nom, descripcio, data_inici, data_fi, latlon_key in dades_activitats:
+                punt_id = punts_guardats.get(latlon_key).id
+
                 with transaction.atomic():
-                    ActivitatCultural.objects.filter(data_fi < avui).delete()
+                    ActivitatCultural.objects.get_or_create(
+                        punt_ptr_id=punt_id,
+                        defaults={
+                            "nom_estacio": nom,
+                            "descripcio": descripcio,
+                            "data_inici": data_inici,
+                            "data_fi": data_fi,
+                            "latitud": latlon_key[0],
+                            "longitud": latlon_key[1],
+                            "index_qualitat_aire": 0.0,
+                        },
+                    )
+
+            avui = now().date()
+            with transaction.atomic():
+                ActivitatCultural.objects.filter(data_fi < avui).delete()

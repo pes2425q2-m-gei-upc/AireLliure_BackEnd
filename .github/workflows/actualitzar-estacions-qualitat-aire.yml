@@ -1,4 +1,4 @@
-name: Actualitzar BD
+name: Actualitzar Estacions de Qualitat d'Aire
 
 on:
     schedule:

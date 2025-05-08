@@ -243,12 +243,12 @@ def actualitzar_activitats_culturals():
         dades = response.json()
         with transaction.atomic():
             for activitat_dades in dades:
-                nom = activitat_dades.get("nom")
-                descripcio = activitat_dades.get("descripcio")
-                data_inici = activitat_dades.get("data_inici")
-                data_fi = activitat_dades.get("data_fi")
-                latitud = activitat_dades.get("latitud")
-                longitud = activitat_dades.get("longitud")
+                nom = activitat_dades.get("name")
+                descripcio = activitat_dades.get("description")
+                data_inici = activitat_dades.get("start date")
+                data_fi = activitat_dades.get("end date")
+                latitud = activitat_dades.get("addressid").get("latitude")
+                longitud = activitat_dades.get("addressid").get("longitude")
 
                 if latitud and longitud and nom and descripcio and data_inici:
                     activitat_info = {
@@ -257,8 +257,8 @@ def actualitzar_activitats_culturals():
                         "latitud": float(latitud),
                         "longitud": float(longitud),
                         "index_qualitat_aire": 0.0,
-                        "data_inici": data_inici,
-                        "data_fi": data_fi,
+                        "data_inici": data_inici.date(),
+                        "data_fi": data_fi.date(),
                     }
                     activitat_serializer = ActivitatCulturalSerializer(
                         data=activitat_info
@@ -270,3 +270,7 @@ def actualitzar_activitats_culturals():
                         ).exists()
                     ):
                         activitat_serializer.save()
+
+                avui = now().date()
+                with transaction.atomic():
+                    ActivitatCultural.objects.filter(data_fi < avui).delete()

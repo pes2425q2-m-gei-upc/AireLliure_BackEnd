@@ -1,6 +1,8 @@
 name: Actualitzar Rutes
 
 on:
+    push:
+      branches: [dev-actualitzar-activitats]
     schedule:
       - cron: "55 5 * * 1"  # Cada lunes a les 5:55 UTC
     workflow_dispatch: 

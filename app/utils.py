@@ -271,6 +271,13 @@ def actualitzar_activitats_culturals():
                     )
 
             with transaction.atomic():
+                Punt.objects.bulk_create(
+                    list(dades_punts.values()),
+                    ignore_conflicts=True,
+                    unique_fields=["latitud", "longitud"],
+                )
+
+            with transaction.atomic():
                 punts_guardats = {
                     (p.latitud, p.longitud): p
                     for p in Punt.objects.filter(

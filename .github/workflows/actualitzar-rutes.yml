@@ -1,4 +1,4 @@
-name: Actualitzar BD
+name: Actualitzar Rutes
 
 on:
     schedule:

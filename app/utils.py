@@ -27,7 +27,9 @@ DADES_OBERTES_DE_LA_GENERALITAT_URL = (
     "https://analisi.transparenciacatalunya.cat/resource/tasf-thgu.json"
     # "?$select=nom_estacio,altitud,latitud,longitud,contaminant,data,magnitud"
 )
-SERVEI_ACTIVITATS_CULTURALS_URL = "https://???"
+SERVEI_ACTIVITATS_CULTURALS_URL = (
+    "http://nattech.fib.upc.edu:40340/" "service/events-all"
+)
 
 
 def genera_ruta_id(register_id) -> int:

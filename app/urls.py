@@ -527,4 +527,10 @@ urlpatterns = [
         views.get_asig_respiratoria,
         name="get_asig_respiratoria",
     ),
+    # EVENTS PRIVATS XAT
+    path(
+        "events-privats-xat/<int:pk>/",
+        views.get_events_privat_xat,
+        name="get_events_privat_xat",
+    ),
 ]

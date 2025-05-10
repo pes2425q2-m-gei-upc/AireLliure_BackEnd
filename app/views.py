@@ -1348,6 +1348,13 @@ def delete_event_de_calendari_privat(request, pk):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(["GET"])
+def get_events_privat_xat(request, pk):
+    events_privats = EventDeCalendariPrivat.objects.filter(xat_event=pk)
+    serializer = EventDeCalendariPrivatSerializer(events_privats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 # LA PART DE EVENT DE CALENDARI PUBLIC ------------------------------------------------
 
 

@@ -287,6 +287,7 @@ class EventDeCalendari(models.Model):
     creador = models.ForeignKey(
         Usuari, on_delete=models.CASCADE, name="creador_event", null=True, blank=True
     )
+    public = models.BooleanField(default=True, null=True, blank=True)
 
     class Meta:
         constraints = [

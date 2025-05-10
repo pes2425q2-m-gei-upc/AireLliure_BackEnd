@@ -890,7 +890,7 @@ def create_assignacio_accesibilitat_respiratoria(request):
         "ruta": request.data.get("ruta"),
         "accesibilitat": request.data.get("accesibilitat"),
     }
-    form = AssignaAccesibilitatRespiratoria(data=data)
+    form = AssignaAccesibilitatRespiratoriaForm(data=data)
     if form.is_valid():
         assignacio = form.save()
         serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacio)

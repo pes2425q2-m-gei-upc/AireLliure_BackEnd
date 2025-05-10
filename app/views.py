@@ -1998,3 +1998,19 @@ def delete_index_qualitat_aire_taula(request, pk):
     index_qca = get_object_or_404(IndexQualitatAire, contaminant=pk)
     index_qca.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def get_asig_esportiva(request, pk_ruta):
+    assig_esportiva = AssignaDificultatEsportiva.objects.filter(ruta=pk_ruta)
+    serializer = AssignaDificultatEsportivaSerializer(assig_esportiva, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_asig_respiratoria(request, pk_ruta):
+    assig_respiratoria = AssignaAccesibilitatRespiratoria.objects.filter(ruta=pk_ruta)
+    serializer = AssignaAccesibilitatRespiratoriaSerializer(
+        assig_respiratoria, many=True
+    )
+    return Response(serializer.data, status=status.HTTP_200_OK)

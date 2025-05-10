@@ -515,4 +515,16 @@ urlpatterns = [
         views.delete_index_qualitat_aire_taula,
         name="delete_index_qualitat_aire_taula",
     ),
+    # ASSIGNACIO DIFICULTAT ESPORTIVA
+    path(
+        "assig-esportiva/<int:pk_ruta>/",
+        views.get_asig_esportiva,
+        name="get_asig_esportiva",
+    ),
+    # ASSIGNACIO ACCESIBILITAT RESPIRATORIA
+    path(
+        "assig-acc-resp/<int:pk_ruta>/",
+        views.get_asig_respiratoria,
+        name="get_asig_respiratoria",
+    ),
 ]

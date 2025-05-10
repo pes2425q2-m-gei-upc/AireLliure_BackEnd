@@ -1317,6 +1317,7 @@ def create_event_de_calendari_privat(request):
         "data_fi": request.data.get("data_fi", timezone.now()),
         "creador": request.data.get("creador"),
         "xat": request.data.get("xat"),
+        "public": False,
     }
     form = EventDeCalendariPrivatForm(data=data)
     if form.is_valid():

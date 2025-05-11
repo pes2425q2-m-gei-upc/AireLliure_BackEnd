@@ -2041,6 +2041,18 @@ def get_asig_respiratoria(request, pk_ruta):
 def get_events_pudels_usuari(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
     apuntats = Apuntat.objects.filter(usuari=usuari)
-    events_pudels = EventDeCalendariPublic.objects.filter(id__in=apuntats)
+    # Obtener solo los IDs de los eventos
+    event_ids = [apuntat.event.id for apuntat in apuntats]
+    events_pudels = EventDeCalendariPublic.objects.filter(id__in=event_ids)
     serializer = EventDeCalendariPublicSerializer(events_pudels, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# abandonar participacio passant el usuari i el event
+@api_view(["DELETE"])
+def abandonar_participacio(request, pk_usuari, pk_event):
+    usuari = get_object_or_404(Usuari, correu=pk_usuari)
+    event = get_object_or_404(EventDeCalendariPublic, id=pk_event)
+    apuntat = Apuntat.objects.get(usuari=usuari, event=event)
+    apuntat.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

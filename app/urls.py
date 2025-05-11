@@ -539,4 +539,10 @@ urlpatterns = [
         views.get_events_pudels_usuari,
         name="get_events_pudels_usuari",
     ),
+    # Eliminar-se d'un event
+    path(
+        "eliminar-participacio/<str:pk_usuari>/<int:pk_event>/",
+        views.abandonar_participacio,
+        name="abandonar_participacio",
+    ),
 ]

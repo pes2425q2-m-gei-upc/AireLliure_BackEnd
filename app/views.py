@@ -2034,3 +2034,13 @@ def get_asig_respiratoria(request, pk_ruta):
         assig_respiratoria, many=True
     )
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# AGAFAR EVENTS PUDELS USUARI ON PARTICIPA
+@api_view(["GET"])
+def get_events_pudels_usuari(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    apuntats = Apuntat.objects.filter(usuari=usuari)
+    events_pudels = EventDeCalendariPublic.objects.filter(id__in=apuntats)
+    serializer = EventDeCalendariPublicSerializer(events_pudels, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

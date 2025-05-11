@@ -533,4 +533,10 @@ urlpatterns = [
         views.get_events_privat_xat,
         name="get_events_privat_xat",
     ),
+    # EVENTS PUDELS USUARI ON PARTICIPA
+    path(
+        "events-pudels-usuari/<str:pk>/",
+        views.get_events_pudels_usuari,
+        name="get_events_pudels_usuari",
+    ),
 ]

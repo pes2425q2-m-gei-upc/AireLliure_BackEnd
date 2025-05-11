@@ -299,9 +299,7 @@ class EventDeCalendari(models.Model):
 
 
 class EventDeCalendariPrivat(EventDeCalendari):
-    xat_event = models.ForeignKey(
-        Xat, on_delete=models.CASCADE, null=True, blank=True
-    )
+    xat_event = models.ForeignKey(Xat, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class EventDeCalendariPublic(EventDeCalendari):

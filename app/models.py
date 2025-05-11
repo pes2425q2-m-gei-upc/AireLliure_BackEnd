@@ -284,8 +284,8 @@ class EventDeCalendari(models.Model):
     descripció = models.TextField()
     data_inici = models.DateTimeField(default=timezone.now)
     data_fi = models.DateTimeField(default=timezone.now)
-    creador = models.ForeignKey(
-        Usuari, on_delete=models.CASCADE, name="creador_event", null=True, blank=True
+    creador_event = models.ForeignKey(
+        Usuari, on_delete=models.CASCADE, null=True, blank=True
     )
     public = models.BooleanField(default=True, null=True, blank=True)
 
@@ -299,9 +299,7 @@ class EventDeCalendari(models.Model):
 
 
 class EventDeCalendariPrivat(EventDeCalendari):
-    xat = models.ForeignKey(
-        Xat, on_delete=models.CASCADE, name="xat_event", null=True, blank=True
-    )
+    xat_event = models.ForeignKey(Xat, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class EventDeCalendariPublic(EventDeCalendari):

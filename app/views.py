@@ -1310,21 +1310,33 @@ def get_event_de_calendari_privat(request, pk):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def create_event_de_calendari_privat(request):
+    print("Datos recibidos en request.data:", request.data)
+    print("Tipo de xat_event recibido:", type(request.data.get("xat_event")))
+    print("Valor de xat_event recibido:", request.data.get("xat_event"))
+
     data = {
         "nom": request.data.get("nom"),
         "descripció": request.data.get("descripció"),
         "data_inici": request.data.get("data_inici", timezone.now()),
         "data_fi": request.data.get("data_fi", timezone.now()),
-        "creador": request.data.get("creador"),
-        "xat": request.data.get("xat"),
+        "creador_event": request.data.get("creador_event"),
+        "xat_event": request.data.get("xat_event"),
         "public": False,
     }
+    print("Datos procesados:", data)
+
     form = EventDeCalendariPrivatForm(data=data)
-    if form.is_valid():
-        ev = form.save()
-        serializer = EventDeCalendariPrivatSerializer(ev)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+    print("Form is_valid:", form.is_valid())
+    if not form.is_valid():
+        print("Errores del formulario:", form.errors)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    ev = form.save()
+    print("Evento guardado. ID:", ev.id)
+    print("xat_event guardado:", ev.xat_event)
+
+    serializer = EventDeCalendariPrivatSerializer(ev)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(["PATCH"])
@@ -1380,7 +1392,7 @@ def create_event_de_calendari_public(request):
         "descripció": request.data.get("descripció"),
         "data_inici": request.data.get("data_inici", timezone.now()),
         "data_fi": request.data.get("data_fi", timezone.now()),
-        "creador": request.data.get("creador"),
+        "creador_event": request.data.get("creador_event"),
         "limit": request.data.get("limit"),
     }
     form = EventDeCalendariPublicForm(data=data)

@@ -953,11 +953,15 @@ def get_xats_usuari(request, pk):
     data_xi = XatIndividualSerializer(xats_individuals, many=True)
     for dxi in data_xi.data:
         other_user = ""
+        correu_other_user = ""
         if dxi["usuari1"] == usuari.pk:
             other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
+            correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
         else:
             other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
+            correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
         dxi["nom"] = other_user
+        dxi["correu"] = correu_other_user
     xats_grupals = XatGrupal.objects.filter(membres=usuari)
     data_xg = XatGrupalSerializer(xats_grupals, many=True)
     data = data_xi.data + data_xg.data

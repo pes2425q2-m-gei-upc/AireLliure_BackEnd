@@ -954,14 +954,18 @@ def get_xats_usuari(request, pk):
     for dxi in data_xi.data:
         other_user = ""
         correu_other_user = ""
+        imatge_other_user = ""
         if dxi["usuari1"] == usuari.pk:
             other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
             correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
+            imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge
         else:
             other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
             correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
+            imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge
         dxi["nom"] = other_user
         dxi["correu"] = correu_other_user
+        dxi["imatge"] = imatge_other_user
     xats_grupals = XatGrupal.objects.filter(membres=usuari)
     data_xg = XatGrupalSerializer(xats_grupals, many=True)
     data = data_xi.data + data_xg.data

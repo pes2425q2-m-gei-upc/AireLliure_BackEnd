@@ -1,8 +1,7 @@
 # flake8: noqa: F403, F405
 # pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
-
+# pylint: disable=line-too-long, broad-exception-caught
 import os
-import urllib.parse
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -960,11 +959,19 @@ def get_xats_usuari(request, pk):
             if dxi["usuari1"] == usuari.pk:
                 other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
                 correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
-                imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge.url if get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge else None
+                imatge_other_user = (
+                    get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge.url
+                    if get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge
+                    else None
+                )
             else:
                 other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
                 correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
-                imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge.url if get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge else None
+                imatge_other_user = (
+                    get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge.url
+                    if get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge
+                    else None
+                )
             dxi["nom"] = other_user
             dxi["correu"] = correu_other_user
             dxi["imatge"] = imatge_other_user
@@ -975,7 +982,7 @@ def get_xats_usuari(request, pk):
     except Exception as e:
         return Response(
             {"error": f"Error al procesar la solicitud: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
 

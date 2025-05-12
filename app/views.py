@@ -2,6 +2,7 @@
 # pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
 
 import os
+import urllib.parse
 
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -946,30 +947,36 @@ def get_xat(request, pk):
 
 @api_view(["GET"])
 def get_xats_usuari(request, pk):
-    usuari = get_object_or_404(Usuari, correu=pk)
-    xats_individuals = XatIndividual.objects.filter(
-        models.Q(usuari1=usuari) | models.Q(usuari2=usuari)
-    )
-    data_xi = XatIndividualSerializer(xats_individuals, many=True)
-    for dxi in data_xi.data:
-        other_user = ""
-        correu_other_user = ""
-        imatge_other_user = ""
-        if dxi["usuari1"] == usuari.pk:
-            other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
-            correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
-            imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge
-        else:
-            other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
-            correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
-            imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge
-        dxi["nom"] = other_user
-        dxi["correu"] = correu_other_user
-        dxi["imatge"] = imatge_other_user
-    xats_grupals = XatGrupal.objects.filter(membres=usuari)
-    data_xg = XatGrupalSerializer(xats_grupals, many=True)
-    data = data_xi.data + data_xg.data
-    return Response(data, status=status.HTTP_200_OK)
+    try:
+        usuari = get_object_or_404(Usuari, correu=pk)
+        xats_individuals = XatIndividual.objects.filter(
+            models.Q(usuari1=usuari) | models.Q(usuari2=usuari)
+        )
+        data_xi = XatIndividualSerializer(xats_individuals, many=True)
+        for dxi in data_xi.data:
+            other_user = ""
+            correu_other_user = ""
+            imatge_other_user = ""
+            if dxi["usuari1"] == usuari.pk:
+                other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
+                correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
+                imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge.url if get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge else None
+            else:
+                other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
+                correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
+                imatge_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge.url if get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge else None
+            dxi["nom"] = other_user
+            dxi["correu"] = correu_other_user
+            dxi["imatge"] = imatge_other_user
+        xats_grupals = XatGrupal.objects.filter(membres=usuari)
+        data_xg = XatGrupalSerializer(xats_grupals, many=True)
+        data = data_xi.data + data_xg.data
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response(
+            {"error": f"Error al procesar la solicitud: {str(e)}"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 @api_view(["POST"])

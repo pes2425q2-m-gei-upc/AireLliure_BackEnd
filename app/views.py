@@ -1903,7 +1903,7 @@ def get_presencies_punt_lon_lat(request, lon, lat):
 # LA PART DE DADES OBERTES ------------------------------------------------------------
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_rutes_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1916,7 +1916,7 @@ def actualitzar_rutes_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_estacions_qualitat_aire_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1929,7 +1929,7 @@ def actualitzar_estacions_qualitat_aire_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_activitats_culturals_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"

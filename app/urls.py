@@ -515,4 +515,34 @@ urlpatterns = [
         views.delete_index_qualitat_aire_taula,
         name="delete_index_qualitat_aire_taula",
     ),
+    # ASSIGNACIO DIFICULTAT ESPORTIVA
+    path(
+        "assig-esportiva/<int:pk_ruta>/",
+        views.get_asig_esportiva,
+        name="get_asig_esportiva",
+    ),
+    # ASSIGNACIO ACCESIBILITAT RESPIRATORIA
+    path(
+        "assig-acc-resp/<int:pk_ruta>/",
+        views.get_asig_respiratoria,
+        name="get_asig_respiratoria",
+    ),
+    # EVENTS PRIVATS XAT
+    path(
+        "events-privats-xat/<int:pk>/",
+        views.get_events_privat_xat,
+        name="get_events_privat_xat",
+    ),
+    # EVENTS PUDELS USUARI ON PARTICIPA
+    path(
+        "events-pudels-usuari/<str:pk>/",
+        views.get_events_pudels_usuari,
+        name="get_events_pudels_usuari",
+    ),
+    # Eliminar-se d'un event
+    path(
+        "eliminar-participacio/<str:pk_usuari>/<int:pk_event>/",
+        views.abandonar_participacio,
+        name="abandonar_participacio",
+    ),
 ]

@@ -1,6 +1,6 @@
 # flake8: noqa: F403, F405
 # pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
-
+# pylint: disable=line-too-long, broad-exception-caught
 import os
 
 from django.db.models import Q
@@ -533,6 +533,7 @@ def get_amics_usuari(request, pk):
                     "nom": amic.accepta.nom,
                     "punts": amic.accepta.punts,
                     "about": amic.accepta.about,
+                    "imatge": amic.accepta.imatge.url if amic.accepta.imatge else None,
                 }
             )
         else:
@@ -543,6 +544,9 @@ def get_amics_usuari(request, pk):
                     "nom": amic.solicita.nom,
                     "punts": amic.solicita.punts,
                     "about": amic.solicita.about,
+                    "imatge": (
+                        amic.solicita.imatge.url if amic.solicita.imatge else None
+                    ),
                 }
             )
     return Response(llistat_retorn, status=status.HTTP_200_OK)
@@ -600,6 +604,7 @@ def get_solicituds_rebudes(request, pk):
     for data_ser in serializer.data:
         usuari = get_object_or_404(Usuari, correu=data_ser.get("solicita"))
         data_ser["nom"] = usuari.nom
+        data_ser["imatge"] = usuari.imatge.url if usuari.imatge else None
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -611,6 +616,7 @@ def get_solicituds_enviades(request, pk):
     for data_ser in serializer.data:
         usuari = get_object_or_404(Usuari, correu=data_ser.get("accepta"))
         data_ser["nom"] = usuari.nom
+        data_ser["imatge"] = usuari.imatge.url if usuari.imatge else None
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -890,7 +896,7 @@ def create_assignacio_accesibilitat_respiratoria(request):
         "ruta": request.data.get("ruta"),
         "accesibilitat": request.data.get("accesibilitat"),
     }
-    form = AssignaAccesibilitatRespiratoria(data=data)
+    form = AssignaAccesibilitatRespiratoriaForm(data=data)
     if form.is_valid():
         assignacio = form.save()
         serializer = AssignaAccesibilitatRespiratoriaSerializer(assignacio)
@@ -946,22 +952,44 @@ def get_xat(request, pk):
 
 @api_view(["GET"])
 def get_xats_usuari(request, pk):
-    usuari = get_object_or_404(Usuari, correu=pk)
-    xats_individuals = XatIndividual.objects.filter(
-        models.Q(usuari1=usuari) | models.Q(usuari2=usuari)
-    )
-    data_xi = XatIndividualSerializer(xats_individuals, many=True)
-    for dxi in data_xi.data:
-        other_user = ""
-        if dxi["usuari1"] == usuari.pk:
-            other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
-        else:
-            other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
-        dxi["nom"] = other_user
-    xats_grupals = XatGrupal.objects.filter(membres=usuari)
-    data_xg = XatGrupalSerializer(xats_grupals, many=True)
-    data = data_xi.data + data_xg.data
-    return Response(data, status=status.HTTP_200_OK)
+    try:
+        usuari = get_object_or_404(Usuari, correu=pk)
+        xats_individuals = XatIndividual.objects.filter(
+            models.Q(usuari1=usuari) | models.Q(usuari2=usuari)
+        )
+        data_xi = XatIndividualSerializer(xats_individuals, many=True)
+        for dxi in data_xi.data:
+            other_user = ""
+            correu_other_user = ""
+            imatge_other_user = ""
+            if dxi["usuari1"] == usuari.pk:
+                other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).nom
+                correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari2"]).correu
+                imatge_other_user = (
+                    get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge.url
+                    if get_object_or_404(Usuari, pk=dxi["usuari2"]).imatge
+                    else None
+                )
+            else:
+                other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).nom
+                correu_other_user = get_object_or_404(Usuari, pk=dxi["usuari1"]).correu
+                imatge_other_user = (
+                    get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge.url
+                    if get_object_or_404(Usuari, pk=dxi["usuari1"]).imatge
+                    else None
+                )
+            dxi["nom"] = other_user
+            dxi["correu"] = correu_other_user
+            dxi["imatge"] = imatge_other_user
+        xats_grupals = XatGrupal.objects.filter(membres=usuari)
+        data_xg = XatGrupalSerializer(xats_grupals, many=True)
+        data = data_xi.data + data_xg.data
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response(
+            {"error": f"Error al procesar la solicitud: {str(e)}"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["POST"])
@@ -1310,20 +1338,33 @@ def get_event_de_calendari_privat(request, pk):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def create_event_de_calendari_privat(request):
+    print("Datos recibidos en request.data:", request.data)
+    print("Tipo de xat_event recibido:", type(request.data.get("xat_event")))
+    print("Valor de xat_event recibido:", request.data.get("xat_event"))
+
     data = {
         "nom": request.data.get("nom"),
         "descripció": request.data.get("descripció"),
         "data_inici": request.data.get("data_inici", timezone.now()),
         "data_fi": request.data.get("data_fi", timezone.now()),
-        "creador": request.data.get("creador"),
-        "xat": request.data.get("xat"),
+        "creador_event": request.data.get("creador_event"),
+        "xat_event": request.data.get("xat_event"),
+        "public": False,
     }
+    print("Datos procesados:", data)
+
     form = EventDeCalendariPrivatForm(data=data)
-    if form.is_valid():
-        ev = form.save()
-        serializer = EventDeCalendariPrivatSerializer(ev)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+    print("Form is_valid:", form.is_valid())
+    if not form.is_valid():
+        print("Errores del formulario:", form.errors)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    ev = form.save()
+    print("Evento guardado. ID:", ev.id)
+    print("xat_event guardado:", ev.xat_event)
+
+    serializer = EventDeCalendariPrivatSerializer(ev)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(["PATCH"])
@@ -1345,6 +1386,13 @@ def delete_event_de_calendari_privat(request, pk):
         event_privat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET"])
+def get_events_privat_xat(request, pk):
+    events_privats = EventDeCalendariPrivat.objects.filter(xat_event=pk)
+    serializer = EventDeCalendariPrivatSerializer(events_privats, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # LA PART DE EVENT DE CALENDARI PUBLIC ------------------------------------------------
@@ -1372,7 +1420,7 @@ def create_event_de_calendari_public(request):
         "descripció": request.data.get("descripció"),
         "data_inici": request.data.get("data_inici", timezone.now()),
         "data_fi": request.data.get("data_fi", timezone.now()),
-        "creador": request.data.get("creador"),
+        "creador_event": request.data.get("creador_event"),
         "limit": request.data.get("limit"),
     }
     form = EventDeCalendariPublicForm(data=data)
@@ -1855,7 +1903,7 @@ def get_presencies_punt_lon_lat(request, lon, lat):
 # LA PART DE DADES OBERTES ------------------------------------------------------------
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_rutes_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1868,7 +1916,7 @@ def actualitzar_rutes_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_estacions_qualitat_aire_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1881,7 +1929,7 @@ def actualitzar_estacions_qualitat_aire_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_activitats_culturals_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1907,7 +1955,9 @@ def obtenir_ranking_usuaris_all(request):
 @api_view(["GET"])
 def obtenir_ranking_usuari_amics(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
-    llistat_amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    llistat_amics = Amistat.objects.filter(
+        (Q(solicita=usuari) | Q(accepta=usuari)) & Q(pendent=False)
+    )
     amics = []
     amics.append(usuari)
     for amistat in llistat_amics:
@@ -1997,4 +2047,42 @@ def update_index_qualitat_aire_taula(request, pk):
 def delete_index_qualitat_aire_taula(request, pk):
     index_qca = get_object_or_404(IndexQualitatAire, contaminant=pk)
     index_qca.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET"])
+def get_asig_esportiva(request, pk_ruta):
+    assig_esportiva = AssignaDificultatEsportiva.objects.filter(ruta=pk_ruta)
+    serializer = AssignaDificultatEsportivaSerializer(assig_esportiva, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+def get_asig_respiratoria(request, pk_ruta):
+    assig_respiratoria = AssignaAccesibilitatRespiratoria.objects.filter(ruta=pk_ruta)
+    serializer = AssignaAccesibilitatRespiratoriaSerializer(
+        assig_respiratoria, many=True
+    )
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# AGAFAR EVENTS PUDELS USUARI ON PARTICIPA
+@api_view(["GET"])
+def get_events_pudels_usuari(request, pk):
+    usuari = get_object_or_404(Usuari, correu=pk)
+    apuntats = Apuntat.objects.filter(usuari=usuari)
+    # Obtener solo los IDs de los eventos
+    event_ids = [apuntat.event.id for apuntat in apuntats]
+    events_pudels = EventDeCalendariPublic.objects.filter(id__in=event_ids)
+    serializer = EventDeCalendariPublicSerializer(events_pudels, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# abandonar participacio passant el usuari i el event
+@api_view(["DELETE"])
+def abandonar_participacio(request, pk_usuari, pk_event):
+    usuari = get_object_or_404(Usuari, correu=pk_usuari)
+    event = get_object_or_404(EventDeCalendariPublic, id=pk_event)
+    apuntat = Apuntat.objects.get(usuari=usuari, event=event)
+    apuntat.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)

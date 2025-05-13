@@ -78,7 +78,7 @@ def actualitzar_rutes():
 
         with transaction.atomic():
             punts_guardats = {
-                (p.latitud, p.longitud): p
+                (p.latitud, p.longitud): p.id
                 for p in Punt.objects.filter(
                     latitud__in=[k[0] for k in dades_punts],
                     longitud__in=[k[1] for k in dades_punts],
@@ -91,7 +91,7 @@ def actualitzar_rutes():
                 nom=nombre,
                 descripcio=descripcion,
                 dist_km=dist_km,
-                punt_inici_id=punts_guardats.get(punt).id,
+                punt_inici_id=punts_guardats.get(punt),
             )
             for ruta_id, nombre, descripcion, dist_km, punt in dades_rutes
         ]
@@ -182,7 +182,7 @@ def actualitzar_estacions_qualitat_aire():
 
         with transaction.atomic():
             punts_guardats = {
-                (p.latitud, p.longitud): p
+                (p.latitud, p.longitud): p.id
                 for p in Punt.objects.filter(
                     latitud__in=[k[0] for k in dades_punts],
                     longitud__in=[k[1] for k in dades_punts],
@@ -190,11 +190,9 @@ def actualitzar_estacions_qualitat_aire():
             }
 
         for latlon_key, estacio in dades_estacions.items():
-            punt = punts_guardats.get(latlon_key)
-
+            punt_id = punts_guardats.get(latlon_key)
             nom_estacio = estacio.nom_estacio
             descripcio = estacio.descripcio
-            punt_id = punt.id
 
             with transaction.atomic():
                 EstacioQualitatAire.objects.get_or_create(
@@ -237,7 +235,7 @@ def actualitzar_activitats_culturals():
 
     response = requests.get(SERVEI_ACTIVITATS_CULTURALS_URL, timeout=60)
     if response.status_code == 200:
-        dades = response.json()
+        dades = response.json().get("events")
         dades_punts = {}
         punts_guardats = {}
         dades_activitats = []
@@ -262,43 +260,45 @@ def actualitzar_activitats_culturals():
                     )
 
                 if nom and descripcio and data_inici:
+                    data_inici = datetime.fromisoformat(data_inici).date()
+                    data_fi = datetime.fromisoformat(data_fi).date()
                     dades_activitats.append(
                         (nom, descripcio, data_inici, data_fi, latlon_key)
                     )
 
+        with transaction.atomic():
+            Punt.objects.bulk_create(
+                list(dades_punts.values()),
+                ignore_conflicts=True,
+                unique_fields=["latitud", "longitud"],
+            )
+
+        with transaction.atomic():
+            punts_guardats = {
+                (p.latitud, p.longitud): p.id
+                for p in Punt.objects.filter(
+                    latitud__in=[k[0] for k in dades_punts],
+                    longitud__in=[k[1] for k in dades_punts],
+                )
+            }
+
+        for nom, descripcio, data_inici, data_fi, latlon_key in dades_activitats:
+            punt_id = punts_guardats.get(latlon_key)
+
             with transaction.atomic():
-                Punt.objects.bulk_create(
-                    list(dades_punts.values()),
-                    ignore_conflicts=True,
-                    unique_fields=["latitud", "longitud"],
+                ActivitatCultural.objects.get_or_create(
+                    punt_ptr_id=punt_id,
+                    defaults={
+                        "nom_activitat": nom,
+                        "descripcio": descripcio[:255],
+                        "data_inici": data_inici,
+                        "data_fi": data_fi,
+                        "latitud": latlon_key[0],
+                        "longitud": latlon_key[1],
+                        "index_qualitat_aire": 0.0,
+                    },
                 )
 
-            with transaction.atomic():
-                punts_guardats = {
-                    (p.latitud, p.longitud): p
-                    for p in Punt.objects.filter(
-                        latitud__in=[k[0] for k in dades_punts],
-                        longitud__in=[k[1] for k in dades_punts],
-                    )
-                }
-
-            for nom, descripcio, data_inici, data_fi, latlon_key in dades_activitats:
-                punt_id = punts_guardats.get(latlon_key).id
-
-                with transaction.atomic():
-                    ActivitatCultural.objects.get_or_create(
-                        punt_ptr_id=punt_id,
-                        defaults={
-                            "nom_estacio": nom,
-                            "descripcio": descripcio,
-                            "data_inici": data_inici,
-                            "data_fi": data_fi,
-                            "latitud": latlon_key[0],
-                            "longitud": latlon_key[1],
-                            "index_qualitat_aire": 0.0,
-                        },
-                    )
-
-            avui = now().date()
-            with transaction.atomic():
-                ActivitatCultural.objects.filter(data_fi < avui).delete()
+        avui = now().date()
+        with transaction.atomic():
+            ActivitatCultural.objects.filter(data_fi__lt=avui).delete()

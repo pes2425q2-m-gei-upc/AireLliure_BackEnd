@@ -533,6 +533,7 @@ def get_amics_usuari(request, pk):
                     "nom": amic.accepta.nom,
                     "punts": amic.accepta.punts,
                     "about": amic.accepta.about,
+                    "imatge": amic.accepta.imatge.url if amic.accepta.imatge else None,
                 }
             )
         else:
@@ -543,6 +544,9 @@ def get_amics_usuari(request, pk):
                     "nom": amic.solicita.nom,
                     "punts": amic.solicita.punts,
                     "about": amic.solicita.about,
+                    "imatge": (
+                        amic.solicita.imatge.url if amic.solicita.imatge else None
+                    ),
                 }
             )
     return Response(llistat_retorn, status=status.HTTP_200_OK)
@@ -600,6 +604,7 @@ def get_solicituds_rebudes(request, pk):
     for data_ser in serializer.data:
         usuari = get_object_or_404(Usuari, correu=data_ser.get("solicita"))
         data_ser["nom"] = usuari.nom
+        data_ser["imatge"] = usuari.imatge.url if usuari.imatge else None
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -611,6 +616,7 @@ def get_solicituds_enviades(request, pk):
     for data_ser in serializer.data:
         usuari = get_object_or_404(Usuari, correu=data_ser.get("accepta"))
         data_ser["nom"] = usuari.nom
+        data_ser["imatge"] = usuari.imatge.url if usuari.imatge else None
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -1897,7 +1903,7 @@ def get_presencies_punt_lon_lat(request, lon, lat):
 # LA PART DE DADES OBERTES ------------------------------------------------------------
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_rutes_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1910,7 +1916,7 @@ def actualitzar_rutes_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_estacions_qualitat_aire_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1923,7 +1929,7 @@ def actualitzar_estacions_qualitat_aire_bd(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def actualitzar_activitats_culturals_bd(request):
 
     expected_token = f"Bearer {os.environ.get('UPDATE_TOKEN', '')}"
@@ -1949,7 +1955,9 @@ def obtenir_ranking_usuaris_all(request):
 @api_view(["GET"])
 def obtenir_ranking_usuari_amics(request, pk):
     usuari = get_object_or_404(Usuari, correu=pk)
-    llistat_amics = Amistat.objects.filter(Q(solicita=usuari) | Q(accepta=usuari))
+    llistat_amics = Amistat.objects.filter(
+        (Q(solicita=usuari) | Q(accepta=usuari)) & Q(pendent=False)
+    )
     amics = []
     amics.append(usuari)
     for amistat in llistat_amics:

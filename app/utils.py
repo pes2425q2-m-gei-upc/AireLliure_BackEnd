@@ -306,9 +306,11 @@ def actualitzar_activitats_culturals():
             activitats_a_eliminar = ActivitatCultural.objects.filter(data_fi__lt=avui)
 
         with transaction.atomic():
-            punts_a_eliminar = Punt.objects.filter(
-                id__in=activitats_a_eliminar.values("id")
-            ).exclude(id__in=EstacioQualitatAire.objects.values("id"))
+            punts_a_eliminar = (
+                Punt.objects.filter(id__in=activitats_a_eliminar.values("id"))
+                .exclude(id__in=EstacioQualitatAire.objects.values("id"))
+                .exclude(id__in=Ruta.objects.values("punt_inici_id"))
+            )
 
         with transaction.atomic():
             activitats_a_eliminar.delete()

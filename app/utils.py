@@ -282,23 +282,38 @@ def actualitzar_activitats_culturals():
                 )
             }
 
-        for nom, descripcio, data_inici, data_fi, latlon_key in dades_activitats:
-            punt_id = punts_guardats.get(latlon_key)
-
-            with transaction.atomic():
-                ActivitatCultural.objects.get_or_create(
-                    punt_ptr_id=punt_id,
-                    defaults={
-                        "nom_activitat": nom,
-                        "descripcio": descripcio[:255],
-                        "data_inici": data_inici,
-                        "data_fi": data_fi,
-                        "latitud": latlon_key[0],
-                        "longitud": latlon_key[1],
-                        "index_qualitat_aire": 0.0,
-                    },
-                )
-
         avui = now().date()
+
+        for nom, descripcio, data_inici, data_fi, latlon_key in dades_activitats:
+            if data_fi >= avui:
+                punt_id = punts_guardats.get(latlon_key)
+
+                with transaction.atomic():
+                    ActivitatCultural.objects.get_or_create(
+                        punt_ptr_id=punt_id,
+                        defaults={
+                            "nom_activitat": nom,
+                            "descripcio": descripcio[:255],
+                            "data_inici": data_inici,
+                            "data_fi": data_fi,
+                            "latitud": latlon_key[0],
+                            "longitud": latlon_key[1],
+                            "index_qualitat_aire": 0.0,
+                        },
+                    )
+
         with transaction.atomic():
-            ActivitatCultural.objects.filter(data_fi__lt=avui).delete()
+            activitats_a_eliminar = ActivitatCultural.objects.filter(data_fi__lt=avui)
+
+        with transaction.atomic():
+            punts_a_eliminar = (
+                Punt.objects.filter(id__in=activitats_a_eliminar.values("id"))
+                .exclude(id__in=EstacioQualitatAire.objects.values("id"))
+                .exclude(id__in=Ruta.objects.values("punt_inici_id"))
+            )
+
+        with transaction.atomic():
+            activitats_a_eliminar.delete()
+
+        with transaction.atomic():
+            punts_a_eliminar.delete()

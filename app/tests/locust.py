@@ -1,6 +1,4 @@
-import random
-import time
-
+#pylint: disable=W0718
 from locust import HttpUser, between, task
 
 

@@ -1,4 +1,4 @@
-#pylint: disable=W0718
+# pylint: disable=W0718, C0303
 from locust import HttpUser, between, task
 
 
@@ -118,7 +118,7 @@ class WebsiteUser(HttpUser):
         response = self.client.get("/rutas/615851413/info/")
         if response.status_code != 200:
             print(f"Error en ruta: {response.status_code}")
-    
+
     @task
     def get_presencies(self):
         response = self.client.get("/presencies/")

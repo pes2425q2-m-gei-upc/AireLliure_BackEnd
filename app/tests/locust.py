@@ -118,3 +118,15 @@ class WebsiteUser(HttpUser):
         response = self.client.get("/rutas/615851413/info/")
         if response.status_code != 200:
             print(f"Error en ruta: {response.status_code}")
+    
+    @task
+    def get_presencies(self):
+        response = self.client.get("/presencies/")
+        if response.status_code != 200:
+            print(f"Error en presencies: {response.status_code}")
+
+    @task
+    def get_index_qualitat_aire(self):
+        response = self.client.get("index-qualitat-aire-taula/")
+        if response.status_code != 200:
+            print(f"Error en index qualitat aire: {response.status_code}")

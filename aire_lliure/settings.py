@@ -139,7 +139,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "app/static"),
 ]
 
-# Configuración de archivos estáticos para desarrollo
+# Configuración de archivos estáticos para desarrollo y producción
 if DEBUG:
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 else:
@@ -149,12 +149,23 @@ else:
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_MIMETYPES = {
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
+    ".jpg": "image/jpeg",
+    ".png": "image/png",
+    ".ico": "image/x-icon",
+}
 
 # Configuración de MIME types
 MIME_TYPES = {
     ".js": "application/javascript",
     ".css": "text/css",
     ".json": "application/json",
+    ".jpg": "image/jpeg",
+    ".png": "image/png",
+    ".ico": "image/x-icon",
 }
 
 # Default primary key field type

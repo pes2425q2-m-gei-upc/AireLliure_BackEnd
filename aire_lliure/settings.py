@@ -70,7 +70,7 @@ ROOT_URLCONF = "aire_lliure.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'app/static')],
+        "DIRS": [os.path.join(BASE_DIR, "app/static")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -133,17 +133,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'app/staticfiles')
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "app/staticfiles")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'app/static'),
+    os.path.join(BASE_DIR, "app/static"),
 ]
 
 # Configuración de archivos estáticos para desarrollo
 if DEBUG:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 else:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Configuración de WhiteNoise
 WHITENOISE_USE_FINDERS = True
@@ -152,9 +152,9 @@ WHITENOISE_ALLOW_ALL_ORIGINS = True
 
 # Configuración de MIME types
 MIME_TYPES = {
-    '.js': 'application/javascript',
-    '.css': 'text/css',
-    '.json': 'application/json',
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
 }
 
 # Default primary key field type

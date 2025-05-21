@@ -3,9 +3,13 @@
 # pylint: disable=line-too-long, broad-exception-caught
 import os
 
+from django.conf import settings
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.template import Context, Template
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -19,6 +23,47 @@ from .utils import (
     actualitzar_estacions_qualitat_aire,
     actualitzar_rutes,
 )
+
+# ------------LANDING PAGE--------------------------------
+
+
+class LandingPageView(TemplateView):
+    template_name = "index.html"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # Leer el archivo index.html
+            with open(
+                os.path.join(settings.STATICFILES_DIRS[0], "index.html"),
+                "r",
+                encoding="utf-8",
+            ) as f:
+                content = f.read()
+
+            # Crear el contexto con las variables necesarias
+            context = Context(
+                {
+                    "STATIC_URL": settings.STATIC_URL,
+                    "DEBUG": settings.DEBUG,
+                }
+            )
+
+            # Renderizar el template
+            template = Template(content)
+            rendered_content = template.render(context)
+
+            # Crear la respuesta HTTP
+            response = HttpResponse(rendered_content)
+
+            # Configurar los headers necesarios
+            response["Content-Type"] = "text/html; charset=utf-8"
+
+            return response
+        except Exception as e:
+            return HttpResponse(
+                f"Error al cargar la landing page: {str(e)}", status=500
+            )
+
 
 # ------- funcions auxiliars ----------------------------------------------------------
 

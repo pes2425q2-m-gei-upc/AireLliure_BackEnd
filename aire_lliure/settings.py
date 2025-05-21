@@ -70,7 +70,7 @@ ROOT_URLCONF = "aire_lliure.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "app/static")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -133,25 +133,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "app/staticfiles")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "app/static"),
+]
+
+# Configuración de archivos estáticos para desarrollo
+if DEBUG:
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+else:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Configuración de WhiteNoise
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+
+# Configuración de MIME types
+MIME_TYPES = {
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".json": "application/json",
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-STATIC_URL = "/static/"
-
-# This production code might break development mode, so we check whether we're in DEBUG
-# mode
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is
-    # specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce
-    # disk use and renames the files with unique names for each version to support
-    # long-term caching
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Añade esta configuración para REST framework
 REST_FRAMEWORK = {

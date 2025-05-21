@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     # Aquí irán tus URLs cuando las necesites
+    path("", views.LandingPageView.as_view(), name="landing_page"),
     # CATEGORIA
     path("categories/", views.get_categories, name="get_categories"),
     # DIFICULTAT ESPORTIVA

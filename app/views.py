@@ -10,7 +10,10 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-
+from django.views.generic import TemplateView
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from django.template import Context, Template
 from .forms import *
 from .models import *
 from .serializers import *
@@ -19,6 +22,40 @@ from .utils import (
     actualitzar_estacions_qualitat_aire,
     actualitzar_rutes,
 )
+from django.conf import settings
+
+#------------LANDING PAGE--------------------------------
+
+
+class LandingPageView(TemplateView):
+    template_name = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # Leer el archivo index.html
+            with open(os.path.join(settings.STATICFILES_DIRS[0], 'index.html'), 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # Crear el contexto con las variables necesarias
+            context = Context({
+                'STATIC_URL': settings.STATIC_URL,
+                'DEBUG': settings.DEBUG,
+            })
+
+            # Renderizar el template
+            template = Template(content)
+            rendered_content = template.render(context)
+
+            # Crear la respuesta HTTP
+            response = HttpResponse(rendered_content)
+            
+            # Configurar los headers necesarios
+            response['Content-Type'] = 'text/html; charset=utf-8'
+            
+            return response
+        except Exception as e:
+            return HttpResponse(f"Error al cargar la landing page: {str(e)}", status=500)
+
 
 # ------- funcions auxiliars ----------------------------------------------------------
 

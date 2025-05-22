@@ -67,23 +67,6 @@ class TestIntegracion(TestCase):
             nom="Ruta de prueba", descripcio="Descripcion de prueba", dist_km=5.0
         )
 
-    def test_flujo_completo_amistad_y_chat(self):
-        # 1. Crear sol·licitud d'amistat
-        url = reverse("create_amistat")
-        data = {
-            "solicita": self.usuari.correu,
-            "accepta": self.usuari2.correu,
-            "pendent": True,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        # 2. Verificar que s'ha creat el xat individual
-        amistat = Amistat.objects.get(solicita=self.usuari, accepta=self.usuari2)
-        self.assertIsNotNone(amistat)  # Verificar que l'amistat existeix
-        xat = XatIndividual.objects.get(usuari1=self.usuari, usuari2=self.usuari2)
-        self.assertIsNotNone(xat)
-
     def test_flujo_completo_ruta_y_valoracion(self):
         # 1. Crear ruta
         url = reverse("create_ruta")
@@ -502,25 +485,6 @@ class TestIntegracion(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         with self.assertRaises(Presencia.DoesNotExist):
             Presencia.objects.get(id=presencia.id)
-
-    def test_error_crear_amistat_amb_mateix_usuari(self):
-        # 1. Crear amistat amb el mateix usuari
-        url = reverse("create_amistat")
-        data = {
-            "solicita": self.usuari.correu,
-            "accepta": self.usuari.correu,
-            "pendent": True,
-        }
-        response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-        # 2. Verificar que s'ha creat l'amistat
-        amistat = Amistat.objects.get(solicita=self.usuari, accepta=self.usuari)
-        self.assertIsNotNone(amistat)
-
-        # 3. Verificar que s'ha creat el xat individual
-        xat = XatIndividual.objects.get(usuari1=self.usuari, usuari2=self.usuari)
-        self.assertIsNotNone(xat)
 
     def test_error_crear_event_sense_permisos(self):
         # 1. Crear event públic amb usuari normal

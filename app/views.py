@@ -530,16 +530,8 @@ def create_amistat(request):
     form = AmistatForm(data=data)
     if form.is_valid():
         amistat = form.save()
-        data2 = {
-            "usuari1": request.data.get("solicita"),
-            "usuari2": request.data.get("accepta"),
-        }
-        form2 = XatIndividualForm(data=data2)
-        if form2.is_valid():
-            form2.save()
-            serializer = AmistatSerializer(amistat)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(form2.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = AmistatSerializer(amistat)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

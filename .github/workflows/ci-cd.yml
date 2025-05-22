@@ -2,9 +2,10 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main, staging]
+    branches: [main, staging, feature/cobertura-tests]
   pull_request:
     branches: [main, staging]
+  workflow_dispatch:
 
 jobs:
   lint:

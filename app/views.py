@@ -735,6 +735,7 @@ def get_all_info_ruta(request, pk):
     for valoracio in serializer_valoracions.data:
         usuari = get_object_or_404(Usuari, pk=valoracio.get("usuari"))
         valoracio["nom_usuari"] = usuari.nom
+        valoracio["imatge_usuari"] = usuari.imatge.url if usuari.imatge else None
     return Response(
         {"ruta": serializer_ruta.data, "valoracions": serializer_valoracions.data},
         status=status.HTTP_200_OK,

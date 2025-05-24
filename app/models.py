@@ -418,6 +418,6 @@ class IndexQualitatAire(models.Model):
                 y1 = i / num_intervals
                 y2 = (i + 1) / num_intervals
                 m = (y2 - y1) / (x2 - x1)
-                return m * (valor - x1) + y1
+                return 1 - (m * (valor - x1) + y1)
 
         return 0

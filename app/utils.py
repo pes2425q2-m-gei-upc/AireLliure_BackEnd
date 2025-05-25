@@ -4,7 +4,7 @@ from datetime import datetime, time
 
 import requests
 from django.db import transaction
-from django.utils.timezone import now, timedelta
+from django.utils.timezone import make_aware, now, timedelta
 
 from .models import (
     ActivitatCultural,
@@ -34,9 +34,12 @@ def genera_ruta_id(register_id) -> int:
 
 def datetime_from_iso_date_and_hour(iso_date_str: str, hora: int) -> datetime:
     fecha_base = datetime.fromisoformat(iso_date_str).date()
+    result = fecha_base
     if hora == 24:
-        return datetime.combine(fecha_base + timedelta(days=1), time(0))
-    return datetime.combine(fecha_base, time(hora))
+        result = datetime.combine(fecha_base + timedelta(days=1), time(0))
+    else:
+        result = datetime.combine(fecha_base, time(hora))
+    return make_aware(result)
 
 
 def actualitzar_rutes():
@@ -218,7 +221,7 @@ def actualitzar_estacions_qualitat_aire():
                     else 0.0
                 ),
                 contaminant_id=contaminants_guardats.get(nom_contaminant).id,
-                punt_id=punts_guardats.get(latlon_key).id,
+                punt_id=punts_guardats.get(latlon_key),
             )
             for data, valor, nom_contaminant, latlon_key in dades_presencia
         ]

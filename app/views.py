@@ -1,6 +1,7 @@
 # flake8: noqa: F403, F405
 # pylint: disable=no-member, assignment-from-none, unused-wildcard-import, inconsistent-return-statements, unused-variable, no-else-return, wildcard-import
 # pylint: disable=line-too-long, broad-exception-caught
+from datetime import date
 import os
 
 from django.conf import settings
@@ -1650,7 +1651,8 @@ def delete_estacio_qualitat_aire(request, pk):
 
 @api_view(["GET"])
 def get_activitats_culturals(request):
-    activitats_culturals = ActivitatCultural.objects.all()
+    avui = date.today()
+    activitats_culturals = ActivitatCultural.objects.filter(data_inici__lte=avui, data_fi__gte=avui)[:20]
     serializer = ActivitatCulturalSerializer(activitats_culturals, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

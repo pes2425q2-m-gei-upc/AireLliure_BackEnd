@@ -4,7 +4,7 @@ import emailjs from 'emailjs-com';
 
 function App() {
 
-  const handleSubmit = (e) => {
+  /*const handleSubmit = (e) => {
     e.preventDefault(); 
     
     const email = document.getElementById('input-email').value;
@@ -37,6 +37,10 @@ function App() {
     .catch((error) => {
       console.log('Error al enviar el email', error);
     })
+  }*/
+
+  const handleSubmit = (e) => {
+    window.location.href = 'https://appdistribution.firebase.dev/i/7fe695fe8fb3b8ac';
   }
 
   return (
@@ -55,14 +59,7 @@ function App() {
       <div className="form-container">
           <label className="form-label"> Descarrega la nostra aplicació a Android introduint el teu correu a continuació. </label>
         <br />
-        <input 
-          id="input-email" 
-          className="input-email" 
-          type="email" 
-          placeholder="example@gmail.com" 
-          required
-        />
-        <button onClick={handleSubmit}>Registrarse</button>
+        <button onClick={handleSubmit}>Descarrega / Descarga / Download </button>
       </div>
     </div>
   );
